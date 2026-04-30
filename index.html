@@ -236,6 +236,55 @@ header{
 }
 .btn-green:hover{background:#72a32f;}
 
+/* ──────── TEKLİF FORM EXTRAS ──────── */
+.teklif-section-title{font-size:13px;font-weight:700;color:var(--blue-dark);border-left:3px solid var(--istobal-red);padding-left:10px;margin:16px 0 10px;}
+.teklif-check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;}
+.teklif-check{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:4px 0;}
+.teklif-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--istobal-red);}
+
+/* ──────── PRINT LAYOUT ──────── */
+#print-teklif{display:none;font-family:'Segoe UI',Arial,sans-serif;background:#fff;color:#222;}
+.pt-red-bar{height:7px;background:linear-gradient(90deg,var(--istobal-red),#b5001a);}
+.pt-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px 12px;border-bottom:2px solid #e0e0e0;}
+.pt-logo-l,.pt-logo-r{height:38px;object-fit:contain;}
+.pt-logo-l{filter:none;}
+.pt-header-center{text-align:center;}
+.pt-title{font-size:20px;font-weight:900;color:var(--blue-dark);letter-spacing:2px;}
+.pt-subtitle{font-size:10px;color:#888;margin-top:2px;letter-spacing:.5px;}
+.pt-meta-row{display:flex;justify-content:space-around;background:#f4f7fb;padding:8px 28px;font-size:11px;border-bottom:1px solid #dde;}
+.pt-meta-item{text-align:center;}
+.pt-meta-lbl{font-weight:700;color:#555;display:block;font-size:9px;text-transform:uppercase;letter-spacing:.5px;}
+.pt-meta-val{font-size:12px;font-weight:700;color:var(--blue-dark);}
+.pt-section{padding:12px 28px;border-bottom:1px solid #eee;}
+.pt-section-title{font-size:9.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:var(--blue-dark);display:inline-block;padding:3px 10px;border-radius:3px;margin-bottom:10px;}
+.pt-two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.pt-field{font-size:12px;margin-bottom:4px;line-height:1.6;}
+.pt-field-lbl{font-weight:700;color:#555;min-width:70px;display:inline-block;}
+.pt-product-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.pt-product-name{font-size:17px;font-weight:900;color:var(--blue-dark);}
+.pt-product-sub{font-size:11.5px;color:#555;margin-top:3px;}
+.pt-product-var{font-size:11px;color:var(--istobal-red);font-weight:700;margin-top:5px;background:#fff0f0;display:inline-block;padding:2px 8px;border-radius:4px;}
+.pt-badge{background:var(--istobal-red);color:#fff;font-size:9px;font-weight:900;text-align:center;padding:8px 12px;border-radius:8px;line-height:1.6;letter-spacing:.5px;white-space:nowrap;}
+.pt-spec-table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:4px;}
+.pt-spec-table th{background:var(--blue-dark);color:#fff;padding:7px 14px;text-align:left;font-size:10px;letter-spacing:.5px;}
+.pt-spec-table td{padding:6px 14px;border-bottom:1px solid #eee;}
+.pt-spec-table tr:nth-child(even) td{background:#f7f9fc;}
+.pt-spec-table td:first-child{font-weight:700;color:#333;width:55%;}
+.pt-spec-table td:last-child{color:var(--blue-dark);font-weight:700;text-align:right;}
+.pt-services{display:flex;flex-wrap:wrap;gap:8px;}
+.pt-service-tag{background:#e8f5e9;border:1.5px solid #81c784;color:#2e7d32;padding:4px 14px;border-radius:20px;font-weight:700;font-size:11px;}
+.pt-price-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;}
+.pt-price-table td{padding:9px 16px;border:1px solid #dde;}
+.pt-price-table td:first-child{color:#444;}
+.pt-price-table td:last-child{text-align:right;font-weight:700;color:var(--blue-dark);width:200px;}
+.pt-total-row td{background:var(--blue-dark)!important;color:#fff!important;font-size:14px!important;font-weight:900!important;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.pt-total-row td:last-child{color:#a8e063!important;}
+.pt-vade-row{font-size:12px;color:#555;margin-top:8px;}
+.pt-signatures{display:flex;justify-content:space-around;padding:18px 28px;border-bottom:1px solid #eee;gap:40px;}
+.pt-sig-box{flex:1;text-align:center;}
+.pt-sig-line{border-bottom:1.5px solid #333;height:52px;margin:10px 20px 0;}
+.pt-footer{background:var(--blue-dark);color:#fff;text-align:center;padding:10px 28px;font-size:10px;letter-spacing:.5px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
 /* ──────── TAB 5 ARIZA ──────── */
 .ariza-bar{display:flex;gap:10px;margin-bottom:18px;}
 .ariza-bar input{
@@ -455,12 +504,10 @@ header{
 
 /* PRINT */
 @media print{
-  header,.tabs,.ai-float,.ai-panel{display:none!important;}
-  .tab-content{display:none!important;padding:0!important;}
-  #tab-teklif{display:block!important;}
-  .teklif-layout{grid-template-columns:1fr 1fr!important;}
-  .btn-prim,.btn-sec,.btn-green{display:none!important;}
-  body{background:#fff;}
+  body>*{display:none!important;}
+  #print-teklif{display:block!important;}
+  .pt-red-bar,.pt-footer,.pt-total-row td,.pt-section-title{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  @page{size:A4;margin:10mm 14mm;}
 }
 
 /* RESPONSIVE */
@@ -1006,75 +1053,158 @@ header{
 ══════════════════════════════════════ -->
 <div id="tab-teklif" class="tab-content">
   <div class="teklif-layout">
-    <div class="card">
-      <div class="card-title">👤 Müşteri Bilgileri</div>
-      <div class="frow">
-        <div class="fgrp"><label>Firma Adı *</label><input id="tf-firma" placeholder="Firma / İşletme Adı"></div>
-        <div class="fgrp"><label>Yetkili Kişi *</label><input id="tf-yetkili" placeholder="Ad Soyad"></div>
-      </div>
-      <div class="frow">
-        <div class="fgrp"><label>Telefon</label><input id="tf-tel" type="tel" placeholder="+90 5xx xxx xx xx"></div>
-        <div class="fgrp"><label>E-posta</label><input id="tf-email" type="email" placeholder="ornek@firma.com"></div>
-      </div>
-      <div class="frow">
-        <div class="fgrp"><label>Şehir / İlçe</label><input id="tf-sehir" placeholder="İstanbul, Ankara..."></div>
-        <div class="fgrp"><label>Günlük Araç Kapasitesi</label><input id="tf-kap" type="number" placeholder="100"></div>
-      </div>
-      <div class="fgrp" style="margin-bottom:14px;">
-        <label>Tesis Tipi</label>
-        <select id="tf-tesis">
-          <option>Akaryakıt İstasyonu</option>
-          <option>Bağımsız Oto Yıkama</option>
-          <option>Alışveriş Merkezi</option>
-          <option>Filo / Servis İşletmesi</option>
-          <option>Diğer</option>
-        </select>
-      </div>
-      <div class="fgrp">
-        <label>Notlar / Özel İstekler</label>
-        <textarea id="tf-notlar" placeholder="Özel opsiyonlar, altyapı durumu, mevcut makine..."></textarea>
+
+    <!-- SOL: FORM ALANLARI -->
+    <div>
+
+      <!-- MÜŞTERİ -->
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title">👤 Müşteri Bilgileri</div>
+        <div class="frow">
+          <div class="fgrp"><label>Firma Adı *</label><input id="tf-firma" placeholder="Firma / İşletme Adı" oninput="updateTeklifSum()"></div>
+          <div class="fgrp"><label>Yetkili Kişi *</label><input id="tf-yetkili" placeholder="Ad Soyad" oninput="updateTeklifSum()"></div>
+        </div>
+        <div class="frow">
+          <div class="fgrp"><label>Telefon</label><input id="tf-tel" type="tel" placeholder="+90 5xx xxx xx xx"></div>
+          <div class="fgrp"><label>E-posta</label><input id="tf-email" type="email" placeholder="ornek@firma.com"></div>
+        </div>
+        <div class="frow">
+          <div class="fgrp"><label>Vergi No / TC Kimlik</label><input id="tf-vergi" placeholder="1234567890"></div>
+          <div class="fgrp"><label>Şehir / İlçe</label><input id="tf-sehir" placeholder="İstanbul, Ankara..."></div>
+        </div>
+        <div class="frow">
+          <div class="fgrp"><label>Adres</label><input id="tf-adres" placeholder="Açık adres"></div>
+          <div class="fgrp">
+            <label>Tesis Tipi</label>
+            <select id="tf-tesis">
+              <option>Akaryakıt İstasyonu</option>
+              <option>Bağımsız Oto Yıkama</option>
+              <option>Alışveriş Merkezi</option>
+              <option>Filo / Servis İşletmesi</option>
+              <option>Diğer</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-      <div class="card-title" style="margin-top:20px;">⚙️ Yapılandırma</div>
-      <div class="frow">
-        <div class="fgrp">
-          <label>Seçilen Model</label>
-          <select id="tf-model">
-            <option>M'WASH2 — 2.40 m (Standart)</option>
-            <option selected>M'WASH2 — 2.60 m (Geniş)</option>
-          </select>
+      <!-- ÜRÜN YAPILANDIRMASI -->
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title">⚙️ Ürün Yapılandırması</div>
+        <div class="frow">
+          <div class="fgrp">
+            <label>Makine Serisi</label>
+            <select id="tf-model" onchange="updateTeklifModel()">
+              <option value="mwash2">M'WASH SERİSİ — Portal Araç Yıkama</option>
+              <option value="hwprogress">HW'PROGRESS — Ağır Araç (TIR / Otobüs)</option>
+              <option value="twashpro">T'WASH PRO — Tünel Konveyör Sistemi</option>
+            </select>
+          </div>
+          <div class="fgrp">
+            <label>Yapılandırma / Varyant</label>
+            <select id="tf-varyant" onchange="updateTeklifSum()"></select>
+          </div>
+        </div>
+        <div class="frow" id="tf-renk-grp">
+          <div class="fgrp">
+            <label>Kasa Rengi</label>
+            <select id="tf-renk" onchange="updateTeklifSum()">
+              <option value="azul">🔵 Mavi</option>
+              <option value="roja">🔴 Kırmızı</option>
+              <option value="amarilla">🟡 Sarı</option>
+              <option value="naranja">🟠 Turuncu</option>
+              <option value="verde">🟢 Yeşil</option>
+              <option value="gris">⚫ Gri</option>
+              <option value="blanca">⚪ Beyaz</option>
+            </select>
+          </div>
+          <div class="fgrp">
+            <label>Günlük Araç Kapasitesi</label>
+            <input type="number" id="tf-kap" placeholder="100 araç/gün">
+          </div>
+        </div>
+        <div class="teklif-section-title">Dahil Edilecek Hizmetler</div>
+        <div class="teklif-check-grid">
+          <label class="teklif-check"><input type="checkbox" id="tf-op-montaj" checked onchange="updateTeklifSum()"> ✅ Montaj (ALGA Teknisyeni)</label>
+          <label class="teklif-check"><input type="checkbox" id="tf-op-nakliye" checked onchange="updateTeklifSum()"> 🚚 Nakliye</label>
+          <label class="teklif-check"><input type="checkbox" id="tf-op-egitim" checked onchange="updateTeklifSum()"> 🎓 Operatör Eğitimi</label>
+          <label class="teklif-check"><input type="checkbox" id="tf-op-garanti" checked onchange="updateTeklifSum()"> 🛡️ 2 Yıl Garanti</label>
+          <label class="teklif-check"><input type="checkbox" id="tf-op-servis" onchange="updateTeklifSum()"> 🔧 Yıllık Bakım Sözleşmesi</label>
+          <label class="teklif-check"><input type="checkbox" id="tf-op-kimyasal" onchange="updateTeklifSum()"> 🧴 Başlangıç Kimyasal Paketi</label>
+        </div>
+      </div>
+
+      <!-- FİYAT BİLGİLERİ -->
+      <div class="card">
+        <div class="card-title">💰 Fiyat Bilgileri</div>
+        <div class="frow">
+          <div class="fgrp">
+            <label>Makine Bedeli (₺, KDV Hariç)</label>
+            <input type="number" id="tf-fiyat" placeholder="1.500.000" oninput="updateTeklifFiyat()">
+          </div>
+          <div class="fgrp">
+            <label>KDV Oranı</label>
+            <select id="tf-kdv" onchange="updateTeklifFiyat()">
+              <option value="20">%20</option>
+              <option value="10">%10</option>
+              <option value="0">KDV Muaf</option>
+            </select>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgrp">
+            <label>Ödeme Vadesi</label>
+            <select id="tf-vade" onchange="updateTeklifSum()">
+              <option>Peşin</option>
+              <option>30 Gün</option>
+              <option>60 Gün</option>
+              <option>90 Gün</option>
+              <option>Banka Finansmanı</option>
+            </select>
+          </div>
+          <div class="fgrp">
+            <label>Teklif Geçerlilik Süresi</label>
+            <select id="tf-gecerlilik" onchange="updateTeklifSum()">
+              <option>15 Gün</option>
+              <option selected>30 Gün</option>
+              <option>45 Gün</option>
+              <option>60 Gün</option>
+            </select>
+          </div>
         </div>
         <div class="fgrp">
-          <label>Kasa Rengi</label>
-          <select id="tf-renk">
-            <option value="azul">Mavi</option>
-            <option value="roja">Kırmızı</option>
-            <option value="amarilla">Sarı</option>
-            <option value="naranja">Turuncu</option>
-            <option value="verde">Yeşil</option>
-            <option value="gris">Gri</option>
-            <option value="blanca">Beyaz</option>
-          </select>
+          <label>Notlar / Özel Koşullar</label>
+          <textarea id="tf-notlar" placeholder="Özel teslimat koşulları, altyapı gereksinimleri, müşteri talepleri..."></textarea>
         </div>
       </div>
     </div>
 
+    <!-- SAĞ: ÖZET KARTI + BUTONLAR -->
     <div>
       <div class="tklf-sum">
-        <div class="card-title" style="color:var(--blue-dark);">📋 Teklif Özeti</div>
-        <div class="sum-row"><span class="sum-lbl">Model</span><span class="sum-val" id="ts-model">M'WASH2 2.60m</span></div>
-        <div class="sum-row"><span class="sum-lbl">Renk</span><span class="sum-val" id="ts-renk">🔵 Mavi</span></div>
-        <div class="sum-row"><span class="sum-lbl">Seçili Opsiyonlar</span><span class="sum-val" id="ts-opt" style="font-size:11px;text-align:right;max-width:180px;">—</span></div>
-        <div class="sum-row"><span class="sum-lbl">Garanti</span><span class="sum-val">2 Yıl</span></div>
-        <div class="sum-row"><span class="sum-lbl">Montaj</span><span class="sum-val">✅ Dahil</span></div>
-        <div class="sum-row"><span class="sum-lbl">Nakliye</span><span class="sum-val">✅ Dahil</span></div>
-        <div class="sum-row"><span class="sum-lbl">Eğitim</span><span class="sum-val">✅ Dahil</span></div>
-        <div class="sum-row" style="background:#e0f0e8;padding:10px;border-radius:8px;margin-top:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div class="card-title" style="color:var(--blue-dark);margin-bottom:0;">📋 Teklif Özeti</div>
+          <div style="font-size:10px;color:#888;font-weight:700;" id="ts-no">TKL-…</div>
+        </div>
+        <div class="sum-row"><span class="sum-lbl">Firma</span><span class="sum-val" id="ts-firma" style="font-size:12px;">—</span></div>
+        <div class="sum-row"><span class="sum-lbl">Model</span><span class="sum-val" id="ts-model">—</span></div>
+        <div class="sum-row"><span class="sum-lbl">Varyant</span><span class="sum-val" id="ts-varyant" style="font-size:12px;">—</span></div>
+        <div class="sum-row" id="ts-renk-row"><span class="sum-lbl">Renk</span><span class="sum-val" id="ts-renk">🔵 Mavi</span></div>
+        <div class="sum-row"><span class="sum-lbl">Hizmetler</span><span class="sum-val" id="ts-opt" style="font-size:11px;text-align:right;max-width:170px;line-height:1.5;">—</span></div>
+        <div class="sum-row"><span class="sum-lbl">Ödeme</span><span class="sum-val" id="ts-vade">Peşin</span></div>
+        <div class="sum-row"><span class="sum-lbl">Geçerlilik</span><span class="sum-val" id="ts-gecerlilik">30 Gün</span></div>
+        <hr style="margin:10px 0;border:none;border-top:1px dashed #c0cdd8;">
+        <div class="sum-row"><span class="sum-lbl">KDV Hariç</span><span class="sum-val" id="ts-fiyat-net">—</span></div>
+        <div class="sum-row"><span class="sum-lbl" id="ts-kdv-lbl">KDV (%20)</span><span class="sum-val" id="ts-kdv-tutar">—</span></div>
+        <div class="sum-row" style="background:var(--blue-dark);padding:10px 12px;border-radius:8px;margin-top:6px;">
+          <span style="font-weight:700;color:#fff;font-size:13px;">TOPLAM</span>
+          <span style="font-weight:900;color:#a8e063;font-size:16px;" id="ts-toplam">—</span>
+        </div>
+        <div class="sum-row" style="background:#e0f0e8;padding:8px 10px;border-radius:6px;margin-top:6px;">
           <span class="sum-lbl" style="font-weight:700;">📅 Tarih</span>
           <span class="sum-val" id="ts-tarih"></span>
         </div>
       </div>
-      <button class="btn-prim" onclick="yazdir()">🖨️ Teklifi Yazdır / PDF</button>
+      <button class="btn-prim" onclick="yazdir()" style="margin-top:14px;">🖨️ PDF / Yazdır</button>
       <button class="btn-green" onclick="whatsapp()">📱 WhatsApp'a Gönder</button>
       <button class="btn-sec" onclick="sifirla()">🗑️ Formu Temizle</button>
     </div>
@@ -1787,25 +1917,183 @@ function hesap(){
 }
 
 // ── TEKLİF ──
-document.getElementById('ts-tarih').textContent=
-  new Date().toLocaleDateString('tr-TR',{day:'2-digit',month:'long',year:'numeric'});
+// ── TEKLİF FORMU ──
+const _today = new Date().toLocaleDateString('tr-TR',{day:'2-digit',month:'long',year:'numeric'});
+document.getElementById('ts-tarih').textContent = _today;
 
-function yazdir(){
-  const tabs=document.querySelectorAll('.tab-content');
-  tabs.forEach(e=>e.classList.remove('active'));
-  document.getElementById('tab-teklif').classList.add('active');
-  setTimeout(()=>window.print(),120);
+// Teklif numarası üret
+function teklifNo(){
+  const d=new Date();
+  return `TKL-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${String(Math.floor(Math.random()*900)+100)}`;
 }
+const _teklifNo = teklifNo();
+document.getElementById('ts-no').textContent = _teklifNo;
+
+// Model değişince varyant dropdown güncelle
+function updateTeklifModel(){
+  const key = document.getElementById('tf-model').value;
+  const m = MODELLER[key];
+  const vSel = document.getElementById('tf-varyant');
+  const renkGrp = document.getElementById('tf-renk-grp');
+  vSel.innerHTML = '';
+  if(m.varyantlar && m.varyantlar.length){
+    m.varyantlar.forEach((v,i)=>{
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = v.ad + (v.sub ? ' — ' + v.sub : '');
+      vSel.appendChild(opt);
+    });
+    vSel.parentElement.parentElement.style.display='';
+  } else {
+    const opt = document.createElement('option');
+    opt.textContent = 'Standart';
+    vSel.appendChild(opt);
+  }
+  renkGrp.style.display = m.renkler ? '' : 'none';
+  updateTeklifSum();
+}
+
+// Özet kartı güncelle
+function updateTeklifSum(){
+  const key = document.getElementById('tf-model').value;
+  const m = MODELLER[key];
+  const vIdx = +document.getElementById('tf-varyant').value || 0;
+  const v = (m.varyantlar && m.varyantlar[vIdx]) ? m.varyantlar[vIdx] : null;
+  const renkSel = document.getElementById('tf-renk');
+  const renkTxt = renkSel.options[renkSel.selectedIndex]?.text || '';
+  const renkRow = document.getElementById('ts-renk-row');
+
+  document.getElementById('ts-firma').textContent = document.getElementById('tf-firma').value || '—';
+  document.getElementById('ts-model').textContent = m.ad;
+  document.getElementById('ts-varyant').textContent = v ? v.ad : '—';
+  renkRow.style.display = m.renkler ? '' : 'none';
+  document.getElementById('ts-renk').textContent = renkTxt;
+  document.getElementById('ts-vade').textContent = document.getElementById('tf-vade').value;
+  document.getElementById('ts-gecerlilik').textContent = document.getElementById('tf-gecerlilik').value;
+
+  const ops = [];
+  if(document.getElementById('tf-op-montaj').checked)   ops.push('Montaj');
+  if(document.getElementById('tf-op-nakliye').checked)  ops.push('Nakliye');
+  if(document.getElementById('tf-op-egitim').checked)   ops.push('Eğitim');
+  if(document.getElementById('tf-op-garanti').checked)  ops.push('2Y Garanti');
+  if(document.getElementById('tf-op-servis').checked)   ops.push('Bakım Sözl.');
+  if(document.getElementById('tf-op-kimyasal').checked) ops.push('Kimyasal Paket');
+  document.getElementById('ts-opt').textContent = ops.length ? ops.join(' · ') : '—';
+}
+
+// Fiyat hesapla
+function updateTeklifFiyat(){
+  const net = +document.getElementById('tf-fiyat').value || 0;
+  const kdvPct = +document.getElementById('tf-kdv').value || 20;
+  const kdv = net * kdvPct / 100;
+  const top = net + kdv;
+  document.getElementById('ts-fiyat-net').textContent = net ? fmt(net)+' ₺' : '—';
+  document.getElementById('ts-kdv-lbl').textContent = `KDV (%${kdvPct})`;
+  document.getElementById('ts-kdv-tutar').textContent = net ? fmt(kdv)+' ₺' : '—';
+  document.getElementById('ts-toplam').textContent = net ? fmt(top)+' ₺' : '—';
+}
+
+// Print — A4 teklif belgesini doldur ve yazdır
+function yazdir(){
+  const key = document.getElementById('tf-model').value;
+  const m = MODELLER[key];
+  const vIdx = +document.getElementById('tf-varyant').value || 0;
+  const v = (m.varyantlar && m.varyantlar[vIdx]) ? m.varyantlar[vIdx] : null;
+  const net = +document.getElementById('tf-fiyat').value || 0;
+  const kdvPct = +document.getElementById('tf-kdv').value || 20;
+  const kdv = net * kdvPct / 100;
+  const top = net + kdv;
+  const renkSel = document.getElementById('tf-renk');
+  const renkTxt = renkSel.options[renkSel.selectedIndex]?.text.replace(/[🔵🔴🟡🟠🟢⚫⚪]\s*/,'') || '';
+
+  // Meta
+  document.getElementById('pt-no').textContent = _teklifNo;
+  document.getElementById('pt-tarih').textContent = _today;
+  document.getElementById('pt-gecerlilik').textContent = document.getElementById('tf-gecerlilik').value;
+
+  // Müşteri
+  document.getElementById('pt-firma').textContent  = document.getElementById('tf-firma').value  || '—';
+  document.getElementById('pt-yetkili').textContent = document.getElementById('tf-yetkili').value|| '—';
+  document.getElementById('pt-vergi').textContent  = document.getElementById('tf-vergi').value  || '—';
+  document.getElementById('pt-tel').textContent    = document.getElementById('tf-tel').value    || '—';
+  document.getElementById('pt-email').textContent  = document.getElementById('tf-email').value  || '—';
+  document.getElementById('pt-sehir').textContent  = document.getElementById('tf-sehir').value  || '—';
+  document.getElementById('pt-adres').textContent  = document.getElementById('tf-adres').value  || '—';
+  document.getElementById('pt-tesis').textContent  = document.getElementById('tf-tesis').value  || '—';
+
+  // Ürün
+  document.getElementById('pt-model-ad').textContent = m.ad;
+  document.getElementById('pt-model-alt').textContent = m.alt || '';
+  const varEl = document.getElementById('pt-varyant-ad');
+  const renkEl = document.getElementById('pt-renk-ad');
+  if(v){ varEl.textContent = v.ad + (v.sub?' — '+v.sub:''); varEl.style.display='inline-block'; } else { varEl.style.display='none'; }
+  if(m.renkler && renkTxt){ renkEl.textContent = 'Renk: '+renkTxt; renkEl.style.display='inline-block'; } else { renkEl.style.display='none'; }
+
+  // Teknik özellikler
+  const specs = v ? v.stats : m.stats;
+  const tbody = document.getElementById('pt-spec-tbody');
+  tbody.innerHTML = specs.map(s=>`<tr><td>${s.lbl.replace(/[🚗💧⚡🧴📱📏🚛🛤️🏗️]/u,'').trim()}</td><td>${s.val} ${s.unit}</td></tr>`).join('');
+
+  // Hizmetler
+  const svcMap = {
+    'tf-op-montaj':'Montaj (ALGA Teknisyeni)',
+    'tf-op-nakliye':'Nakliye',
+    'tf-op-egitim':'Operatör Eğitimi',
+    'tf-op-garanti':'2 Yıl Garanti',
+    'tf-op-servis':'Yıllık Bakım Sözleşmesi',
+    'tf-op-kimyasal':'Başlangıç Kimyasal Paketi'
+  };
+  const svcHtml = Object.entries(svcMap)
+    .filter(([id])=>document.getElementById(id).checked)
+    .map(([,lbl])=>`<span class="pt-service-tag">✓ ${lbl}</span>`).join('');
+  document.getElementById('pt-services').innerHTML = svcHtml || '—';
+
+  // Fiyat
+  document.getElementById('pt-fiyat-net').textContent  = net ? fmt(net)+' ₺' : 'Teklif Alınacak';
+  document.getElementById('pt-kdv-lbl').textContent    = `KDV (%${kdvPct})`;
+  document.getElementById('pt-kdv-tutar').textContent  = net ? fmt(kdv)+' ₺' : '—';
+  document.getElementById('pt-toplam-p').textContent   = net ? fmt(top)+' ₺' : 'Teklif Alınacak';
+  document.getElementById('pt-vade').textContent       = document.getElementById('tf-vade').value;
+
+  // Notlar
+  const notlar = document.getElementById('tf-notlar').value;
+  document.getElementById('pt-notlar').textContent = notlar || '—';
+  document.getElementById('pt-notlar-section').style.display = notlar ? '' : 'none';
+
+  setTimeout(()=>window.print(), 150);
+}
+
 function whatsapp(){
-  const firma=document.getElementById('tf-firma').value||'Belirtilmedi';
-  const model=document.getElementById('tf-model').value;
-  const renk=document.getElementById('tf-renk').options[document.getElementById('tf-renk').selectedIndex].text;
-  const msg=`ISTOBAL M'WASH2 Teklif Talebi\n\nFirma: ${firma}\nModel: ${model}\nRenk: ${renk}\n\nLütfen fiyat teklifi için iletişime geçin.\n\nALGA — Türkiye ISTOBAL Distribütörü`;
+  const firma   = document.getElementById('tf-firma').value||'Belirtilmedi';
+  const yetkili = document.getElementById('tf-yetkili').value||'';
+  const key     = document.getElementById('tf-model').value;
+  const m       = MODELLER[key];
+  const vIdx    = +document.getElementById('tf-varyant').value||0;
+  const v       = m.varyantlar?.[vIdx];
+  const net     = +document.getElementById('tf-fiyat').value||0;
+  const msg = [
+    `📋 *ISTOBAL TEKLİF TALEBİ*`,
+    `Teklif No: ${_teklifNo}`,
+    ``,
+    `*Müşteri:* ${firma}${yetkili?' | '+yetkili:''}`,
+    `*Model:* ${m.ad}${v?' — '+v.ad:''}`,
+    net ? `*Tutar:* ${fmt(net)} ₺ (KDV Hariç)` : '',
+    `*Ödeme:* ${document.getElementById('tf-vade').value}`,
+    `*Geçerlilik:* ${document.getElementById('tf-gecerlilik').value}`,
+    ``,
+    `_ALGA — Türkiye ISTOBAL Yetkili Distribütörü_`
+  ].filter(Boolean).join('\n');
   window.open('https://wa.me/?text='+encodeURIComponent(msg));
 }
+
 function sifirla(){
   if(!confirm('Formu temizlemek istiyor musunuz?'))return;
-  ['tf-firma','tf-yetkili','tf-tel','tf-email','tf-sehir','tf-kap','tf-notlar'].forEach(id=>document.getElementById(id).value='');
+  ['tf-firma','tf-yetkili','tf-tel','tf-email','tf-vergi','tf-sehir','tf-adres','tf-kap','tf-notlar','tf-fiyat']
+    .forEach(id=>document.getElementById(id).value='');
+  ['tf-op-montaj','tf-op-nakliye','tf-op-egitim','tf-op-garanti'].forEach(id=>document.getElementById(id).checked=true);
+  ['tf-op-servis','tf-op-kimyasal'].forEach(id=>document.getElementById(id).checked=false);
+  updateTeklifSum();
+  updateTeklifFiyat();
 }
 
 // ── ARIZA KODLARI ──
@@ -2204,6 +2492,133 @@ document.getElementById('roi-yontem').addEventListener('change', roiHesap);
 hesap();
 roiHesap();
 renderAriza(ariza);
+updateTeklifModel();
+updateTeklifFiyat();
 </script>
+
+<!-- ══════════════════════════════════════
+     PRINT LAYOUT — A4 TEKLİF BELGESİ
+══════════════════════════════════════ -->
+<div id="print-teklif">
+  <div class="pt-red-bar"></div>
+
+  <!-- HEADER: LOGOLAR + BAŞLIK -->
+  <div class="pt-header">
+    <img src="./gorseller/logolar/istobal-logo.png" class="pt-logo-l" alt="ISTOBAL"
+      onerror="this.outerHTML='<span style=\'font-size:20px;font-weight:900;color:#e3001b;\'>ISTOBAL</span>'">
+    <div class="pt-header-center">
+      <div class="pt-title">TİCARİ TEKLİF</div>
+      <div class="pt-subtitle">ISTOBAL Araç Yıkama Sistemleri — Türkiye Yetkili Distribütörü</div>
+    </div>
+    <img src="./gorseller/logolar/alga_logo_new.png" class="pt-logo-r" alt="ALGA"
+      onerror="this.outerHTML='<span style=\'font-size:20px;font-weight:900;color:#8dc63f;\'>ALGA</span>'">
+  </div>
+
+  <!-- META: TEKLİF NO / TARİH / GEÇERLİLİK -->
+  <div class="pt-meta-row">
+    <div class="pt-meta-item"><span class="pt-meta-lbl">Teklif No</span><span class="pt-meta-val" id="pt-no">—</span></div>
+    <div class="pt-meta-item"><span class="pt-meta-lbl">Teklif Tarihi</span><span class="pt-meta-val" id="pt-tarih">—</span></div>
+    <div class="pt-meta-item"><span class="pt-meta-lbl">Geçerlilik</span><span class="pt-meta-val" id="pt-gecerlilik">30 Gün</span></div>
+    <div class="pt-meta-item"><span class="pt-meta-lbl">Hazırlayan</span><span class="pt-meta-val">ALGA Satış Ekibi</span></div>
+  </div>
+
+  <!-- MÜŞTERİ BİLGİLERİ -->
+  <div class="pt-section">
+    <div class="pt-section-title">Müşteri Bilgileri</div>
+    <div class="pt-two-col">
+      <div>
+        <div class="pt-field"><span class="pt-field-lbl">Firma:</span> <span id="pt-firma">—</span></div>
+        <div class="pt-field"><span class="pt-field-lbl">Yetkili:</span> <span id="pt-yetkili">—</span></div>
+        <div class="pt-field"><span class="pt-field-lbl">Vergi No:</span> <span id="pt-vergi">—</span></div>
+      </div>
+      <div>
+        <div class="pt-field"><span class="pt-field-lbl">Telefon:</span> <span id="pt-tel">—</span></div>
+        <div class="pt-field"><span class="pt-field-lbl">E-posta:</span> <span id="pt-email">—</span></div>
+        <div class="pt-field"><span class="pt-field-lbl">Şehir:</span> <span id="pt-sehir">—</span></div>
+      </div>
+    </div>
+    <div class="pt-field" id="pt-adres-row"><span class="pt-field-lbl">Adres:</span> <span id="pt-adres">—</span></div>
+    <div class="pt-field"><span class="pt-field-lbl">Tesis Tipi:</span> <span id="pt-tesis">—</span></div>
+  </div>
+
+  <!-- TEKLİF EDİLEN ÜRÜN -->
+  <div class="pt-section">
+    <div class="pt-section-title">Teklif Edilen Ürün</div>
+    <div class="pt-product-header">
+      <div>
+        <div class="pt-product-name" id="pt-model-ad">—</div>
+        <div class="pt-product-sub" id="pt-model-alt">—</div>
+        <div class="pt-product-var" id="pt-varyant-ad" style="display:none;">—</div>
+        <div class="pt-product-var" id="pt-renk-ad" style="display:none;margin-top:4px;background:#e8f2fb;color:var(--blue-dark);">—</div>
+      </div>
+      <div class="pt-badge">ISTOBAL<br>ONAYLIDIR<br>✓</div>
+    </div>
+    <table class="pt-spec-table">
+      <thead><tr><th colspan="2">TEKNİK ÖZELLİKLER</th></tr></thead>
+      <tbody id="pt-spec-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- DAHİL HİZMETLER -->
+  <div class="pt-section">
+    <div class="pt-section-title">Dahil Hizmetler</div>
+    <div class="pt-services" id="pt-services">—</div>
+  </div>
+
+  <!-- FİYAT -->
+  <div class="pt-section">
+    <div class="pt-section-title">Fiyat Bilgileri</div>
+    <table class="pt-price-table">
+      <tbody>
+        <tr><td>Makine Bedeli (KDV Hariç)</td><td id="pt-fiyat-net">—</td></tr>
+        <tr><td id="pt-kdv-lbl">KDV (%20)</td><td id="pt-kdv-tutar">—</td></tr>
+        <tr class="pt-total-row"><td>TOPLAM TUTAR (KDV Dahil)</td><td id="pt-toplam-p">—</td></tr>
+      </tbody>
+    </table>
+    <div class="pt-vade-row">Ödeme Vadesi: <strong id="pt-vade">—</strong></div>
+  </div>
+
+  <!-- NOTLAR -->
+  <div class="pt-section" id="pt-notlar-section">
+    <div class="pt-section-title">Notlar ve Özel Koşullar</div>
+    <div id="pt-notlar" style="font-size:11.5px;line-height:1.8;min-height:28px;color:#333;">—</div>
+  </div>
+
+  <!-- GENEL ŞARTLAR -->
+  <div class="pt-section" style="background:#fafafa;">
+    <div class="pt-section-title">Genel Şartlar</div>
+    <ul style="font-size:10.5px;line-height:2;margin:0;padding-left:16px;color:#444;">
+      <li>Bu teklif yukarıda belirtilen süre için geçerlidir.</li>
+      <li>Fiyatlar KDV hariç Türk Lirası (₺) olarak belirlenmiştir.</li>
+      <li>Teslimat süresi sipariş onayından itibaren üretici ile koordineli belirlenir.</li>
+      <li>Garanti kapsamı ISTOBAL resmi garanti belgesi şartlarını içerir.</li>
+      <li>Montaj ve devreye alma ALGA yetkili teknik ekibi tarafından gerçekleştirilir.</li>
+      <li>Güncellenen döviz kuru veya hammadde fiyatlarına bağlı revize hakkı saklıdır.</li>
+    </ul>
+  </div>
+
+  <!-- İMZA ALANLARI -->
+  <div class="pt-signatures">
+    <div class="pt-sig-box">
+      <div style="font-size:10px;font-weight:700;color:#333;">ALGA YETKİLİ İMZASI / KAŞE</div>
+      <div class="pt-sig-line"></div>
+      <div style="font-size:9px;color:#888;margin-top:6px;">Ad Soyad: ______________________</div>
+      <div style="font-size:9px;color:#888;margin-top:3px;">Tarih: ___________________________</div>
+    </div>
+    <div class="pt-sig-box">
+      <div style="font-size:10px;font-weight:700;color:#333;">MÜŞTERİ İMZASI / KAŞE</div>
+      <div class="pt-sig-line"></div>
+      <div style="font-size:9px;color:#888;margin-top:6px;">Ad Soyad: ______________________</div>
+      <div style="font-size:9px;color:#888;margin-top:3px;">Tarih: ___________________________</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="pt-footer">
+    <div style="font-weight:700;letter-spacing:1px;">ALGA ENERJİ VE HİZMETLER A.Ş. — TÜRKİYE ISTOBAL YETKİLİ DİSTRİBÜTÖRÜ</div>
+    <div style="margin-top:3px;opacity:.75;">istobal.com.tr &nbsp;|&nbsp; alga.com.tr</div>
+  </div>
+</div>
+
 </body>
 </html>
