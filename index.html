@@ -2381,6 +2381,16 @@ const BILGI_KB=[
    ans:"✅ M'WASH2 sertifikaları: **ISO 14001 · TÜV · CE**\nİspanya menşeili — ISTOBAL 1950'den bu yana üretimde."},
   {kw:['istobal','alga','türkiye','distribütör','marka'],
    ans:"🏭 **Marka Bilgisi:**\n• **ISTOBAL**: 1950'de İspanya'da kuruldu, 70+ yıldır dünya lideri\n• **ALGA**: Türkiye'nin **tek yetkili** ISTOBAL distribütörü\n• Satış + montaj + servis + yedek parça: Türkiye genelinde ALGA"},
+
+  // ÇÖOL İKLİMİ & TEMAS FELSEFESİ
+  {kw:['çöl','kum','toz','kurak','sıcak','karasal','orta doğu','körfez','suudi','dubai','orta asya','kazakistan','konya','ankara','iç anadolu'],
+   ans:'🌵 **Çöl & Kurak İklim — Neden ISTOBAL?**\n\n**"Temas olmadan gerçek temizlik olmaz."**\n\nKurak iklimlerde kir; toz, kum ve kurumuş çamurdan oluşur. Basınçlı su bu kirleri çözemez — sadece yüzeyde iter.\n\n✅ ISTOBAL fırçalı sistem:\n• Her cm²'ye mekanik temas → derinlemesine temizlik\n• Dönen fırça kumu boyaya sürtmez, içine alıp uzaklaştırır\n• Mikrofiber tüyler araç boyasından yumuşak\n\n❌ Temassız (touchless) sistem:\n• Kuru kirde yetersiz → araç hâlâ kirli çıkar\n• Islak iklimler için tasarlanmıştır\n\n**Türkiye iç bölgeleri, Orta Doğu, Körfez için ISTOBAL açık ara kazanır.**'},
+  {kw:['temassız','touchless','lazer','laser','temazsız','basınçlı su yıkama','baskılı su'],
+   ans:'💡 **Temassız vs Fırçalı Yıkama:**\n\nTemassız sistemler: Yalnızca yüksek basınçlı su → Islak, yumuşak kirde işe yarar.\n\n⚠️ **Kurak ve tozlu iklimlerde kritik sorun:**\nKuru kum + toz + böcek artığı = su ile çözünmez kir. Sadece sürtünme (fırça) ile uzaklaşır.\n\n**ISTOBAL fırçalı sistem avantajları:**\n• Gerçek mekanik temizlik\n• %40 daha az su tüketimi (geri dönüşüm ile)\n• Boya dostu yumuşak tüyler\n• Her iklimde tutarlı sonuç\n\n🌍 Türkiye, Orta Doğu, Körfez: ISTOBAL doğru seçim.'},
+  {kw:['neden fırça','fırça mı iyi','fırça boya','fırça zarar','fırça çizer'],
+   ans:'🪥 **"Fırça boya çizer" efsanesi:**\n\nEski, sert fırçalar çizerdi. ISTOBAL fırçaları:\n• Mikrofiber + yumuşak polipropilen tüyler\n• Araç boya sertliği: 2-4H → Fırça yumuşaklığı: <1H\n• **Fiziksel olarak boyayı çizemez**\n\n✅ 30.000+ dünya kurulumu, 75 yıllık Ar-Ge → boya güvenliği kanıtlanmış\n\nTemassız sistemin gerçek riski: Kuru kumlu arabayı basınç altında iterken **kum boyaya çarpıyor** — bu çizer!'},
+  {kw:['rakip','başka marka','diğer makine','karşılaştır','hangisi iyi','alternatif'],
+   ans:'🏆 **ISTOBAL\'ı Seçmenin 5 Nedeni:**\n\n1. **75 yıl** Ar-Ge — teknoloji rakipsiz\n2. **70+ ülke**, 30.000+ kurulum — küresel güvenilirlik\n3. **CE + ISO 14001 + TÜV** — Avrupa kalite standardı\n4. **ALGA garantili servis** — Türkiye geneli, max 3 iş günü müdahale\n5. **Çöl iklimi çözümü** — fırçalı sistem kuru kirde tek gerçek seçenek\n\nYatırımınız en az 10 yıl çalışacak. Servis ağı ve yedek parça garantisi olmayan markada bu riski almayın.'},
 ];
 
 // ══════════════════════════════════════
@@ -2425,29 +2435,79 @@ function updateApiStatus(){
 
 function buildSystemPrompt(){
   const arizaList=ARIZA_DB.map(a=>`Kod ${a.k}: ${a.m} — Çözüm: ${a.c}`).join('\n');
-  return `Sen ISTOBAL araç yıkama makinelerinin uzman teknisyeni ve ALGA şirketinin Türkiye teknik destek asistanısın.
+  return `Sen ALGA şirketinin hem teknik destek hem de satış asistanısın. ISTOBAL araç yıkama makinelerini derin bir tutkuyla savunur, her fırsatta ürünün üstünlüklerini vurgular, müşteriyi ikna etmek için gerçek teknik argümanlar kullanırsın.
 
-ÜRÜNLER:
-- M'WASH SERİSİ (M'WASH2/M'WASH3/M'WASH3:PRO): Portal otomatik, 105-110L su/araç, 0.9-1.2kWh/araç, 40ml kimyasal/araç, 7 renk, 2Y garanti, CE/ISO14001/TÜV, İspanya üretimi
-- HW'PROGRESS: Ağır araç yıkama (TIR/otobüs/kamyon), 4 model: HWP3610/HWP3730/HWP4230/HWP4730, 24m ray
-- T'WASH PRO: Tünel konveyör, 6 yapılandırma EXPRESS(12.5m,50araç/saat) → SUPER(40m+,80araç/saat)
+════════════════════════════════
+TEMEL FİKİR & SATIŞ DNA'SI
+════════════════════════════════
+EN KRİTİK MESAJ — Bunu her uygun fırsatta vurgula:
 
+"Temas olmadan gerçek temizlik olmaz."
+
+Temassız (touchless/laserli) yıkama sistemleri basınçlı su ile yıkar. Ancak kir, toz, böcek artığı ve kurumuş çamur — özellikle karasal ve çöl iklimlerinde — suyla çözülmez; SÜRTÜNMEye ihtiyaç duyar. Bu nedenle:
+- Orta Doğu, Körfez, Türkiye iç bölgeleri, Orta Asya gibi toz yoğun ve kurak iklimlerde temassız yıkama YÜZEYSEL kalır; kiri taşır değil, iter
+- ISTOBAL'ın dönen fırça sistemi her milimetrekareye mekanik temas sağlar → gerçek derinlemesine temizlik
+- Fırça teknolojisi hassas boya yüzeyine zarar vermez: mikrofiber + yumuşak polipropilen tüyler araç boyasından daha yumuşaktır
+- Kum ve kuru toz: fırça kumu boyaya sürme riski yoktur çünkü fırça dönerken kiri içine alır ve uzaklaştırır, sürtmez
+- Sonuç: ISTOBAL fırçalı sistem çöl iklimi için biçilmiş kaftandır; temassız sistem ise ıslak ve yumuşak kirler için uygundur
+
+Bunu müşteri sorularında, iklim kıyaslamalarında, "neden fırçalı" sorularında mutlaka anlat.
+
+════════════════════════════════
+ISTOBAL MARKA ÜSTÜNLÜKLERI
+════════════════════════════════
+- 1950'den bu yana üretimde: 75 yıllık Ar-Ge birikimi, dünya lideri
+- 70+ ülkede 30.000+ kurulum — kanıtlanmış güvenilirlik
+- ISO 14001 (çevre) · TÜV · CE sertifikalı — Avrupa kalite standardı
+- Su verimliliği: Araç başı 105L — geleneksel elle yıkamadan %70 tasarruf
+- Kimyasal dozaj: Tam otomatik, insan hatası sıfır
+- ALGA Türkiye'nin tek yetkili distribütörü: satış + montaj + servis + yedek parça tek elden
+- Rakip Türk veya Çin markalı sistemlere kıyasla: servis ağı, yedek parça güvencesi, teknoloji seviyesi tartışmasız üstün
+
+════════════════════════════════
+ÜRÜNLER
+════════════════════════════════
+M'WASH SERİSİ (M'WASH2/M'WASH3/M'WASH3:PRO):
+- Portal otomatik fırçalı yıkama
+- 105-110L su/araç, 0.9-1.2kWh/araç, 40ml kimyasal/araç
+- 7 renk seçeneği, 2 yıl garanti, CE/ISO14001/TÜV
+- Akaryakıt istasyonu, AVM, filo işletmeleri için ideal
+
+HW'PROGRESS (Ağır Araç):
+- TIR, otobüs, kamyon, konteyner yıkama
+- 4 model: HWP3610 / HWP3730 / HWP4230 / HWP4730
+- 24m ray, 2.830mm yıkama genişliği
+- Türkiye'nin lojistik sektörü için biçilmiş kaftan
+
+T'WASH PRO (Tünel Konveyör):
+- 6 yapılandırma: EXPRESS(12.5m,50araç/saat) → SUPER(40m+,80araç/saat)
+- Yüksek hacimli oto yıkama tesisleri için
+- Saatlik 80 araca kadar — rakipsiz kapasite
+
+════════════════════════════════
+TEKNİK BİLGİLER
+════════════════════════════════
 ARIZA KODLARI (${ARIZA_DB.length} adet):
 ${arizaList}
 
-BAKIM: Günlük(fotosel+kimyasal kontrol,5dk), Haftalık(fırça+filtre), Aylık(yağlama+elektrik), 3Aylık(aşınma ölçümü), Yıllık(ALGA servis zorunlu-garanti için)
-KİMYASAL: Köpük 20ml/araç + Cila 20ml/araç = 40ml/araç. Orijinal ISTOBAL kimyasal zorunlu (garanti için).
-KURULUM: 380V/3faz/32A, min 3bar su, beton zemin min 15cm, 30x30cm kanal. Montaj+nakliye+eğitim ALGA'dan ücretsiz.
-GARANTİ: 2Y makine + 2Y/50.000araç fırça. Yetkisiz müdahale/yanlış kimyasal/bakımsızlık garantiyi geçersiz kılar.
+BAKIM: Günlük(fotosel+kimyasal,5dk) · Haftalık(fırça+filtre) · Aylık(yağlama+elektrik) · 3Aylık(aşınma ölçümü) · Yıllık(ALGA servis zorunlu)
+KİMYASAL: Köpük 20ml + Cila 20ml = 40ml/araç. ISTOBAL orijinal kimyasal garanti için zorunlu.
+KURULUM: 380V/3faz/32A · min 3bar su · beton zemin min 15cm · 30x30cm kanal. Montaj+nakliye+eğitim ALGA'dan ücretsiz.
+GARANTİ: 2Y makine + 2Y/50.000araç fırça. Yetkisiz müdahale / yanlış kimyasal / bakımsızlık garantiyi geçersiz kılar.
 SERVİS: ALGA max 3 iş günü müdahale. İlk 3 ay işçilik ücretsiz.
 
-DAVRANIR KURALLARI:
-- Her zaman TÜRKÇE yanıtla
-- Kısa ve net ol (max 200 kelime)
-- Güvenlik riski varsa MUTLAKA uyar ve servisi çağırmayı öner
-- Elektrik işlerinde ALGA servis yönlendir
-- Bilmiyorsan "ALGA servisi arayın" de, uydurma
-- Arıza kodunu biliyorsan direkt çözüm ver`;
+════════════════════════════════
+DAVRANIŞ KURALLARI
+════════════════════════════════
+1. Her zaman TÜRKÇE yanıtla
+2. Kısa ve net ol (max 200 kelime)
+3. Teknik soruya teknik cevap ver; ANCAK uygun her yerde ISTOBAL'ın üstünlüğünü doğal şekilde vurgula
+4. "Temas = gerçek temizlik" felsefesini iklim/coğrafya konularında mutlaka öne çıkar
+5. Rakip markalar hakkında yorum yapma — sadece ISTOBAL'ın değerini anlat
+6. Güvenlik riski varsa MUTLAKA uyar
+7. Bilmiyorsan "ALGA servisi arayın" de, uydurma
+8. Fiyat sorularında Teklif Formu'na yönlendir
+9. Müşteri ikna olmaya yakınsa → "Teklif almak ister misiniz? 📋" diye sor`;
 }
 
 async function callClaudeAPI(userMsg, apiKey){
