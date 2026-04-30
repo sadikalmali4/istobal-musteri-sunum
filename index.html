@@ -395,6 +395,26 @@ header{
   background:var(--alga-green);color:#fff;border:none;
   padding:9px 16px;border-radius:20px;cursor:pointer;font-weight:700;
 }
+.ai-status-bar{display:flex;align-items:center;justify-content:space-between;padding:5px 12px;background:rgba(0,0,0,.2);font-size:10px;}
+.ai-status-left{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,.6);}
+.ai-status-dot{width:7px;height:7px;border-radius:50%;background:#555;flex-shrink:0;}
+.ai-status-dot.online{background:#4caf50;box-shadow:0 0 5px #4caf50;}
+.ai-settings-btn-top{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:10px;}
+.ai-settings-btn-top:hover{background:rgba(255,255,255,.1);}
+.ai-settings-panel{background:#0b2540;border-bottom:1px solid rgba(255,255,255,.1);padding:12px 14px;display:none;}
+.ai-settings-panel.open{display:block;}
+.ai-settings-panel label{font-size:10px;color:rgba(255,255,255,.55);display:block;margin-bottom:5px;font-weight:700;}
+.ai-settings-panel input{width:100%;padding:8px 10px;border:1px solid rgba(255,255,255,.2);border-radius:6px;background:rgba(255,255,255,.07);color:#fff;font-size:12px;box-sizing:border-box;outline:none;}
+.ai-settings-panel input::placeholder{color:rgba(255,255,255,.25);}
+.ai-settings-save{margin-top:7px;background:var(--alga-green);color:#fff;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;width:100%;}
+.ai-settings-clear{margin-top:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);padding:5px 14px;border-radius:6px;cursor:pointer;font-size:11px;width:100%;}
+.ai-settings-note{font-size:9.5px;color:rgba(255,255,255,.35);margin-top:6px;line-height:1.6;}
+.ai-chips{display:flex;flex-wrap:wrap;gap:5px;padding:8px 10px;background:#f0f5fb;border-bottom:1px solid #dde;}
+.ai-typing{display:flex;align-items:center;gap:5px;padding:10px 14px;background:#e8f2fb;border-radius:4px 12px 12px 12px;align-self:flex-start;}
+.ai-typing-dot{width:7px;height:7px;background:#aac;border-radius:50%;animation:typingBounce .9s infinite;}
+.ai-typing-dot:nth-child(2){animation-delay:.18s;}
+.ai-typing-dot:nth-child(3){animation-delay:.36s;}
+@keyframes typingBounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
 
 /* ──────── TAB ROI ──────── */
 .roi-tab-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;}
@@ -1329,26 +1349,66 @@ header{
 </button>
 
 <div class="ai-panel" id="aiPanel">
+
+  <!-- BAŞLIK -->
   <div class="ai-header">
     <div>
       <span class="ai-title">🤖 ALGA Teknik Asistan</span>
-      <div style="font-size:10px;opacity:.7;margin-top:2px;">M'WASH2 · HW'PROGRESS · T'WASH PRO</div>
+      <div style="font-size:10px;opacity:.65;margin-top:2px;">M'WASH · HW'PROGRESS · T'WASH PRO</div>
     </div>
-    <button class="ai-close" onclick="toggleAI()">✕</button>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="ai-settings-btn-top" onclick="toggleApiSettings()" title="Claude API Ayarları">⚙️ API</button>
+      <button class="ai-close" onclick="toggleAI()">✕</button>
+    </div>
   </div>
+
+  <!-- DURUM ÇUBUĞU -->
+  <div class="ai-status-bar">
+    <div class="ai-status-left">
+      <div class="ai-status-dot" id="aiStatusDot"></div>
+      <span id="aiStatusLbl">Çevrimdışı Mod</span>
+    </div>
+    <span style="color:rgba(255,255,255,.35);font-size:9px;">50+ arıza kodu · Bakım · Teknik</span>
+  </div>
+
+  <!-- CLAUDE API AYARLARI (gizli) -->
+  <div class="ai-settings-panel" id="aiSettingsPanel">
+    <label>🔑 Anthropic Claude API Anahtarı</label>
+    <input id="apiKeyInput" type="password" placeholder="sk-ant-api03-...">
+    <button class="ai-settings-save" onclick="saveApiKey()">✅ Kaydet — Claude'u Aktifleştir</button>
+    <button class="ai-settings-clear" onclick="clearApiKey()">🗑️ Anahtarı Sil</button>
+    <div class="ai-settings-note">
+      Anahtar yalnızca tarayıcınızda saklanır, hiçbir sunucuya gönderilmez.<br>
+      Anahtar almak için: <strong>console.anthropic.com</strong>
+    </div>
+  </div>
+
+  <!-- HIZLI BUTONLAR -->
   <div class="ai-chips">
     <button class="ai-chip" onclick="aiChip('sık arızalar')">🔧 Sık Arızalar</button>
-    <button class="ai-chip" onclick="aiChip('fotosel kirli')">📷 Fotosel</button>
+    <button class="ai-chip" onclick="aiChip('günlük bakım')">📅 Günlük Bakım</button>
+    <button class="ai-chip" onclick="aiChip('kimyasal doz')">🧴 Kimyasal</button>
+    <button class="ai-chip" onclick="aiChip('garanti kapsamı')">🛡️ Garanti</button>
     <button class="ai-chip" onclick="aiChip('su yok pompa')">💧 Su/Pompa</button>
-    <button class="ai-chip" onclick="aiChip('motor sigorta')">⚡ Motor/Sigorta</button>
-    <button class="ai-chip" onclick="aiChip('fırça takıldı')">🪥 Fırça</button>
-    <button class="ai-chip" onclick="aiChip('acil stop reset')">🔴 Acil Stop</button>
+    <button class="ai-chip" onclick="aiChip('motor sigorta')">⚡ Elektrik</button>
+    <button class="ai-chip" onclick="aiChip('fırça değişim')">🪥 Fırça</button>
+    <button class="ai-chip" onclick="aiChip('kurulum altyapı')">🏗️ Kurulum</button>
   </div>
+
+  <!-- MESAJLAR -->
   <div class="ai-msgs" id="aiMsgs">
-    <div class="ai-msg bot">Merhaba! 👋 Ben ALGA'nın teknik asistanıyım.<br><br>📟 <strong>Arıza kodu</strong> yazın (örn: <em>35</em>)<br>🔍 <strong>Semptom</strong> yazın (örn: <em>fırça takıldı</em>)<br>❓ <strong>Teknik soru</strong> sorun<br><br>Yukarıdaki hızlı butonları da kullanabilirsiniz.</div>
+    <div class="ai-msg bot">Merhaba! 👋 Ben ALGA'nın teknik asistanıyım.<br><br>
+      📟 <strong>Arıza kodu</strong> yazın → <em>35</em><br>
+      🔍 <strong>Semptom</strong> yazın → <em>fırça takıldı</em><br>
+      🔧 <strong>Bakım sorusu</strong> → <em>günlük bakım ne yapılır</em><br>
+      ❓ <strong>Teknik soru</strong> → <em>su tüketimi ne kadar</em><br><br>
+      <span style="font-size:11px;opacity:.7;">⚙️ API butonundan Claude'u aktifleştirebilirsiniz.</span>
+    </div>
   </div>
+
+  <!-- GİRİŞ -->
   <div class="ai-input-row">
-    <input id="aiInput" placeholder="Kod no veya semptom yazın..." onkeydown="if(event.key==='Enter')aiGonder()">
+    <input id="aiInput" placeholder="Kod, semptom veya soru yazın..." onkeydown="if(event.key==='Enter')aiGonder()">
     <button onclick="aiGonder()">➤</button>
   </div>
 </div>
@@ -2242,77 +2302,272 @@ const ARIZA_DB=[
   {k:97, m:"Ekranda mesaj yok ama makine çalışmıyor",        a:"Makine bağlı ancak ekran boş.",                                               t:"hata",  n:"Güç gelmiyor veya FS1 sigortası atmış.",                                               c:"Güç beslemesini kontrol edin; FS1 sigortasını takın/kontrol edin.",                                                             kw:["ekran","boş","çalışmıyor","güç","sigorta","FS1"]},
 ];
 
-// Genel bilgi KB
-const AI_KB={
-  su:        'Su tüketimi araç başına **105 litre**. 100 araç/gün → aylık ~273.000 litre. Hesaplayıcı sekmesinde detaylı hesap yapabilirsiniz.',
-  elektrik:  'Elektrik tüketimi araç başına **0,9 kWh**. Sistem 380 V – 50 Hz şebeke gerektirir.',
-  renk:      "M'WASH2 **7 farklı renk** seçeneğiyle sunulmaktadır. Sunum sekmesinde interaktif önizleme yapabilirsiniz!",
-  garanti:   'Makine **2 yıl**, fırça **2 yıl / 50.000 araç** garantili. İlk 3 ay servis + işçilik ücretsiz.',
-  bakım:     'Periyodik bakım her **10.000 araçta bir** zorunlu. Günlük: fotosel temizliği + kimyasal kontrol. Bakım Takvimi sekmesine bakın.',
-  boyut:     "M'WASH2: max **2,90 m yükseklik**, **2,40 m veya 2,60 m genişlik**. Ray uzunluğu min. **11 m**.",
-  sertifika: "M'WASH2; **ISO 14001 · TÜV · CE** sertifikalı. İspanya menşeili — ISTOBAL 1950'den bu yana üretimde.",
-  kimyasal:  'Araç başı: Köpük **20 ml** + Cila **20 ml** = Toplam **40 ml**. Tüm sistemler dozaj pompalı.',
-  program:   'Makinede **min. 6** farklı yıkama programı var. Programlar ihtiyaca göre ayarlanabilir.',
-  montaj:    'Montaj **ücretsiz**, yetkili servis tarafından yapılır. Altyapı projesi de ücretsiz hazırlanır.',
-};
+// ══════════════════════════════════════
+//  GENİŞLETİLMİŞ BİLGİ TABANI (A)
+// ══════════════════════════════════════
+const BILGI_KB=[
+  // BAKIM
+  {kw:['günlük bakım','her gün','sabah kontrol','günlük kontrol'],
+   ans:'📅 **Günlük Bakım (5-10 dk):**\n• Fotosel lenslerini nemli bezle sil\n• Kimyasal seviyelerini kontrol et (köpük + cila)\n• Fırçalarda görünür aşınma veya hasar var mı bak\n• Acil stop butonlarını test et\n• Zemin ve kanalı temizle'},
+  {kw:['haftalık bakım','haftada bir','haftalık'],
+   ans:'📅 **Haftalık Bakım:**\n• Fırça tutucular ve milleri kontrol et\n• Su filtrelerini kontrol et (tıkalı mı?)\n• Tüm nozulları kontrol et (kırık / tıkanık?)\n• Genel makine yüzeyi temizliği\n• Kablo ve hortumları görsel kontrol et'},
+  {kw:['aylık bakım','her ay','aylık kontrol'],
+   ans:'📅 **Aylık Bakım:**\n• Tüm hareketli parçaları yağla (raylar, redüktörler)\n• Elektrik bağlantılarını kontrol et (gevşek var mı?)\n• Su basıncı ayarlarını kontrol et\n• Tüm programları test et\n• Kimyasal dozaj pompalarını kalibre et'},
+  {kw:['3 aylık','üç aylık','çeyrek yıl'],
+   ans:'📅 **3 Aylık Bakım:**\n• Fırça aşınma ölçümü (kaliper ile)\n• Baskı silindirlerini kontrol et\n• V-kayışları kontrol et (gerilim doğru mu?)\n• Cıvataları kontrol et (titreşimden gevşeyebilir)\n• Termik röleleri test et'},
+  {kw:['yıllık bakım','yılda bir','tam bakım','revizyon','periyodik bakım'],
+   ans:'📅 **Yıllık Tam Bakım:**\n• Redüktör yağı değişimi (3.000 saat / 1 yıl)\n• V-kayış kontrolü / değişimi\n• Fırça değişimi (gerekiyorsa — 50.000 araç veya 2 yıl)\n• Tüm contaların kontrolü\n⚠️ **ALGA yetkili servisi çağırın** — yıllık bakım garanti için zorunlu!'},
 
+  // KİMYASAL
+  {kw:['kimyasal','köpük','cila','deterjan','sabun','şampuan','doz','kimyasal miktarı'],
+   ans:'🧴 **Kimyasal Kullanımı:**\n• Köpük: **20 ml / araç** — pH nötr, çevre dostu\n• Cila / Parlatıcı: **20 ml / araç** — hidrofobik etki\n• Toplam: **40 ml / araç**\n\nEklenebilir opsiyonlar:\n• Tekerlek temizleyici · Böcek çözücü · Kireç önleyici\n\nTüm sistemler otomatik dozaj pompalı ✅'},
+  {kw:['kimyasal bitti','kimyasal yok','köpük yok','cila çıkmıyor'],
+   ans:'🧴 Kimyasal gelmiyorsa:\n1. Bidon / tank boş mu?\n2. Emiş borusu sıvı içinde mi?\n3. Dozaj pompası çalışıyor mu? (vızıltı sesi)\n4. Filtre / emiş valf tıkalı → temizle\n\n📟 Arıza kodu **10** veya **11** ekranda görünüyor mu?'},
+  {kw:['kimyasal sipariş','hangi kimyasal','kimyasal temin','orijinal kimyasal'],
+   ans:'🧴 ISTOBAL onaylı kimyasallar ALGA üzerinden temin edilir.\n⚠️ Garanti geçerliliği için **ISTOBAL orijinal** veya ALGA onaylı kimyasal kullanın — piyasa ürünleri garantiyi etkileyebilir.\n📞 Sipariş: ALGA satış ekibi'},
+
+  // SU SİSTEMİ
+  {kw:['su basıncı','su yok','su gelmiyor','pompa çalışmıyor','basınç düşük','su problemi'],
+   ans:'💧 **Su Problemi — Kontrol Listesi:**\n1. Ana su vanası açık mı?\n2. Su filtresi tıkalı mı? → temizle\n3. Basınç min. **3 bar** mı? (tesisat basıncını ölç)\n4. Pompa çalışıyor mu? (ses var mı?)\n5. Emiş borusunda hava kilidi var mı?\n\n📟 Kod **16** (su yok) veya **56** (akış sensörü)?'},
+  {kw:['su sertliği','kireç','kireçlenme','arıtma','filtre','kireç önleme'],
+   ans:'💧 **Su Kalitesi:**\n• Sert su (>15 °F) olan bölgelerde kireç önleyici sistem önerilir\n• Aylık filtre kontrolü şart — tıkanık filtre basıncı düşürür\n• Kireç birikimi nozulları tıkar, fırça performansını düşürür\n• İyon değiştirici veya ters osmoz sistemi eklenebilir\n📞 ALGA danışmanlık verir'},
+  {kw:['su kaçağı','sızıntı','ıslak zemin','su sızdırıyor'],
+   ans:'💧 **Su Kaçağı:**\n1. Kaynağı tespit et (hangi bölge?)\n2. Hortum kelepçelerini kontrol et\n3. Nozul contaları hasar görmüş olabilir\n4. Pompada salmastra arızası olabilir\n⚠️ Zemin sürekli ıslaksa **elektrik tehlikesi!** → Makineyi kapat, ALGA servisi çağır'},
+
+  // FIRÇA
+  {kw:['fırça değişim','fırça eskidi','fırça aşındı','fırça ömrü','fırça ne zaman'],
+   ans:'🪥 **Fırça Bilgileri:**\n• Garanti ömrü: **50.000 araç veya 2 yıl**\n• Değişim kriteri: Çap orijinalin %70\'ine düştüğünde\n• Ani tüylenme veya dökülme → hasar var, ALGA çağır\n• Değişim ALGA teknik servisi tarafından yapılır'},
+  {kw:['fırça takıldı','fırça sıkıştı','fırça durdu','fırça dönmüyor'],
+   ans:'🪥 Fırça takıldıysa:\n1. **Acil stop** → alanı boşalt\n2. Fırça çevresinde yabancı cisim var mı? (bez, ip, anten)\n3. Motor aşırı ısınmış mı? (soğumasını bekle)\n4. Ekranda arıza kodu var mı?\n\n📟 Kodlar: **20, 21, 22** (fırça motoru) · **35** (aşırı yük)'},
+
+  // GARANTİ
+  {kw:['garanti','garanti süresi','garanti kapsamı','kaç yıl garanti'],
+   ans:'🛡️ **Garanti:**\n• Makine: **2 yıl** (tüm elektro-mekanik parçalar)\n• Fırça: **2 yıl veya 50.000 araç**\n• İlk 3 ay: İşçilik + servis ücretsiz\n\n⚠️ **Garanti geçersiz olur:**\n• Yetkisiz müdahale\n• ISTOBAL dışı yedek parça\n• Yıllık bakım yaptırılmazsa\n• Yanlış kimyasal kullanımı'},
+  {kw:['garanti dışı','garanti geçersiz','garanti bitti'],
+   ans:'🛡️ Garanti kapsamı dışı durumlar:\n• Kullanıcı hatası (yanlış araç girişi)\n• Elektrik dalgalanması hasarı → **UPS/parafudr öneririm**\n• Piyasa kimyasal hasarı\n• Doğal afet, yangın\n• Bakım yapılmaması nedeniyle oluşan hasar\n\n💡 UPS + parafudr ekleyin — elektrik hasarı garanti dışı!'},
+
+  // KURULUM
+  {kw:['kurulum','montaj','altyapı','zemin','beton','kurulum gereksinimleri'],
+   ans:'🏗️ **Kurulum Gereksinimleri:**\n• **Zemin:** Beton, min. 15 cm, C25 sınıfı\n• **Kanal:** Min. 30×30 cm, %0.5-1 eğim\n• **Elektrik:** 380V / 3 faz / 50Hz / min. 32A sigorta\n• **Su:** ¾" bağlantı, min. 3 bar basınç\n• **Alan:** Min. 6×15 m (ray + manevra)\n\nALGA altyapı projesi ücretsiz hazırlar ✅'},
+  {kw:['ray','ray uzunluğu','ray montajı'],
+   ans:'🏗️ **Ray Bilgileri:**\n• M\'WASH2: Min. ray uzunluğu **11 metre**\n• HW\'PROGRESS: **24.000 mm**\n• Beton temele ankraj ile sabitlenir\n• Lazer hizalama ile montaj yapılır\n• ALGA teknik ekibi tarafından gerçekleştirilir'},
+  {kw:['elektrik bağlantısı','şebeke','380v','üç faz','sigorta','topraklama'],
+   ans:'⚡ **Elektrik Gereksinimleri:**\n• Şebeke: **380V / 3 faz / 50Hz**\n• Sigorta: Min. **32A** (M\'WASH2)\n• Topraklama: **Zorunlu** — RCD (kaçak akım rölesi) önerilir\n• UPS/AVR: Gerilim dalgalanması olan bölgelerde önerilir\n⚠️ Elektrik bağlantısını **yetkili elektrikçiye** yaptırın'},
+
+  // OPERASYON
+  {kw:['program','yıkama programı','kaç program','hangi program'],
+   ans:'📱 **Yıkama Programları:**\n• M\'WASH2\'de **minimum 6 program** tanımlanabilir\n• Her program için: su miktarı, kimyasal dozu, fırça hızı ayrı ayarlanır\n• Örnek: Hızlı (3 dk) · Standart (5 dk) · Tam (7 dk) · Balmumu dahil\n• Program değişikliği yetkili operatör veya ALGA teknisyeni'},
+  {kw:['araç girişi','araç hizalama','nasıl kullanılır','araç sürüş'],
+   ans:'🚗 **Araç Giriş Talimatı:**\n1. Aracı raya hizala — ön tekerlek kılavuz ray ortasında\n2. Motor kapalı, şanzıman P\'de (otomatik) veya vites boşta\n3. Makine yeşil ışık verince ilerle\n4. Max hız: **8 km/h** (yürüme hızı)\n5. Pencereler kapalı, anten kırık / indirili olmalı'},
+  {kw:['kapasite','saat başı','günde kaç araç','kaç araç yıkar','verimlilik'],
+   ans:'📊 **Kapasite:**\n• M\'WASH2: **60-80 araç/gün** (8 saat)\n• T\'WASH PRO EXPRESS: **50 araç/saat**\n• T\'WASH PRO SUPER: **80 araç/saat**\n• HW\'PROGRESS: Ağır araç başı ~8-12 dk\n\n💡 Kapasite artırmak için: Yıkama süresi kısalt, ön ıslatma ekle'},
+  {kw:['kış','don','soğuk','antidon','buz','donma'],
+   ans:'❄️ **Kış Kullanımı:**\n• -5°C altında çalıştırmadan önce ısıtma modu\n• Gece boşaltma yapın veya ısıtmalı makine binası\n• Kimyasal donma noktasına dikkat (+5°C\'de değişir)\n• Uzun süre kullanmayacaksanız sistemi **tamamen boşaltın**'},
+
+  // GENEL
+  {kw:['servis','arıza çağrısı','teknisyen','teknik destek','servis çağır'],
+   ans:'📞 **ALGA Teknik Servis:**\n• Arıza müdahale süresi: **max. 3 iş günü**\n• İlk 3 ay: Servis + işçilik ücretsiz\n• Uzaktan tanı imkanı (bazı modellerde)\n\n💡 Çağrı öncesi hazır edin:\n• Ekrandaki hata kodu\n• Makine seri numarası\n• Fotoğraf → daha hızlı çözüm'},
+  {kw:['seri numarası','model bilgisi','plaka'],
+   ans:'🔍 **Makine Bilgilerini Bulmak:**\n• Seri numarası + model kodu: Makinenin **sol yan paneli** — yazılı plakette\n• Üretim tarihi seri numarasından anlaşılır\n• Bu bilgileri garanti belgesi ile birlikte saklayın'},
+  {kw:['yedek parça','parça','stok','yedek'],
+   ans:'🔧 **Yedek Parçalar:**\n• Kritik parçalar (fırça, motor, pompa): genellikle ALGA stokunda\n• Özel parçalar: İspanya\'dan 2-4 hafta temin\n• ⚠️ Muadil / sahte parça kullanmayın → garanti riski + güvenlik\n📞 Parça siparişi: ALGA servis hattı'},
+  {kw:['su tüketimi','litre','su harcama'],
+   ans:'💧 Su tüketimi araç başına **105 litre** (M\'WASH2). 100 araç/gün → aylık ~273.000 litre.\nHW\'PROGRESS ve T\'WASH PRO için farklı değerler geçerlidir.\n📊 Detaylı hesap için **Seçenekler & Tüketim** sekmesine bakın.'},
+  {kw:['elektrik tüketimi','kwh','enerji','elektrik harcama'],
+   ans:'⚡ Elektrik tüketimi araç başına **0,9 kWh** (M\'WASH2). Sistem 380V / 3 faz / 50 Hz şebeke gerektirir.\n📊 Aylık maliyet hesabı için **Seçenekler & Tüketim** sekmesine bakın.'},
+  {kw:['boyut','genişlik','yükseklik','uzunluk','kaç metrelik'],
+   ans:"📐 M'WASH2 boyutları:\n• Yıkama genişliği: **2.400 mm** (standart) veya **2.600 mm** (geniş)\n• Max. araç yüksekliği: **2.900 mm**\n• Ray uzunluğu: Min. **11 metre**\n\nHW'PROGRESS: Max araç yüksekliği modele göre 3.610–4.730 mm"},
+  {kw:['sertifika','ce','iso','tüv','belge'],
+   ans:"✅ M'WASH2 sertifikaları: **ISO 14001 · TÜV · CE**\nİspanya menşeili — ISTOBAL 1950'den bu yana üretimde."},
+  {kw:['istobal','alga','türkiye','distribütör','marka'],
+   ans:"🏭 **Marka Bilgisi:**\n• **ISTOBAL**: 1950'de İspanya'da kuruldu, 70+ yıldır dünya lideri\n• **ALGA**: Türkiye'nin **tek yetkili** ISTOBAL distribütörü\n• Satış + montaj + servis + yedek parça: Türkiye genelinde ALGA"},
+];
+
+// ══════════════════════════════════════
+//  CLAUDE API YÖNETİMİ (B)
+// ══════════════════════════════════════
+function getApiKey(){ try{ return atob(localStorage.getItem('alga_ai_k')||''); }catch(e){ return ''; } }
+
+function saveApiKey(){
+  const v=document.getElementById('apiKeyInput').value.trim();
+  if(!v){ alert('API anahtarı boş olamaz.'); return; }
+  if(!v.startsWith('sk-')){ alert('Geçersiz format. "sk-" ile başlamalı.'); return; }
+  localStorage.setItem('alga_ai_k', btoa(v));
+  document.getElementById('apiKeyInput').value='';
+  updateApiStatus();
+  toggleApiSettings();
+  addMsg('✅ **Claude API aktif!** Artık daha akıllı yanıtlar alabilirsiniz.','bot');
+}
+
+function clearApiKey(){
+  localStorage.removeItem('alga_ai_k');
+  updateApiStatus();
+  document.getElementById('aiSettingsPanel').classList.remove('open');
+  addMsg('🔑 API anahtarı silindi — çevrimdışı mod aktif.','bot');
+}
+
+function toggleApiSettings(){
+  const p=document.getElementById('aiSettingsPanel');
+  p.classList.toggle('open');
+  if(p.classList.contains('open')){
+    const k=getApiKey();
+    if(k) document.getElementById('apiKeyInput').placeholder='Kayıtlı: sk-...'+k.slice(-4);
+  }
+}
+
+function updateApiStatus(){
+  const dot=document.getElementById('aiStatusDot');
+  const lbl=document.getElementById('aiStatusLbl');
+  const has=!!getApiKey();
+  if(dot) dot.className='ai-status-dot'+(has?' online':'');
+  if(lbl) lbl.textContent=has?'🟢 Claude Aktif':'⚫ Çevrimdışı Mod';
+}
+
+function buildSystemPrompt(){
+  const arizaList=ARIZA_DB.map(a=>`Kod ${a.k}: ${a.m} — Çözüm: ${a.c}`).join('\n');
+  return `Sen ISTOBAL araç yıkama makinelerinin uzman teknisyeni ve ALGA şirketinin Türkiye teknik destek asistanısın.
+
+ÜRÜNLER:
+- M'WASH SERİSİ (M'WASH2/M'WASH3/M'WASH3:PRO): Portal otomatik, 105-110L su/araç, 0.9-1.2kWh/araç, 40ml kimyasal/araç, 7 renk, 2Y garanti, CE/ISO14001/TÜV, İspanya üretimi
+- HW'PROGRESS: Ağır araç yıkama (TIR/otobüs/kamyon), 4 model: HWP3610/HWP3730/HWP4230/HWP4730, 24m ray
+- T'WASH PRO: Tünel konveyör, 6 yapılandırma EXPRESS(12.5m,50araç/saat) → SUPER(40m+,80araç/saat)
+
+ARIZA KODLARI (${ARIZA_DB.length} adet):
+${arizaList}
+
+BAKIM: Günlük(fotosel+kimyasal kontrol,5dk), Haftalık(fırça+filtre), Aylık(yağlama+elektrik), 3Aylık(aşınma ölçümü), Yıllık(ALGA servis zorunlu-garanti için)
+KİMYASAL: Köpük 20ml/araç + Cila 20ml/araç = 40ml/araç. Orijinal ISTOBAL kimyasal zorunlu (garanti için).
+KURULUM: 380V/3faz/32A, min 3bar su, beton zemin min 15cm, 30x30cm kanal. Montaj+nakliye+eğitim ALGA'dan ücretsiz.
+GARANTİ: 2Y makine + 2Y/50.000araç fırça. Yetkisiz müdahale/yanlış kimyasal/bakımsızlık garantiyi geçersiz kılar.
+SERVİS: ALGA max 3 iş günü müdahale. İlk 3 ay işçilik ücretsiz.
+
+DAVRANIR KURALLARI:
+- Her zaman TÜRKÇE yanıtla
+- Kısa ve net ol (max 200 kelime)
+- Güvenlik riski varsa MUTLAKA uyar ve servisi çağırmayı öner
+- Elektrik işlerinde ALGA servis yönlendir
+- Bilmiyorsan "ALGA servisi arayın" de, uydurma
+- Arıza kodunu biliyorsan direkt çözüm ver`;
+}
+
+async function callClaudeAPI(userMsg, apiKey){
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json',
+        'x-api-key':apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-20240307',
+        max_tokens:450,
+        system:buildSystemPrompt(),
+        messages:[{role:'user',content:userMsg}]
+      })
+    });
+    if(!res.ok){
+      const e=await res.json().catch(()=>({}));
+      if(e.error?.type==='authentication_error'){
+        addMsg('❌ API anahtarı geçersiz — ⚙️ API butonundan yeniden girin.','bot');
+        return true;
+      }
+      return false;
+    }
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'';
+    if(text){ addMsg('🤖 '+text,'bot'); return true; }
+    return false;
+  }catch(e){ return false; }
+}
+
+// Yazıyor göstergesi
+let _tid=0;
+function addTyping(){
+  const box=document.getElementById('aiMsgs');
+  const id=++_tid;
+  const d=document.createElement('div');
+  d.className='ai-typing'; d.id='typing_'+id;
+  d.innerHTML='<div class="ai-typing-dot"></div><div class="ai-typing-dot"></div><div class="ai-typing-dot"></div>';
+  box.appendChild(d); box.scrollTop=box.scrollHeight; return id;
+}
+function removeTyping(id){ const el=document.getElementById('typing_'+id); if(el) el.remove(); }
+
+// ══════════════════════════════════════
+//  ANA SORU İŞLEYİCİ
+// ══════════════════════════════════════
 function aiChip(q){ document.getElementById('aiInput').value=q; aiGonder(); }
 
-function aiGonder(){
+async function aiGonder(){
   const inp=document.getElementById('aiInput');
   const q=inp.value.trim();
-  if(!q)return;
+  if(!q||inp.disabled)return;
   addMsg(q,'user');
   inp.value='';
-  setTimeout(()=>{
+  inp.disabled=true;
+  const tid=addTyping();
+
+  try{
     const ql=q.toLowerCase().replace(/[',.\-]/g,' ');
 
-    // 1 ── Arıza kodu numarası
+    // 1 — Arıza kodu numarası
     const numM=ql.match(/\b(\d{1,2})\b/);
     if(numM){
-      const kod=parseInt(numM[1]);
-      const hit=ARIZA_DB.find(a=>a.k===kod);
-      if(hit){addFaultCard(hit);return;}
+      const hit=ARIZA_DB.find(a=>a.k===parseInt(numM[1]));
+      if(hit){ removeTyping(tid); addFaultCard(hit); return; }
     }
 
-    // 2 ── "Sık arızalar" listesi
-    if(ql.includes('sık')||ql.includes('en sık')||ql.includes('yaygın')||ql.includes('liste')){
+    // 2 — Sık arızalar
+    if(ql.includes('sık')||ql.includes('yaygın')||ql.includes('liste')){
+      removeTyping(tid);
       addMsg('En sık karşılaşılan **6 arıza** ve çözümleri:','bot');
       [3,6,16,35,37,42].forEach(k=>{const h=ARIZA_DB.find(a=>a.k===k);if(h)addFaultCard(h,true);});
       return;
     }
 
-    // 3 ── Anahtar kelime araması (arıza DB)
+    // 3 — Arıza DB anahtar kelime
     const hits=ARIZA_DB.filter(a=>{
-      if(a.kw.some(kw=>ql.includes(kw))) return true;
-      const mWords=a.m.toLowerCase().split(/\s+/);
-      return mWords.some(w=>w.length>3&&ql.includes(w));
+      if(a.kw.some(kw=>ql.includes(kw)))return true;
+      return a.m.toLowerCase().split(/\s+/).some(w=>w.length>3&&ql.includes(w));
     });
-    if(hits.length===1){addFaultCard(hits[0]);return;}
-    if(hits.length>1&&hits.length<=5){
-      addMsg(`**"${q}"** ile ilgili ${hits.length} arıza bulundu:`,'bot');
-      hits.forEach(h=>addFaultCard(h,true));return;
-    }
-    if(hits.length>5){
-      addMsg(`**"${q}"** için ${hits.length} sonuç — ilk 4 tanesi:`,'bot');
-      hits.slice(0,4).forEach(h=>addFaultCard(h,true));return;
+    if(hits.length===1){ removeTyping(tid); addFaultCard(hits[0]); return; }
+    if(hits.length>=2&&hits.length<=5){
+      removeTyping(tid);
+      addMsg(`**"${q}"** için ${hits.length} arıza bulundu:`,'bot');
+      hits.forEach(h=>addFaultCard(h,true)); return;
     }
 
-    // 4 ── Genel KB
-    for(const [kw,ans] of Object.entries(AI_KB)){
-      if(ql.includes(kw)){addMsg(ans,'bot');return;}
+    // 4 — Genişletilmiş bilgi tabanı
+    const kbHit=BILGI_KB.find(e=>e.kw.some(kw=>ql.includes(kw)));
+    if(kbHit){ removeTyping(tid); addMsg(kbHit.ans,'bot'); return; }
+
+    // 5 — Kalıp eşleşme
+    if(ql.includes('merhaba')||ql.includes('selam')||ql.includes('naber')){
+      removeTyping(tid); addMsg('Merhaba! 😊 Arıza kodu, semptom veya teknik soru yazabilirsiniz.','bot'); return;
+    }
+    if(ql.includes('fiyat')||ql.includes('ücret')||ql.includes('tutar')||ql.includes('kaça')){
+      removeTyping(tid); addMsg('Fiyat bilgisi için **📋 Teklif Formu** sekmesini doldurun. ALGA ekibi kısa sürede ulaşır.','bot'); return;
+    }
+    if(ql.includes('teşekkür')||ql.includes('sağol')||ql.includes('tamam')){
+      removeTyping(tid); addMsg('Ne demek, her zaman! 😊 Başka bir sorunuz varsa buradayım.','bot'); return;
     }
 
-    // 5 ── Kalıplar
-    if(ql.includes('merhaba')||ql.includes('selam'))
-      {addMsg('Merhaba! 😊 Arıza kodu (örn: **35**) veya semptom yazarak yardım alabilirsiniz.','bot');return;}
-    if(ql.includes('fiyat')||ql.includes('ücret')||ql.includes('tutar'))
-      {addMsg('Fiyat için **Teklif Formu** sekmesini doldurun. ALGA ekibi en kısa sürede ulaşır. 📋','bot');return;}
-    if(ql.includes('teknik servis')||ql.includes('servis ara'))
-      {addMsg('ALGA Teknik Servis — Arıza müdahale süresi max. **3 iş günü**. İlk 3 ay ücretsiz.','bot');return;}
+    // 6 — Claude API (internet varsa + anahtar varsa)
+    const apiKey=getApiKey();
+    if(apiKey){
+      const ok=await callClaudeAPI(q,apiKey);
+      if(ok){ removeTyping(tid); return; }
+    }
 
-    addMsg('Aradığınızı bulamadım 🤔\nArıza kodu numarası (örn: **35**) veya farklı bir anahtar kelime deneyin.\n➡️ Yukarıdaki hızlı butonları da kullanabilirsiniz.','bot');
-  },350);
+    // 7 — Fallback
+    removeTyping(tid);
+    addMsg(`"**${q}**" için bilgi bulunamadı 🤔\n\nDeneyebilirsiniz:\n• Arıza kodu numarası (örn: **35**)\n• Farklı anahtar kelime\n• Yukarıdaki hızlı butonlar\n${apiKey?'':'• ⚙️ API butonu → Claude ile akıllı yanıt'}`, 'bot');
+  } finally {
+    removeTyping(tid);
+    inp.disabled=false;
+    inp.focus();
+  }
 }
 
 function addFaultCard(a,compact=false){
@@ -2494,6 +2749,7 @@ roiHesap();
 renderAriza(ariza);
 updateTeklifModel();
 updateTeklifFiyat();
+updateApiStatus();
 </script>
 
 <!-- ══════════════════════════════════════
