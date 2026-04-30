@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISTOBAL M'WASH2 — Müşteri Sunum | ALGA</title>
+<style>
+:root {
+  --istobal-red: #e3001b;
+  --istobal-gray: #6d6e71;
+  --alga-green: #8dc63f;
+  --blue-dark: #003a6e;
+  --cyan: #00adef;
+  --bg: #f2f4f7;
+  --card-shadow: 0 2px 16px rgba(0,0,0,0.09);
+  --radius: 12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:#1a2a3a;}
+
+/* HEADER */
+header{
+  background:#fff;
+  padding:0 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:72px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.10);
+  position:sticky;top:0;z-index:200;
+}
+.header-logos{display:flex;align-items:center;gap:28px;}
+.header-logos img{object-fit:contain;}
+.logo-istobal{height:38px;}
+.logo-alga{height:48px;}
+.logo-divider{width:1px;height:36px;background:#ddd;}
+.header-center{
+  position:absolute;left:50%;transform:translateX(-50%);
+  text-align:center;
+}
+.header-center .model-name{font-size:22px;font-weight:800;color:var(--istobal-red);letter-spacing:1px;}
+.header-center .model-sub{font-size:12px;color:#888;font-weight:500;}
+.header-right{font-size:12px;color:#666;text-align:right;}
+.header-right strong{color:var(--alga-green);display:block;font-size:14px;}
+
+/* TABS */
+.tabs{
+  background:var(--blue-dark);
+  display:flex;gap:2px;padding:0 20px;
+  overflow-x:auto;border-top:1px solid rgba(255,255,255,0.08);
+}
+.tab-btn{
+  background:none;border:none;
+  color:rgba(255,255,255,0.6);
+  padding:13px 20px;
+  font-size:13.5px;font-weight:600;cursor:pointer;
+  border-bottom:3px solid transparent;
+  white-space:nowrap;transition:all .2s;
+}
+.tab-btn:hover{color:white;}
+.tab-btn.active{color:#fff;border-bottom-color:var(--alga-green);}
+
+/* CONTENT */
+.tab-content{display:none;padding:28px 32px;max-width:1280px;margin:0 auto;}
+.tab-content.active{display:block;}
+
+/* CARD */
+.card{background:#fff;border-radius:var(--radius);padding:22px 24px;box-shadow:var(--card-shadow);margin-bottom:18px;}
+.card-title{
+  font-size:15px;font-weight:800;color:var(--blue-dark);
+  margin-bottom:14px;padding-bottom:10px;
+  border-bottom:2px solid #eef0f4;
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ──────── TAB 1 SUNUM ──────── */
+.stats-bar{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;
+}
+.stat-box{
+  background:var(--blue-dark);border-radius:10px;
+  padding:16px 12px;text-align:center;color:#fff;
+}
+.stat-box .val{font-size:26px;font-weight:900;color:var(--alga-green);}
+.stat-box .unit{font-size:11px;opacity:.75;margin-top:1px;}
+.stat-box .lbl{font-size:12px;margin-top:6px;font-weight:600;}
+
+.sunum-layout{display:grid;grid-template-columns:1fr 370px;gap:22px;}
+
+.viewer-wrap{
+  background:linear-gradient(140deg,#dff0fa 0%,#c2e3f5 100%);
+  border-radius:14px;padding:20px;
+  display:flex;flex-direction:column;align-items:center;
+  min-height:400px;position:relative;
+}
+.viewer-img-box{flex:1;display:flex;align-items:center;justify-content:center;width:100%;}
+#machineImg{
+  max-width:100%;max-height:340px;object-fit:contain;
+  transition:opacity .25s;
+  filter:drop-shadow(0 8px 28px rgba(0,58,110,.2));
+}
+.view-row{display:flex;gap:8px;margin-top:14px;}
+.view-btn{
+  background:#fff;border:2px solid var(--cyan);
+  color:var(--cyan);padding:6px 18px;
+  border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .2s;
+}
+.view-btn.active,.view-btn:hover{background:var(--cyan);color:#fff;}
+
+/* Colors */
+.color-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.cswatch{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;padding:8px 4px;border-radius:8px;
+  border:2px solid transparent;transition:all .2s;
+}
+.cswatch:hover{background:#f0f6fc;}
+.cswatch.active{border-color:var(--blue-dark);background:#e8f2fb;}
+.cdot{
+  width:36px;height:36px;border-radius:50%;
+  border:3px solid rgba(0,0,0,.12);
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+  transition:transform .2s;
+}
+.cswatch.active .cdot{transform:scale(1.18);border-color:var(--blue-dark);}
+.cname{font-size:11px;font-weight:700;color:#444;text-align:center;}
+
+/* Model */
+.model-row{display:flex;gap:10px;margin-top:4px;}
+.mbtn{
+  flex:1;padding:14px 10px;border:2px solid #dde;
+  border-radius:10px;background:#fff;cursor:pointer;
+  text-align:center;transition:all .2s;
+}
+.mbtn:hover{border-color:var(--cyan);}
+.mbtn.active{border-color:var(--blue-dark);background:#e8f2fb;}
+.mbtn .mv{font-size:22px;font-weight:900;color:var(--blue-dark);}
+.mbtn .md{font-size:11px;color:#777;margin-top:2px;}
+
+/* Benefits */
+.benefit-list{display:flex;flex-direction:column;gap:7px;}
+.benefit-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:8px;font-size:13px;
+}
+
+/* ──────── TAB 2 TEKNİK ──────── */
+.teknik-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.spec-tbl{width:100%;border-collapse:collapse;}
+.spec-tbl tr:nth-child(even) td{background:#f8fafc;}
+.spec-tbl td{padding:9px 13px;border-bottom:1px solid #eef1f6;font-size:13.5px;}
+.spec-tbl td:first-child{font-weight:700;color:var(--blue-dark);width:52%;}
+.badge{
+  display:inline-block;background:var(--cyan);color:#fff;
+  padding:3px 10px;border-radius:11px;font-size:11.5px;font-weight:700;margin:2px;
+}
+.badge.green{background:#27ae60;}
+.badge.red{background:var(--istobal-red);}
+.badge.orange{background:#e67e22;}
+
+/* ──────── TAB 3 SEÇENEKLER ──────── */
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.opt-item{
+  display:flex;align-items:flex-start;gap:11px;
+  padding:13px;border:2px solid #e4e8f0;
+  border-radius:10px;cursor:pointer;transition:all .2s;
+}
+.opt-item:hover{border-color:var(--cyan);}
+.opt-item.sel{border-color:var(--blue-dark);background:#e8f2fb;}
+.opt-item input[type=checkbox]{width:17px;height:17px;margin-top:2px;accent-color:var(--blue-dark);flex-shrink:0;}
+.opt-name{font-weight:700;font-size:13.5px;color:var(--blue-dark);}
+.opt-desc{font-size:11.5px;color:#666;margin-top:2px;}
+
+/* Calculator */
+.calc-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+.cinp-grp{margin-bottom:14px;}
+.cinp-grp label{display:block;font-size:12.5px;font-weight:700;color:#444;margin-bottom:5px;}
+.cinp-grp input,.cinp-grp select{
+  width:100%;padding:9px 13px;
+  border:2px solid #dde;border-radius:8px;
+  font-size:14px;transition:border-color .2s;
+}
+.cinp-grp input:focus{outline:none;border-color:var(--cyan);}
+.calc-res{background:var(--blue-dark);border-radius:12px;padding:18px;color:#fff;}
+.cres-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;border-bottom:1px solid rgba(255,255,255,.1);
+}
+.cres-row:last-child{border-bottom:none;}
+.cres-lbl{font-size:12.5px;opacity:.85;}
+.cres-val{font-size:17px;font-weight:800;color:var(--alga-green);}
+.cres-per{font-size:10px;opacity:.6;display:block;text-align:right;}
+.roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.roi-box{border-radius:10px;padding:16px;color:#fff;text-align:center;}
+.roi-val{font-size:32px;font-weight:900;}
+.roi-lbl{font-size:12px;margin-top:3px;opacity:.9;}
+
+/* ──────── TAB 4 TEKLİF ──────── */
+.teklif-layout{display:grid;grid-template-columns:1fr 360px;gap:22px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.fgrp{display:flex;flex-direction:column;gap:5px;}
+.fgrp label{font-size:12.5px;font-weight:700;color:#444;}
+.fgrp input,.fgrp textarea,.fgrp select{
+  padding:9px 13px;border:2px solid #dde;border-radius:8px;
+  font-size:13.5px;font-family:inherit;transition:border-color .2s;
+}
+.fgrp input:focus,.fgrp textarea:focus,.fgrp select:focus{outline:none;border-color:var(--cyan);}
+.fgrp textarea{resize:vertical;min-height:72px;}
+.tklf-sum{background:#e8f2fb;border-radius:12px;padding:18px;border:2px solid var(--cyan);}
+.sum-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #d0dce8;font-size:13px;}
+.sum-row:last-child{border-bottom:none;}
+.sum-lbl{color:#555;}
+.sum-val{font-weight:700;color:var(--blue-dark);}
+
+.btn-prim{
+  background:var(--istobal-red);color:#fff;
+  border:none;padding:13px;border-radius:8px;
+  font-size:14px;font-weight:700;cursor:pointer;
+  transition:background .2s;width:100%;margin-top:10px;
+}
+.btn-prim:hover{background:#b5001a;}
+.btn-sec{
+  background:#fff;color:var(--blue-dark);
+  border:2px solid var(--blue-dark);
+  padding:11px;border-radius:8px;
+  font-size:13.5px;font-weight:700;cursor:pointer;
+  transition:all .2s;width:100%;margin-top:8px;
+}
+.btn-sec:hover{background:var(--blue-dark);color:#fff;}
+.btn-green{
+  background:var(--alga-green);color:#fff;
+  border:none;padding:13px;border-radius:8px;
+  font-size:14px;font-weight:700;cursor:pointer;
+  transition:background .2s;width:100%;margin-top:8px;
+}
+.btn-green:hover{background:#72a32f;}
+
+/* ──────── TAB 5 ARIZA ──────── */
+.ariza-bar{display:flex;gap:10px;margin-bottom:18px;}
+.ariza-bar input{
+  flex:1;padding:11px 15px;border:2px solid #dde;
+  border-radius:8px;font-size:13.5px;
+}
+.ariza-bar input:focus{outline:none;border-color:var(--cyan);}
+.ariza-bar select{padding:11px 14px;border:2px solid #dde;border-radius:8px;font-size:13.5px;}
+.atbl{width:100%;border-collapse:collapse;}
+.atbl thead th{
+  background:var(--blue-dark);color:#fff;
+  padding:11px 14px;text-align:left;font-size:12.5px;font-weight:700;
+}
+.atbl tbody tr:nth-child(even){background:#f8fafc;}
+.atbl tbody tr:hover{background:#deeefa;cursor:pointer;}
+.atbl td{padding:10px 14px;border-bottom:1px solid #eef1f6;font-size:12.5px;vertical-align:top;}
+.atbl td.kod{font-weight:900;color:var(--istobal-red);font-size:14px;white-space:nowrap;}
+.atbl td.kat{white-space:nowrap;}
+.sbadge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700;}
+.sev-err{background:#fde8ea;color:#9b000f;}
+.sev-warn{background:#fff3cd;color:#856404;}
+.sev-info{background:#d4edda;color:#155724;}
+.detail-row{display:none;background:#f0f6fc;padding:10px 14px 10px 28px;border-left:3px solid var(--cyan);font-size:12px;color:#333;}
+.detail-row.show{display:table-row;}
+
+/* ──────── TAB 6 BAKIM ──────── */
+.bakim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.bcard{border-radius:12px;padding:18px;color:#fff;}
+.bcard .per{font-size:11px;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.bcard .ttl{font-size:17px;font-weight:800;margin-bottom:14px;}
+.bcard ul{list-style:none;}
+.bcard ul li{
+  padding:6px 0;border-bottom:1px solid rgba(255,255,255,.18);
+  font-size:12.5px;display:flex;align-items:flex-start;gap:7px;
+}
+.bcard ul li::before{content:"✓";font-weight:900;opacity:.85;flex-shrink:0;}
+.bcard ul li:last-child{border-bottom:none;}
+.bc1{background:linear-gradient(135deg,#27ae60,#1a8a49);}
+.bc2{background:linear-gradient(135deg,#2980b9,#1a5f87);}
+.bc3{background:linear-gradient(135deg,#e67e22,#c4521a);}
+.bc4{background:linear-gradient(135deg,#8e44ad,#6c3484);}
+.bc5{background:linear-gradient(135deg,#c0392b,#922b21);}
+.bc6{background:linear-gradient(135deg,var(--blue-dark),#0a5299);}
+
+/* AI CHAT BUTTON (floating) */
+.ai-float{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--alga-green);color:#fff;
+  border:none;border-radius:50px;
+  padding:14px 22px;font-size:15px;font-weight:700;
+  cursor:pointer;box-shadow:0 4px 18px rgba(141,198,63,.45);
+  display:flex;align-items:center;gap:9px;z-index:999;
+  transition:all .2s;
+}
+.ai-float:hover{transform:scale(1.05);box-shadow:0 6px 24px rgba(141,198,63,.6);}
+
+/* AI PANEL */
+.ai-panel{
+  position:fixed;bottom:80px;right:24px;
+  width:400px;max-height:560px;
+  background:#fff;border-radius:16px;
+  box-shadow:0 8px 40px rgba(0,0,0,.18);
+  display:none;flex-direction:column;z-index:999;
+  overflow:hidden;
+}
+.ai-panel.open{display:flex;}
+.ai-header{
+  background:var(--blue-dark);color:#fff;
+  padding:14px 18px;display:flex;justify-content:space-between;align-items:center;
+}
+.ai-header .ai-title{font-weight:800;font-size:15px;}
+.ai-header .ai-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;}
+.ai-chips{
+  display:flex;flex-wrap:wrap;gap:5px;padding:8px 12px;
+  background:#f0f4f8;border-bottom:1px solid #dde;
+}
+.ai-chip{
+  background:#fff;border:1.5px solid #b8d4ee;color:#1a3a5c;
+  padding:4px 10px;border-radius:14px;font-size:11px;font-weight:600;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.ai-chip:hover{background:var(--blue-dark);color:#fff;border-color:var(--blue-dark);}
+.ai-fault-card{
+  background:#fff;border:1.5px solid #e0e8f0;border-radius:10px;
+  padding:10px 12px;font-size:12px;line-height:1.5;
+}
+.ai-fault-code{font-size:11px;font-weight:800;color:var(--istobal-red);text-transform:uppercase;margin-bottom:4px;}
+.ai-fault-msg{font-weight:700;color:#1a2a3a;margin-bottom:5px;font-size:13px;}
+.ai-fault-row{display:grid;grid-template-columns:16px 1fr;gap:3px 6px;margin-top:4px;}
+.ai-fault-row span:first-child{font-size:13px;}
+.ai-fault-row span:last-child{color:#334;}
+.ai-fault-cozum{background:#e6f4ea;border-radius:7px;padding:7px 9px;margin-top:6px;color:#1a5c2a;font-weight:600;font-size:12px;}
+.ai-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.ai-msg{
+  max-width:88%;padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.5;
+}
+.ai-msg.bot{background:#e8f2fb;color:#1a2a3a;align-self:flex-start;border-radius:4px 12px 12px 12px;}
+.ai-msg.user{background:var(--blue-dark);color:#fff;align-self:flex-end;border-radius:12px 4px 12px 12px;}
+.ai-input-row{
+  display:flex;gap:8px;padding:12px;border-top:1px solid #eee;
+}
+.ai-input-row input{
+  flex:1;padding:9px 13px;border:2px solid #dde;border-radius:20px;
+  font-size:13px;outline:none;
+}
+.ai-input-row input:focus{border-color:var(--cyan);}
+.ai-input-row button{
+  background:var(--alga-green);color:#fff;border:none;
+  padding:9px 16px;border-radius:20px;cursor:pointer;font-weight:700;
+}
+
+/* ──────── TAB ROI ──────── */
+.roi-tab-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;}
+.roi-inp-grp{margin-bottom:16px;}
+.roi-inp-grp label{display:block;font-size:12.5px;font-weight:700;color:#444;margin-bottom:5px;}
+.roi-inp-grp input,.roi-inp-grp select{
+  width:100%;padding:10px 14px;border:2px solid #dde;border-radius:8px;
+  font-size:14px;transition:border-color .2s;font-family:inherit;
+}
+.roi-inp-grp input:focus{outline:none;border-color:var(--cyan);}
+.roi-inp-grp .hint{font-size:11px;color:#999;margin-top:3px;}
+.roi-divider{border:none;border-top:2px dashed #e0e7ef;margin:16px 0;}
+.roi-result-card{border-radius:14px;padding:20px 22px;margin-bottom:14px;}
+.roi-big{font-size:42px;font-weight:900;line-height:1;}
+.roi-big-lbl{font-size:13px;margin-top:4px;opacity:.88;}
+.roi-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.roi-detail-box{background:rgba(255,255,255,.15);border-radius:10px;padding:13px 14px;text-align:center;}
+.roi-detail-val{font-size:22px;font-weight:800;}
+.roi-detail-lbl{font-size:11px;margin-top:3px;opacity:.85;}
+.payback-bar-wrap{margin-top:18px;}
+.payback-bar-track{background:rgba(255,255,255,.2);border-radius:20px;height:18px;overflow:hidden;margin-top:8px;}
+.payback-bar-fill{height:100%;border-radius:20px;background:var(--alga-green);transition:width .6s ease;}
+.payback-bar-labels{display:flex;justify-content:space-between;font-size:11px;opacity:.75;margin-top:4px;}
+.year-table{width:100%;border-collapse:collapse;margin-top:6px;}
+.year-table th{background:rgba(255,255,255,.18);padding:8px 12px;font-size:12px;text-align:left;}
+.year-table td{padding:9px 12px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.12);}
+.year-table td:not(:first-child){font-weight:700;text-align:right;}
+.year-table tr:last-child td{border-bottom:none;}
+.roi-alert{padding:12px 16px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:14px;display:none;}
+.roi-alert.show{display:block;}
+
+/* ──────── MODEL SELECTOR BAR ──────── */
+.model-bar{
+  background:linear-gradient(90deg,#001d38 0%,var(--blue-dark) 100%);
+  padding:10px 32px;
+  border-bottom:3px solid var(--alga-green);
+}
+.model-bar-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.model-bar-lbl{
+  color:rgba(255,255,255,.55);font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.2px;margin-right:6px;white-space:nowrap;
+}
+.msel{
+  background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.7);
+  padding:8px 20px;border-radius:10px;
+  cursor:pointer;text-align:left;
+  transition:all .2s;min-width:140px;
+}
+.msel:hover{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35);}
+.msel.active{background:var(--alga-green);border-color:var(--alga-green);color:#fff;}
+.msel-name{font-size:15px;font-weight:900;letter-spacing:.5px;}
+.msel-sub{font-size:10px;opacity:.85;margin-top:1px;}
+.msel.active .msel-sub{opacity:.9;}
+
+/* ──────── VARIANT BAR ──────── */
+.var-bar{
+  background:#0a2540;
+  padding:8px 32px;
+  border-bottom:2px solid rgba(141,198,63,.35);
+  display:none;
+}
+.var-bar.show{display:block;}
+.var-bar-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.var-bar-lbl{
+  color:rgba(255,255,255,.4);font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1px;margin-right:4px;white-space:nowrap;
+}
+.vsel{
+  background:rgba(255,255,255,.06);
+  border:1.5px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.65);
+  padding:5px 14px;border-radius:8px;
+  cursor:pointer;text-align:left;
+  transition:all .18s;
+}
+.vsel:hover{background:rgba(255,255,255,.12);color:#fff;}
+.vsel.active{background:var(--istobal-red);border-color:var(--istobal-red);color:#fff;}
+.vsel-name{font-size:12px;font-weight:800;letter-spacing:.4px;}
+.vsel-sub{font-size:9px;opacity:.8;margin-top:1px;}
+
+/* ──────── MODEL IMAGE PLACEHOLDER ──────── */
+.model-placeholder{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  min-height:320px;padding:30px;text-align:center;
+  background:linear-gradient(140deg,#dff0fa 0%,#c2e3f5 100%);
+  border-radius:14px;
+}
+.model-placeholder .mp-name{
+  font-size:60px;font-weight:900;color:var(--blue-dark);
+  text-shadow:0 4px 24px rgba(0,58,110,.2);letter-spacing:2px;
+  line-height:1;margin-bottom:10px;
+}
+.model-placeholder .mp-type{
+  font-size:16px;color:#446;font-weight:600;
+  background:rgba(255,255,255,.7);padding:6px 18px;
+  border-radius:20px;
+}
+.model-placeholder .mp-icon{font-size:48px;margin-bottom:14px;}
+
+/* PRINT */
+@media print{
+  header,.tabs,.ai-float,.ai-panel{display:none!important;}
+  .tab-content{display:none!important;padding:0!important;}
+  #tab-teklif{display:block!important;}
+  .teklif-layout{grid-template-columns:1fr 1fr!important;}
+  .btn-prim,.btn-sec,.btn-green{display:none!important;}
+  body{background:#fff;}
+}
+
+/* RESPONSIVE */
+@media(max-width:920px){
+  .tab-content{padding:14px;}
+  .sunum-layout,.teknik-grid,.options-grid,.calc-layout,.teklif-layout,.bakim-grid,.roi-tab-grid{grid-template-columns:1fr;}
+  .stats-bar{grid-template-columns:1fr 1fr;}
+  .frow{grid-template-columns:1fr;}
+  .header-center{display:none;}
+  .roi-grid,.roi-detail-grid{grid-template-columns:1fr;}
+  .model-bar{padding:8px 14px;}
+  .model-bar-inner{gap:6px;}
+  .msel{padding:6px 12px;min-width:unset;}
+  .msel-name{font-size:13px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-logos">
+    <img class="logo-istobal" src="./gorseller/logolar/istobal-logo.png" alt="ISTOBAL"
+      onerror="this.outerHTML='<span style=\'font-size:22px;font-weight:900;color:#e3001b;letter-spacing:1px;\'>ISTOBAL</span>'">
+    <div class="logo-divider"></div>
+    <img class="logo-alga" src="./gorseller/logolar/alga_logo_new.png" alt="ALGA"
+      onerror="this.outerHTML='<span style=\'font-size:22px;font-weight:900;color:#8dc63f;\'>ALGA</span>'">
+  </div>
+  <div class="header-center">
+    <div class="model-name">M'WASH2</div>
+    <div class="model-sub">Otomatik Araç Yıkama Makinesi</div>
+  </div>
+  <div class="header-right">
+    <strong>ALGA — Türkiye Yetkili Distribütörü</strong>
+    <span>ISTOBAL Vehicle Wash &amp; Care</span>
+  </div>
+</header>
+
+<!-- MODEL SELECTOR -->
+<div class="model-bar">
+  <div class="model-bar-inner">
+    <div class="model-bar-lbl">Model:</div>
+    <button class="msel active" onclick="switchModel('mwash2',this)">
+      <div class="msel-name">M'WASH SERİSİ</div>
+      <div class="msel-sub">Portal · Binek · M2/M3/M3:PRO</div>
+    </button>
+    <button class="msel" onclick="switchModel('hwprogress',this)">
+      <div class="msel-name">HW'PROGRESS</div>
+      <div class="msel-sub">TIR · Otobüs · Ağır Araç</div>
+    </button>
+    <button class="msel" onclick="switchModel('twashpro',this)">
+      <div class="msel-name">T'WASH PRO</div>
+      <div class="msel-sub">Tünel · Konveyörlü</div>
+    </button>
+  </div>
+</div>
+
+<!-- VARIANT BAR -->
+<div class="var-bar" id="varBar">
+  <div class="var-bar-inner" id="varBarInner">
+    <div class="var-bar-lbl">Yapılandırma:</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('sunum',this)">🎯 Sunum</button>
+  <button class="tab-btn" onclick="showTab('teknik',this)">⚙️ Teknik Özellikler</button>
+  <button class="tab-btn" onclick="showTab('secenekler',this)">🔧 Seçenekler &amp; Tüketim</button>
+  <button class="tab-btn" onclick="showTab('roi',this)">💰 Yatırım Geri Dönüşü</button>
+  <button class="tab-btn" onclick="showTab('teklif',this)">📋 Teklif Formu</button>
+  <button class="tab-btn" onclick="showTab('ariza',this)">🚨 Arıza Kodları</button>
+  <button class="tab-btn" onclick="showTab('bakim',this)">🗓️ Bakım Takvimi</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 1 — SUNUM
+══════════════════════════════════════ -->
+<div id="tab-sunum" class="tab-content active">
+
+  <div class="stats-bar">
+    <div class="stat-box">
+      <div class="val">105</div><div class="unit">litre</div>
+      <div class="lbl">💧 Araç Başı Su</div>
+    </div>
+    <div class="stat-box">
+      <div class="val">0.9</div><div class="unit">kWh</div>
+      <div class="lbl">⚡ Araç Başı Elektrik</div>
+    </div>
+    <div class="stat-box">
+      <div class="val">40</div><div class="unit">ml / araç</div>
+      <div class="lbl">🧴 Toplam Kimyasal</div>
+    </div>
+    <div class="stat-box">
+      <div class="val">6+</div><div class="unit">program</div>
+      <div class="lbl">📱 Yıkama Programı</div>
+    </div>
+  </div>
+
+  <div class="sunum-layout">
+
+    <!-- SOL: MAKİNE GÖRSELİ -->
+    <div>
+      <div class="card viewer-wrap" style="padding:20px;">
+        <div class="viewer-img-box" id="imgBox">
+          <img id="machineImg"
+            src="./gorseller/mwash2/MWASH2_persp_azul.png"
+            alt="ISTOBAL M'WASH2"
+            onerror="this.style.display='none';document.getElementById('imgErr').style.display='block'">
+        </div>
+        <div id="imgErr" style="display:none;text-align:center;padding:30px;color:#888;font-size:14px;">
+          📁 Görsel yüklenemedi.<br><small>Dosya yolunu kontrol edin:<br>Istobal Bilgiler &gt; Mwash2 Render</small>
+        </div>
+        <div class="model-placeholder" id="modelPlaceholder">
+          <div class="mp-icon" id="mpIcon">🚗</div>
+          <div class="mp-name" id="mpName">—</div>
+          <div class="mp-type" id="mpType">—</div>
+        </div>
+        <div class="view-row">
+          <button class="view-btn active" id="vbtn-persp" onclick="setView('persp',this)">Perspektif</button>
+          <button class="view-btn" id="vbtn-frente" onclick="setView('frente',this)">Ön Görünüm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAĞ: RENK + MODEL + AVANTAJLAR -->
+    <div>
+      <div class="card" id="colCard">
+        <div class="card-title">🎨 Kasa Rengi Seçin</div>
+        <div class="color-grid">
+          <div class="cswatch active" onclick="selColor('azul',this)" id="csw-azul">
+            <div class="cdot" style="background:#2471a3;"></div>
+            <div class="cname">Mavi</div>
+          </div>
+          <div class="cswatch" onclick="selColor('roja',this)" id="csw-roja">
+            <div class="cdot" style="background:#c0392b;"></div>
+            <div class="cname">Kırmızı</div>
+          </div>
+          <div class="cswatch" onclick="selColor('amarilla',this)" id="csw-amarilla">
+            <div class="cdot" style="background:#f1c40f;border-color:#cca;"></div>
+            <div class="cname">Sarı</div>
+          </div>
+          <div class="cswatch" onclick="selColor('naranja',this)" id="csw-naranja">
+            <div class="cdot" style="background:#e67e22;"></div>
+            <div class="cname">Turuncu</div>
+          </div>
+          <div class="cswatch" onclick="selColor('verde',this)" id="csw-verde">
+            <div class="cdot" style="background:#27ae60;"></div>
+            <div class="cname">Yeşil</div>
+          </div>
+          <div class="cswatch" onclick="selColor('gris',this)" id="csw-gris">
+            <div class="cdot" style="background:#7f8c8d;"></div>
+            <div class="cname">Gri</div>
+          </div>
+          <div class="cswatch" onclick="selColor('blanca',this)" id="csw-blanca">
+            <div class="cdot" style="background:#ecf0f1;border-color:#bbb;"></div>
+            <div class="cname">Beyaz</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📐 Model / Genişlik Kapasitesi</div>
+        <div class="model-row">
+          <div class="mbtn" onclick="selModel('240',this)" id="mbtn-240">
+            <div class="mv">2.40 m</div>
+            <div class="md">Standart Model</div>
+          </div>
+          <div class="mbtn active" onclick="selModel('260',this)" id="mbtn-260">
+            <div class="mv">2.60 m</div>
+            <div class="md" style="color:var(--istobal-red);font-weight:700;">Geniş Model</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;padding:10px;background:#f8fafc;border-radius:8px;font-size:12px;color:#555;">
+          📏 Her iki model de <strong>2.90 m yüksekliğe</strong> kadar yıkar · Ray: min. <strong>11 m</strong>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🏆 Temel Avantajlar</div>
+        <div class="benefit-list">
+          <div class="benefit-item" style="background:#f0f9f4;">🔄 <strong>2 Yönlü Fırça</strong> — Aracın her noktasına erişir</div>
+          <div class="benefit-item" style="background:#e8f2fb;">⚡ <strong>VFD Frekans Kontrol</strong> — Yumuşak hareket, uzun ömür</div>
+          <div class="benefit-item" style="background:#fff8f0;">🌡️ <strong>Donma Koruması</strong> — Otomatik su boşaltma</div>
+          <div class="benefit-item" style="background:#f9f0fc;">🔵 <strong>24V Kumanda</strong> — Personel güvenliği ön planda</div>
+          <div class="benefit-item" style="background:#f0fff4;">📜 <strong>ISO 14001 · TÜV · CE</strong> — Tam sertifikalı</div>
+          <div class="benefit-item" style="background:#fff5f5;">🇪🇸 <strong>İspanya Üretim</strong> — 1950'den bu yana ISTOBAL kalitesi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 2 — TEKNİK ÖZELLİKLER
+══════════════════════════════════════ -->
+<div id="tab-teknik" class="tab-content">
+  <div class="teknik-grid">
+    <div class="card">
+      <div class="card-title">📐 Boyutlar &amp; Kapasite</div>
+      <table class="spec-tbl">
+        <tr><td>Maks. Yıkama Yüksekliği</td><td><strong>2.900 mm</strong></td></tr>
+        <tr><td>Maks. Yıkama Genişliği</td><td><strong>2.400 / 2.600 mm</strong></td></tr>
+        <tr><td>Ray Uzunluğu</td><td><strong>Min. 11.000 mm</strong></td></tr>
+        <tr><td>Şase Genişliği</td><td>3.530 – 3.950 mm</td></tr>
+        <tr><td>Araç Durumu</td><td>✅ Araç sabit, makine hareketli</td></tr>
+        <tr><td>Konumlandırma</td><td>Fotoselli araç yerleştirme sistemi</td></tr>
+        <tr><td>Uyumlu Araçlar</td><td>Otomobil, SUV, Minibüs, Hafif Ticari</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">⚡ Elektrik &amp; Hava-Su Sistemi</div>
+      <table class="spec-tbl">
+        <tr><td>Şebeke Gerilimi</td><td><strong>380 V – 50 Hz</strong></td></tr>
+        <tr><td>Kumanda Voltajı</td><td>24 V (güvenli, düşük voltaj)</td></tr>
+        <tr><td>Su Basıncı</td><td>6 – 8 bar</td></tr>
+        <tr><td>Hava Basıncı</td><td>6 bar</td></tr>
+        <tr><td>Su Tüketimi (araç başı)</td><td><strong>105 Litre</strong></td></tr>
+        <tr><td>Elektrik Tüketimi</td><td><strong>0.9 kWh</strong></td></tr>
+        <tr><td>Köpük Kimyasal</td><td>20 ml / araç</td></tr>
+        <tr><td>Cila Kimyasal</td><td>20 ml / araç</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">🔧 Mekanik Yapı</div>
+      <table class="spec-tbl">
+        <tr><td>Gövde Malzemesi</td><td>Min. 3 mm galvaniz çelik sac</td></tr>
+        <tr><td>Yüzey Kaplama</td><td>Elektrostatik antikorözyon boya</td></tr>
+        <tr><td>Raylar</td><td>Galvaniz kaplı (paslanmaz)</td></tr>
+        <tr><td>Motorlar</td><td>Su yalıtımlı, VFD frekans kontrollü</td></tr>
+        <tr><td>Fırça Hareketi</td><td>2 yönlü · Motor + redüktör</td></tr>
+        <tr><td>Kurutucu Hareketi</td><td>Kayış sistemi (halatısız)</td></tr>
+        <tr><td>Rüzgar Koruması</td><td>✅ Devrilme önleyici sistem</td></tr>
+        <tr><td>Cıvata / Somun</td><td>Paslanmaz / galvanizli</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">📋 Kontrol Sistemi &amp; Programlar</div>
+      <table class="spec-tbl">
+        <tr><td>Kontrol</td><td>PLC (bilgisayar kontrollü)</td></tr>
+        <tr><td>Kumanda Dili</td><td>🇹🇷 <strong>Türkçe</strong></td></tr>
+        <tr><td>Program Sayısı</td><td>Min. <strong>6</strong> farklı program</td></tr>
+        <tr><td>Hız Ayarı</td><td>Kumanda panosundan ayarlanabilir</td></tr>
+        <tr><td>Manuel Operasyon</td><td>✅ Buton ile manuel kontrol</td></tr>
+        <tr><td>Araç Sayacı</td><td>Dijital, kumandadan okunur</td></tr>
+        <tr><td>Çalışma Sıcaklığı</td><td>2°C – 45°C</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">🏅 Garanti &amp; Servis</div>
+      <table class="spec-tbl">
+        <tr><td>Makine Garantisi</td><td><strong>2 yıl</strong> (imalat &amp; montaj)</td></tr>
+        <tr><td>Fırça Garantisi</td><td><strong>2 yıl / 50.000 araç</strong></td></tr>
+        <tr><td>Periyodik Bakım</td><td>Her 10.000 araçta bir</td></tr>
+        <tr><td>Arıza Müdahale</td><td>Max. <strong>3 gün</strong> içinde</td></tr>
+        <tr><td>İlk 3 Ay</td><td>✅ Servis + işçilik ücretsiz</td></tr>
+        <tr><td>Teknik Personel (TR)</td><td>Min. 10 sertifikalı teknisyen</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">🏅 Sertifikalar &amp; Teslimat</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+        <span class="badge" style="font-size:13px;padding:7px 14px;">ISO 14001</span>
+        <span class="badge" style="font-size:13px;padding:7px 14px;">TÜV</span>
+        <span class="badge" style="font-size:13px;padding:7px 14px;">CE</span>
+        <span class="badge green" style="font-size:13px;padding:7px 14px;">✅ Türkçe Kumanda</span>
+        <span class="badge red" style="font-size:13px;padding:7px 14px;">🇪🇸 İspanya Menşeili</span>
+      </div>
+      <table class="spec-tbl">
+        <tr><td>Nakliye</td><td>✅ Üreticiye ait, ücretsiz</td></tr>
+        <tr><td>Montaj</td><td>✅ Yetkili servis, ücretsiz</td></tr>
+        <tr><td>Altyapı Projesi</td><td>✅ Ücretsiz sağlanır</td></tr>
+        <tr><td>Kullanım Eğitimi</td><td>✅ Tutanakla verilir</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 3 — SEÇENEKLER & TÜKETİM
+══════════════════════════════════════ -->
+<div id="tab-secenekler" class="tab-content">
+  <div class="card">
+    <div class="card-title">🔧 Eklenebilir Opsiyonlar <span style="font-size:12px;font-weight:400;color:#888;"> — istediğinizi seçin</span></div>
+    <div class="options-grid" id="optGrid">
+      <label class="opt-item" id="opt0"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">🫧 Köpük Şelalesi</div><div class="opt-desc">Araç girmeden önce otomatik köpük ön yıkama</div></div></label>
+      <label class="opt-item" id="opt1"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">✨ Süper Cila (Wax)</div><div class="opt-desc">Yıkama sonrası araç yüzeyini koruyan cila</div></div></label>
+      <label class="opt-item" id="opt2"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">🔵 Disk Teker Yıkama</div><div class="opt-desc">4 tekerin jant ve lastiklerini özel temizlik</div></div></label>
+      <label class="opt-item" id="opt3"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">💥 Yüksek Basınçlı Teker</div><div class="opt-desc">HP su ile jant temizliği sistemi</div></div></label>
+      <label class="opt-item" id="opt4"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">🚿 Yan Yüksek Basınç</div><div class="opt-desc">Araç yan yüzeylerinde HP su sistemi</div></div></label>
+      <label class="opt-item" id="opt5"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">🔩 Şase Yıkama</div><div class="opt-desc">Araç altı / şase HP yıkama sistemi</div></div></label>
+      <label class="opt-item" id="opt6"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">🌡️ Sıcak Cila</div><div class="opt-desc">Isıtılmış cila — daha uzun koruma süresi</div></div></label>
+      <label class="opt-item" id="opt7"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">🌈 Renkli Köpük</div><div class="opt-desc">Müşteri deneyimi artıran renkli köpük gösterisi</div></div></label>
+      <label class="opt-item" id="opt8"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">💨 Kurutucu (Üst + Yan)</div><div class="opt-desc">Profil takipli hava kurutucu — opsiyonel</div></div></label>
+      <label class="opt-item" id="opt9"><input type="checkbox" onchange="updSum()"><div><div class="opt-name">🧪 Kimyasal Ön Yıkama</div><div class="opt-desc">Fırçadan önce kimyasal ön yıkama spreyi</div></div></label>
+    </div>
+  </div>
+
+  <div class="calc-layout">
+    <div class="card">
+      <div class="card-title">🧮 Tüketim Hesaplayıcı</div>
+      <div class="cinp-grp"><label>Günlük Yıkanan Araç Sayısı</label>
+        <input type="number" id="cArac" value="100" min="1" oninput="hesap()"></div>
+      <div class="cinp-grp"><label>Aylık Çalışma Günü</label>
+        <input type="number" id="cGun" value="26" min="1" max="31" oninput="hesap()"></div>
+      <div class="cinp-grp"><label>Su Birim Fiyatı (₺ / m³)</label>
+        <input type="number" id="cSu" value="35" min="1" oninput="hesap()"></div>
+      <div class="cinp-grp"><label>Elektrik Birim Fiyatı (₺ / kWh)</label>
+        <input type="number" id="cEl" value="6" min="0.1" step="0.1" oninput="hesap()"></div>
+      <div class="cinp-grp"><label>Kimyasal Maliyet (₺ / araç)</label>
+        <input type="number" id="cKim" value="3" min="0.1" step="0.1" oninput="hesap()"></div>
+    </div>
+
+    <div>
+      <div class="calc-res card" style="background:var(--blue-dark);">
+        <div class="card-title" style="color:#fff;border-bottom-color:rgba(255,255,255,.12);">
+          📊 Aylık Tüketim Tablosu
+        </div>
+        <div class="cres-row">
+          <span class="cres-lbl">💧 Su Tüketimi</span>
+          <div><span class="cres-val" id="r-su">273.000 L</span><span class="cres-per">/ ay</span></div>
+        </div>
+        <div class="cres-row">
+          <span class="cres-lbl">⚡ Elektrik Tüketimi</span>
+          <div><span class="cres-val" id="r-el">2.340 kWh</span><span class="cres-per">/ ay</span></div>
+        </div>
+        <div class="cres-row">
+          <span class="cres-lbl">💧 Su Maliyeti</span>
+          <div><span class="cres-val" id="r-sumal">9.555 ₺</span><span class="cres-per">/ ay</span></div>
+        </div>
+        <div class="cres-row">
+          <span class="cres-lbl">⚡ Elektrik Maliyeti</span>
+          <div><span class="cres-val" id="r-elmal">14.040 ₺</span><span class="cres-per">/ ay</span></div>
+        </div>
+        <div class="cres-row">
+          <span class="cres-lbl">🧴 Kimyasal Maliyeti</span>
+          <div><span class="cres-val" id="r-kimmal">7.800 ₺</span><span class="cres-per">/ ay</span></div>
+        </div>
+        <div style="background:rgba(255,255,255,.1);padding:12px;border-radius:8px;margin-top:10px;" class="cres-row">
+          <span style="font-weight:800;font-size:14px;color:#fff;">📦 TOPLAM</span>
+          <div><span class="cres-val" id="r-top" style="font-size:24px;">31.395 ₺</span><span class="cres-per">/ ay</span></div>
+        </div>
+      </div>
+      <div class="roi-grid">
+        <div class="roi-box" style="background:linear-gradient(135deg,#27ae60,#1a8a49);">
+          <div class="roi-val" id="r-arac">2.600</div>
+          <div class="roi-lbl">Aylık Yıkanan Araç</div>
+        </div>
+        <div class="roi-box" style="background:linear-gradient(135deg,var(--blue-dark),#0a5299);">
+          <div class="roi-val" id="r-perArac" style="font-size:26px;">12,1 ₺</div>
+          <div class="roi-lbl">Araç Başı Değişken Maliyet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB ROI — YATIRIM GERİ DÖNÜŞÜ
+══════════════════════════════════════ -->
+<div id="tab-roi" class="tab-content">
+
+  <div id="roiAlert" class="roi-alert"></div>
+
+  <div class="roi-tab-grid">
+
+    <!-- SOL: GİRİŞLER -->
+    <div>
+      <div class="card">
+        <div class="card-title">🏭 Mevcut Durum (Yatırım Öncesi)</div>
+        <div class="roi-inp-grp">
+          <label>Mevcut Yıkama Yöntemi</label>
+          <select id="roi-yontem" onchange="roiHesap()">
+            <option value="manuel">Manuel İşçiyle Yıkama</option>
+            <option value="rakip">Rakip Otomatic Makine</option>
+            <option value="yok">Yıkama Yok (Yeni Yatırım)</option>
+          </select>
+        </div>
+        <div class="roi-inp-grp" id="roi-isci-grp">
+          <label>İşçi Sayısı (yıkama için)</label>
+          <input type="number" id="roi-isci" value="3" min="1" oninput="roiHesap()">
+          <div class="hint">Yıkama operasyonuna ayrılan personel sayısı</div>
+        </div>
+        <div class="roi-inp-grp" id="roi-maas-grp">
+          <label>Ortalama İşçi Maaşı (₺ / ay)</label>
+          <input type="number" id="roi-maas" value="25000" min="1" oninput="roiHesap()">
+        </div>
+        <div class="roi-inp-grp" id="roi-rakip-grp" style="display:none;">
+          <label>Mevcut Makine Aylık Operasyon Maliyeti (₺)</label>
+          <input type="number" id="roi-rakip-maliyet" value="80000" min="1" oninput="roiHesap()">
+          <div class="hint">Yedek parça, enerji, işçilik dahil toplam</div>
+        </div>
+        <hr class="roi-divider">
+        <div class="roi-inp-grp">
+          <label>Günlük Yıkanan Araç Sayısı</label>
+          <input type="number" id="roi-arac" value="80" min="1" oninput="roiHesap()">
+        </div>
+        <div class="roi-inp-grp">
+          <label>Aylık Çalışma Günü</label>
+          <input type="number" id="roi-gun" value="26" min="1" max="31" oninput="roiHesap()">
+        </div>
+        <div class="roi-inp-grp">
+          <label>Araç Başı Yıkama Ücreti (₺)</label>
+          <input type="number" id="roi-fiyat" value="150" min="1" oninput="roiHesap()">
+          <div class="hint">Müşteriye yansıtılan yıkama fiyatı</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💳 Yatırım Bilgileri</div>
+        <div class="roi-inp-grp">
+          <label>Makine Fiyatı (₺) — KDV Hariç</label>
+          <input type="number" id="roi-makinefiyat" value="1500000" min="1" oninput="roiHesap()">
+        </div>
+        <div class="roi-inp-grp">
+          <label>Montaj / Altyapı Maliyeti (₺)</label>
+          <input type="number" id="roi-altyapi" value="0" min="0" oninput="roiHesap()">
+          <div class="hint">ALGA montajı ücretsiz — altyapı işletmeye göre değişir</div>
+        </div>
+        <div class="roi-inp-grp">
+          <label>Su Birim Fiyatı (₺ / m³)</label>
+          <input type="number" id="roi-su" value="35" min="1" oninput="roiHesap()">
+        </div>
+        <div class="roi-inp-grp">
+          <label>Elektrik Birim Fiyatı (₺ / kWh)</label>
+          <input type="number" id="roi-el" value="6" min="0.1" step="0.1" oninput="roiHesap()">
+        </div>
+        <div class="roi-inp-grp">
+          <label>Kimyasal Maliyet (₺ / araç)</label>
+          <input type="number" id="roi-kim" value="3" min="0.1" step="0.1" oninput="roiHesap()">
+        </div>
+        <div class="roi-inp-grp">
+          <label>Operatör Sayısı (makine için)</label>
+          <input type="number" id="roi-operator" value="1" min="0" oninput="roiHesap()">
+          <div class="hint">Makine ile çalışacak personel sayısı</div>
+        </div>
+        <div class="roi-inp-grp">
+          <label>Operatör Maaşı (₺ / ay)</label>
+          <input type="number" id="roi-opmaas" value="25000" min="0" oninput="roiHesap()">
+        </div>
+      </div>
+    </div>
+
+    <!-- SAĞ: SONUÇLAR -->
+    <div id="roiResults">
+
+      <!-- GERİ DÖNÜŞ SÜRESİ — BÜYÜK KART -->
+      <div class="roi-result-card" style="background:linear-gradient(135deg,var(--blue-dark),#0a5299);color:#fff;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+          <div>
+            <div style="font-size:12px;font-weight:700;opacity:.75;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Yatırım Geri Dönüş Süresi</div>
+            <div class="roi-big" id="roi-r-sure">— ay</div>
+            <div class="roi-big-lbl" id="roi-r-sure-lbl">hesaplanıyor...</div>
+          </div>
+          <div style="font-size:52px;opacity:.18;line-height:1;">📈</div>
+        </div>
+        <div class="payback-bar-wrap">
+          <div style="font-size:11px;opacity:.7;margin-bottom:4px;">Geri Dönüş İlerlemesi</div>
+          <div class="payback-bar-track">
+            <div class="payback-bar-fill" id="roi-bar" style="width:0%;"></div>
+          </div>
+          <div class="payback-bar-labels">
+            <span>Yatırım</span><span id="roi-bar-mid"></span><span>Geri Dönüş</span>
+          </div>
+        </div>
+        <div class="roi-detail-grid">
+          <div class="roi-detail-box">
+            <div class="roi-detail-val" id="roi-r-aygelir">—</div>
+            <div class="roi-detail-lbl">Aylık Gelir (₺)</div>
+          </div>
+          <div class="roi-detail-box">
+            <div class="roi-detail-val" id="roi-r-aymaliyet">—</div>
+            <div class="roi-detail-lbl">Aylık Maliyet (₺)</div>
+          </div>
+          <div class="roi-detail-box">
+            <div class="roi-detail-val" id="roi-r-aykar" style="color:#a8e063;">—</div>
+            <div class="roi-detail-lbl">Aylık Net Kâr (₺)</div>
+          </div>
+          <div class="roi-detail-box">
+            <div class="roi-detail-val" id="roi-r-tasarruf" style="color:#ffe066;">—</div>
+            <div class="roi-detail-lbl">Aylık Tasarruf (₺)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- YIL BAZLI TAHMİN -->
+      <div class="roi-result-card" style="background:linear-gradient(135deg,#1d6b3e,#27ae60);color:#fff;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;">📅 Kümülatif Kâr Tahmini</div>
+        <table class="year-table">
+          <thead><tr><th>Yıl</th><th>Aylık Kâr</th><th>Toplam Gelir</th><th>Kümülatif Kâr</th></tr></thead>
+          <tbody id="roi-yil-tbl"></tbody>
+        </table>
+      </div>
+
+      <!-- MEVCUT vs MAKİNE KARŞILAŞTIRMA -->
+      <div class="roi-result-card" style="background:linear-gradient(135deg,#7b3fa0,#9b59b6);color:#fff;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;">⚖️ Mevcut Yöntem vs M'WASH2</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:13px;">
+            <div style="font-size:11px;font-weight:700;opacity:.75;margin-bottom:8px;">📉 MEVCUT</div>
+            <div style="font-size:11px;line-height:1.8;" id="roi-compare-eski">—</div>
+          </div>
+          <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:13px;border:2px solid rgba(255,255,255,.35);">
+            <div style="font-size:11px;font-weight:700;opacity:.75;margin-bottom:8px;">✅ M'WASH2</div>
+            <div style="font-size:11px;line-height:1.8;" id="roi-compare-yeni">—</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 4 — TEKLİF FORMU
+══════════════════════════════════════ -->
+<div id="tab-teklif" class="tab-content">
+  <div class="teklif-layout">
+    <div class="card">
+      <div class="card-title">👤 Müşteri Bilgileri</div>
+      <div class="frow">
+        <div class="fgrp"><label>Firma Adı *</label><input id="tf-firma" placeholder="Firma / İşletme Adı"></div>
+        <div class="fgrp"><label>Yetkili Kişi *</label><input id="tf-yetkili" placeholder="Ad Soyad"></div>
+      </div>
+      <div class="frow">
+        <div class="fgrp"><label>Telefon</label><input id="tf-tel" type="tel" placeholder="+90 5xx xxx xx xx"></div>
+        <div class="fgrp"><label>E-posta</label><input id="tf-email" type="email" placeholder="ornek@firma.com"></div>
+      </div>
+      <div class="frow">
+        <div class="fgrp"><label>Şehir / İlçe</label><input id="tf-sehir" placeholder="İstanbul, Ankara..."></div>
+        <div class="fgrp"><label>Günlük Araç Kapasitesi</label><input id="tf-kap" type="number" placeholder="100"></div>
+      </div>
+      <div class="fgrp" style="margin-bottom:14px;">
+        <label>Tesis Tipi</label>
+        <select id="tf-tesis">
+          <option>Akaryakıt İstasyonu</option>
+          <option>Bağımsız Oto Yıkama</option>
+          <option>Alışveriş Merkezi</option>
+          <option>Filo / Servis İşletmesi</option>
+          <option>Diğer</option>
+        </select>
+      </div>
+      <div class="fgrp">
+        <label>Notlar / Özel İstekler</label>
+        <textarea id="tf-notlar" placeholder="Özel opsiyonlar, altyapı durumu, mevcut makine..."></textarea>
+      </div>
+
+      <div class="card-title" style="margin-top:20px;">⚙️ Yapılandırma</div>
+      <div class="frow">
+        <div class="fgrp">
+          <label>Seçilen Model</label>
+          <select id="tf-model">
+            <option>M'WASH2 — 2.40 m (Standart)</option>
+            <option selected>M'WASH2 — 2.60 m (Geniş)</option>
+          </select>
+        </div>
+        <div class="fgrp">
+          <label>Kasa Rengi</label>
+          <select id="tf-renk">
+            <option value="azul">Mavi</option>
+            <option value="roja">Kırmızı</option>
+            <option value="amarilla">Sarı</option>
+            <option value="naranja">Turuncu</option>
+            <option value="verde">Yeşil</option>
+            <option value="gris">Gri</option>
+            <option value="blanca">Beyaz</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tklf-sum">
+        <div class="card-title" style="color:var(--blue-dark);">📋 Teklif Özeti</div>
+        <div class="sum-row"><span class="sum-lbl">Model</span><span class="sum-val" id="ts-model">M'WASH2 2.60m</span></div>
+        <div class="sum-row"><span class="sum-lbl">Renk</span><span class="sum-val" id="ts-renk">🔵 Mavi</span></div>
+        <div class="sum-row"><span class="sum-lbl">Seçili Opsiyonlar</span><span class="sum-val" id="ts-opt" style="font-size:11px;text-align:right;max-width:180px;">—</span></div>
+        <div class="sum-row"><span class="sum-lbl">Garanti</span><span class="sum-val">2 Yıl</span></div>
+        <div class="sum-row"><span class="sum-lbl">Montaj</span><span class="sum-val">✅ Dahil</span></div>
+        <div class="sum-row"><span class="sum-lbl">Nakliye</span><span class="sum-val">✅ Dahil</span></div>
+        <div class="sum-row"><span class="sum-lbl">Eğitim</span><span class="sum-val">✅ Dahil</span></div>
+        <div class="sum-row" style="background:#e0f0e8;padding:10px;border-radius:8px;margin-top:8px;">
+          <span class="sum-lbl" style="font-weight:700;">📅 Tarih</span>
+          <span class="sum-val" id="ts-tarih"></span>
+        </div>
+      </div>
+      <button class="btn-prim" onclick="yazdir()">🖨️ Teklifi Yazdır / PDF</button>
+      <button class="btn-green" onclick="whatsapp()">📱 WhatsApp'a Gönder</button>
+      <button class="btn-sec" onclick="sifirla()">🗑️ Formu Temizle</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 5 — ARIZA KODLARI
+══════════════════════════════════════ -->
+<div id="tab-ariza" class="tab-content">
+  <div class="ariza-bar">
+    <input id="srhTxt" placeholder="🔍 Arıza kodu veya açıklama ara..." oninput="filtreAriza()">
+    <select id="srhKat" onchange="filtreAriza()">
+      <option value="">Tüm Kategoriler</option>
+      <option value="Sensör">Sensör / Fotosel</option>
+      <option value="Motor">Motor / Elektrik</option>
+      <option value="Hareket">Hareket Sistemi</option>
+      <option value="Su/Kimyasal">Su / Kimyasal</option>
+      <option value="Güvenlik">Güvenlik</option>
+      <option value="Sistem">Sistem Durumu</option>
+    </select>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table class="atbl" id="arizaTbl">
+      <thead>
+        <tr>
+          <th style="width:70px;">Kod</th>
+          <th style="width:110px;">Kategori</th>
+          <th>Arıza / Mesaj</th>
+          <th>Kısa Açıklama</th>
+          <th style="width:90px;">Önem</th>
+        </tr>
+      </thead>
+      <tbody id="arizaTbody"></tbody>
+    </table>
+  </div>
+  <div id="arizaSay" style="margin-top:8px;font-size:12.5px;color:#888;text-align:right;"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 6 — BAKIM TAKVİMİ
+══════════════════════════════════════ -->
+<div id="tab-bakim" class="tab-content">
+  <div style="margin-bottom:16px;padding:13px 16px;background:#fff3cd;border-radius:10px;font-size:13.5px;color:#856404;border-left:4px solid #f0ad00;">
+    ⚠️ <strong>Garanti Koşulu:</strong> Sayaç takibi işletici sorumluluğundadır. Her <strong>10.000 araçta</strong> periyodik bakım yaptırılmazsa garanti kapsamı geçersiz olabilir.
+  </div>
+  <div class="bakim-grid">
+    <div class="bcard bc1">
+      <div class="per">Her Gün</div><div class="ttl">🌅 Günlük</div>
+      <ul>
+        <li>Acil stop butonlarını test et</li>
+        <li>Fotosel camlarını sil</li>
+        <li>Kimyasal ürün seviyelerini kontrol et</li>
+        <li>Yıkama pistini temizle</li>
+        <li>Boru don korumasını kontrol et (kış)</li>
+        <li>Genel görsel kontrol — anormal ses var mı?</li>
+      </ul>
+    </div>
+    <div class="bcard bc2">
+      <div class="per">Her Hafta</div><div class="ttl">📅 Haftalık</div>
+      <ul>
+        <li>Tüm fotoselleri temizle</li>
+        <li>Su filtrelerini temizle</li>
+        <li>Dişli motor yağ sızıntısı kontrolü</li>
+        <li>Fırçaları görsel olarak incele</li>
+        <li>Makine dış yüzeyini temizle</li>
+        <li>Jant yıkama sistemini kontrol et</li>
+      </ul>
+    </div>
+    <div class="bcard bc3">
+      <div class="per">Her Ay</div><div class="ttl">🔧 Aylık</div>
+      <ul>
+        <li>Yatay fırça kılavuz yağlaması</li>
+        <li>Kurutucu meme kılavuz yağlaması</li>
+        <li>Jant yıkama kılavuz yağlaması</li>
+        <li>Makine sayaçlarını kontrol et</li>
+        <li>Kayış gerilimini kontrol et</li>
+        <li>Kimyasal dozaj pompalarını test et</li>
+      </ul>
+    </div>
+    <div class="bcard bc4">
+      <div class="per">3 Ayda Bir</div><div class="ttl">🛠️ Çeyreklik</div>
+      <ul>
+        <li>Makine gövdesini korozyona karşı temizle</li>
+        <li>Tüm bağlantı elemanlarını kontrol et</li>
+        <li>Elektrik bağlantılarını incele</li>
+        <li>Pnömatik sistem genel kontrolü</li>
+        <li>Acil stop sistemlerini tam test et</li>
+      </ul>
+    </div>
+    <div class="bcard bc5">
+      <div class="per">Yılda Bir / 35.000 Araç</div><div class="ttl">🔩 Yıllık</div>
+      <ul>
+        <li>Fırçaları değiştir (35.000 araç veya 3 yıl)</li>
+        <li>Kurutucu ve yatay fırça kayışlarını değiştir</li>
+        <li>Depo boşalt → temizle → dezenfekte et</li>
+        <li>Memeler temizle ve dezenfekte et</li>
+        <li>Fırça pozisyonlarını değiştir (15.000 araçta bir)</li>
+        <li>Kapsamlı elektrik revizyonu yaptır</li>
+      </ul>
+    </div>
+    <div class="bcard bc6">
+      <div class="per">Her 10.000 Araç — GARANTİ</div><div class="ttl">✅ Periyodik Bakım</div>
+      <ul>
+        <li>Yetkili servis çağır — periyodik bakım</li>
+        <li>Rulman kontrolü ve gerekirse değişim</li>
+        <li>Teker ve kayış kontrolü</li>
+        <li>Fırça aşınma ölçümü</li>
+        <li>Yağlama ve rutin kontroller</li>
+        <li>Bakım tutanağını imzala ve sakla</li>
+        <li style="color:#ffd;">⚠️ Gecikirse garanti geçersiz olabilir!</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ALGA AI ASISTAN (Floating)
+══════════════════════════════════════ -->
+<button class="ai-float" onclick="toggleAI()">
+  🤖 ALGA Asistan
+</button>
+
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-header">
+    <div>
+      <span class="ai-title">🤖 ALGA Teknik Asistan</span>
+      <div style="font-size:10px;opacity:.7;margin-top:2px;">M'WASH2 · HW'PROGRESS · T'WASH PRO</div>
+    </div>
+    <button class="ai-close" onclick="toggleAI()">✕</button>
+  </div>
+  <div class="ai-chips">
+    <button class="ai-chip" onclick="aiChip('sık arızalar')">🔧 Sık Arızalar</button>
+    <button class="ai-chip" onclick="aiChip('fotosel kirli')">📷 Fotosel</button>
+    <button class="ai-chip" onclick="aiChip('su yok pompa')">💧 Su/Pompa</button>
+    <button class="ai-chip" onclick="aiChip('motor sigorta')">⚡ Motor/Sigorta</button>
+    <button class="ai-chip" onclick="aiChip('fırça takıldı')">🪥 Fırça</button>
+    <button class="ai-chip" onclick="aiChip('acil stop reset')">🔴 Acil Stop</button>
+  </div>
+  <div class="ai-msgs" id="aiMsgs">
+    <div class="ai-msg bot">Merhaba! 👋 Ben ALGA'nın teknik asistanıyım.<br><br>📟 <strong>Arıza kodu</strong> yazın (örn: <em>35</em>)<br>🔍 <strong>Semptom</strong> yazın (örn: <em>fırça takıldı</em>)<br>❓ <strong>Teknik soru</strong> sorun<br><br>Yukarıdaki hızlı butonları da kullanabilirsiniz.</div>
+  </div>
+  <div class="ai-input-row">
+    <input id="aiInput" placeholder="Kod no veya semptom yazın..." onkeydown="if(event.key==='Enter')aiGonder()">
+    <button onclick="aiGonder()">➤</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
+<script>
+// ── MODEL VERİLERİ ──
+const MODELLER = {
+  mwash2: {
+    ad:"M'WASH2", alt:"Otomatik Portal Araç Yıkama Makinesi",
+    mpIcon:'🔵', mpType:'Portal · Sürtünmeli Fırça',
+    imgBase:'./gorseller/mwash2/MWASH2_',
+    renkler:true,
+    stats:[
+      {val:'105',unit:'litre',lbl:'💧 Araç Başı Su'},
+      {val:'0.9',unit:'kWh',lbl:'⚡ Araç Başı Elektrik'},
+      {val:'40',unit:'ml / araç',lbl:'🧴 Toplam Kimyasal'},
+      {val:'6+',unit:'program',lbl:'📱 Yıkama Programı'},
+    ],
+    avantajlar:[
+      {bg:'#f0f9f4',txt:'🔄 <strong>2 Yönlü Fırça</strong> — Aracın her noktasına erişir'},
+      {bg:'#e8f2fb',txt:'⚡ <strong>VFD Frekans Kontrol</strong> — Yumuşak hareket, uzun ömür'},
+      {bg:'#fff8f0',txt:'🌡️ <strong>Donma Koruması</strong> — Otomatik su boşaltma'},
+      {bg:'#f9f0fc',txt:'🔵 <strong>24V Kumanda</strong> — Personel güvenliği ön planda'},
+      {bg:'#f0fff4',txt:'📜 <strong>ISO 14001 · TÜV · CE</strong> — Tam sertifikalı'},
+      {bg:'#fff5f5',txt:'🇪🇸 <strong>İspanya Üretim</strong> — 1950\'den bu yana ISTOBAL kalitesi'},
+    ],
+    specs:[
+      {baslik:'📐 Boyutlar & Kapasite',rows:[
+        ['Maks. Yıkama Yüksekliği','2.900 mm'],
+        ['Maks. Yıkama Genişliği','2.400 / 2.600 mm'],
+        ['Ray Uzunluğu','Min. 11.000 mm'],
+        ['Araç Durumu','Araç sabit · Makine hareketli'],
+        ['Konumlandırma','Fotoselli araç yerleştirme'],
+        ['Uyumlu Araçlar','Otomobil, SUV, Minibüs, Hafif Ticari'],
+      ]},
+      {baslik:'⚡ Elektrik & Su',rows:[
+        ['Şebeke','380 V – 50 Hz'],
+        ['Kumanda Voltajı','24 V (güvenli)'],
+        ['Su Basıncı','6 – 8 bar'],
+        ['Su Tüketimi','105 L / araç'],
+        ['Elektrik Tüketimi','0.9 kWh / araç'],
+        ['Kimyasal','20 ml köpük + 20 ml cila'],
+      ]},
+      {baslik:'🔧 Mekanik',rows:[
+        ['Gövde','Min. 3 mm galvaniz çelik'],
+        ['Motorlar','Su yalıtımlı, VFD kontrollü'],
+        ['Fırça Hareketi','2 yönlü · Motor + redüktör'],
+        ['Rüzgar Koruması','✅ Devrilme önleyici sistem'],
+        ['Cıvata / Somun','Paslanmaz / galvanizli'],
+      ]},
+      {baslik:'📋 Kontrol',rows:[
+        ['Kontrol Sistemi','PLC (bilgisayar kontrollü)'],
+        ['Kumanda Dili','🇹🇷 Türkçe'],
+        ['Program Sayısı','Min. 6 farklı program'],
+        ['Araç Sayacı','Dijital, kumandadan okunur'],
+        ['Çalışma Sıcaklığı','2°C – 45°C'],
+      ]},
+      {baslik:'🏅 Garanti & Servis',rows:[
+        ['Makine Garantisi','2 yıl'],
+        ['Fırça Garantisi','2 yıl / 50.000 araç'],
+        ['Periyodik Bakım','Her 10.000 araçta bir'],
+        ['Arıza Müdahale','Max. 3 gün'],
+        ['İlk 3 Ay','✅ Servis + işçilik ücretsiz'],
+      ]},
+      {baslik:'🏅 Sertifikalar',rows:[
+        ['Kalite','ISO 14001 · TÜV · CE'],
+        ['Menşei','🇪🇸 İspanya'],
+        ['Nakliye','✅ Ücretsiz'],
+        ['Montaj','✅ Ücretsiz, yetkili servis'],
+        ['Eğitim','✅ Tutanakla verilir'],
+      ]},
+    ],
+    hesap:{su:35,el:6,kim:3,arac:100,gun:26},
+    varyantlar:[
+      {
+        ad:"M'WASH2", sub:"2 Fırça · Kompakt · Çok Yönlü",
+        stats:[
+          {val:'105',unit:'litre',lbl:'💧 Araç Başı Su'},
+          {val:'0.9',unit:'kWh',lbl:'⚡ Araç Başı Elektrik'},
+          {val:'2.400',unit:'mm',lbl:'📐 Max Yıkama Gen.'},
+          {val:'2',unit:'dikey fırça',lbl:'🔄 Fırça Konfigürasyonu'},
+        ],
+      },
+      {
+        ad:"M'WASH3", sub:"3 Fırça · Yüksek Performans",
+        stats:[
+          {val:'110',unit:'litre',lbl:'💧 Araç Başı Su'},
+          {val:'1.1',unit:'kWh',lbl:'⚡ Araç Başı Elektrik'},
+          {val:'2.600',unit:'mm',lbl:'📐 Max Yıkama Gen.'},
+          {val:'3',unit:'fırça',lbl:'🔄 2 Dikey + 1 Yatay'},
+        ],
+      },
+      {
+        ad:"M'WASH3:PRO", sub:"3 Fırça Pro · Optimum Teknoloji",
+        stats:[
+          {val:'110',unit:'litre',lbl:'💧 Araç Başı Su'},
+          {val:'1.2',unit:'kWh',lbl:'⚡ Araç Başı Elektrik'},
+          {val:'2.600',unit:'mm',lbl:'📐 Max Yıkama Gen.'},
+          {val:'3+',unit:'modül',lbl:'🔄 Fırça + Ekstra Modüller'},
+        ],
+      },
+    ],
+  },
+
+  hwprogress: {
+    ad:"HW'PROGRESS", alt:"Ağır Araç Yıkama — TIR · Otobüs · Kamyon",
+    mpIcon:'🚛', mpType:'Büyük Araç Rollover · MOD. 4HWP200',
+    imgBase:'./gorseller/hwprogress/Intrawash_Eurotruck_',
+    renkler:false,
+    hwImages:[
+      {key:'A_01',lbl:'Görünüm 1'},
+      {key:'A_02',lbl:'Görünüm 2'},
+      {key:'B_01',lbl:'Görünüm 3'},
+      {key:'B_02',lbl:'Görünüm 4'},
+    ],
+    stats:[
+      {val:'4.5+',unit:'metre',lbl:'🚛 Yıkama Yüksekliği'},
+      {val:'3.0+',unit:'metre',lbl:'📐 Yıkama Genişliği'},
+      {val:'~2 dk',unit:'/araç',lbl:'⏱️ Yıkama Süresi'},
+      {val:'2 yıl',unit:'garanti',lbl:'🏅 Garanti'},
+    ],
+    avantajlar:[
+      {bg:'#f0f9f4',txt:'🚛 <strong>TIR · Otobüs · Kamyon</strong> — Her büyük araca uygun tasarım'},
+      {bg:'#e8f2fb',txt:'🔄 <strong>Patentli Çift Yıkama</strong> — Ön ve arka bölge çift yıkama sistemi'},
+      {bg:'#fff8f0',txt:'⏱️ <strong>12 m Araç 2 dk\'da</strong> — Yüksek verimlilik, filo için ideal'},
+      {bg:'#f9f0fc',txt:'🏗️ <strong>Ray Gerektirmez</strong> — DriveThru sistemi, sabit makine'},
+      {bg:'#f0fff4',txt:'💡 <strong>3 Işıklı Konumlama</strong> — Sürücüye görsel konum rehberi'},
+      {bg:'#fff5f5',txt:'🇪🇸 <strong>ISTOBAL Kalitesi</strong> — ISO 14001 · TÜV · CE sertifikalı'},
+    ],
+    specs:[
+      {baslik:'📐 Boyutlar & Kapasite',rows:[
+        ['Araç Tipi','TIR, Otobüs, Kamyon, Filo Araçları'],
+        ['Max Araç Uzunluğu','~20 m (konfigürasyona göre)'],
+        ['Max Araç Yüksekliği','4.500 mm'],
+        ['Max Araç Genişliği','3.000 mm'],
+        ['Sistem Tipi','Sabit makine — Araç hareket eder (DriveThru)'],
+        ['Ray','Ray sistemi gerekmiyor'],
+      ]},
+      {baslik:'⚡ Elektrik & Su',rows:[
+        ['Şebeke','380 V – 50 Hz'],
+        ['Kumanda','24 V güvenli voltaj'],
+        ['Su Basıncı','6 – 8 bar'],
+        ['Su Tüketimi','~300–500 L / araç'],
+        ['Kimyasal','Dozaj pompalı köpük + cila sistemi'],
+        ['Sıcaklık Aralığı','2°C – 45°C'],
+      ]},
+      {baslik:'🔧 Mekanik Yapı',rows:[
+        ['Fırça Düzeni','Dikey + yatay fırça kombinasyonu'],
+        ['Ön/Arka Yıkama','✅ Patentli çift bölge yıkama sistemi'],
+        ['Konumlama','3 ışıklı sürücü rehber sistemi'],
+        ['Gövde Malzemesi','Galvaniz çelik · antikorözyon kaplama'],
+        ['Panoramik Araç','✅ Cam tavan konfigürasyonu mevcut'],
+        ['Motorlar','VFD frekans kontrollü'],
+      ]},
+      {baslik:'📋 Kontrol & Programlar',rows:[
+        ['Kontrol Sistemi','PLC — tam otomatik'],
+        ['Kumanda Dili','🇹🇷 Türkçe'],
+        ['Yıkama Programı','Filo tipine göre özel konfigürasyon'],
+        ['Sürücü İletişimi','Işık sinyali sistemi'],
+        ['Araç Sayacı','Dijital sayaç'],
+      ]},
+      {baslik:'🏅 Garanti & Servis',rows:[
+        ['Makine Garantisi','2 yıl'],
+        ['Fırça Garantisi','2 yıl / araç sayısına göre'],
+        ['Arıza Müdahale','Max. 3 gün'],
+        ['İlk 3 Ay','✅ Servis + işçilik ücretsiz'],
+        ['Teknik Personel','ALGA sertifikalı teknisyenler'],
+      ]},
+      {baslik:'🏅 Sertifikalar & Teslimat',rows:[
+        ['Kalite','ISO 14001 · TÜV · CE'],
+        ['Menşei','🇪🇸 İspanya — ISTOBAL S.A.'],
+        ['Nakliye','✅ Ücretsiz'],
+        ['Montaj','✅ Ücretsiz, yetkili servis'],
+        ['Altyapı Projesi','✅ Ücretsiz hazırlanır'],
+      ]},
+    ],
+    hesap:{su:35,el:6,kim:8,arac:30,gun:26},
+    varyantlar:[
+      {
+        ad:'HWP 3610',sub:'Minibüs · Van · Küçük Kamyon',
+        stats:[
+          {val:'3.610',unit:'/ 3.880 mm',lbl:'📏 Yıkama Yüksekliği'},
+          {val:'2.830',unit:'mm',lbl:'📐 Yıkama Genişliği'},
+          {val:'24.000',unit:'mm',lbl:'🛤️ Ray Uzunluğu'},
+          {val:'4.590',unit:'/ 4.780 mm',lbl:'🏗️ Makine Yüksekliği'},
+        ],
+      },
+      {
+        ad:'HWP 3730',sub:'Standart Kamyon · Konteyner',
+        stats:[
+          {val:'3.730',unit:'/ 4.000 mm',lbl:'📏 Yıkama Yüksekliği'},
+          {val:'2.830',unit:'mm',lbl:'📐 Yıkama Genişliği'},
+          {val:'24.000',unit:'mm',lbl:'🛤️ Ray Uzunluğu'},
+          {val:'4.710',unit:'/ 4.900 mm',lbl:'🏗️ Makine Yüksekliği'},
+        ],
+      },
+      {
+        ad:'HWP 4230',sub:'Büyük Kamyon · Otobüs',
+        stats:[
+          {val:'4.230',unit:'/ 4.500 mm',lbl:'📏 Yıkama Yüksekliği'},
+          {val:'2.830',unit:'mm',lbl:'📐 Yıkama Genişliği'},
+          {val:'24.000',unit:'mm',lbl:'🛤️ Ray Uzunluğu'},
+          {val:'5.210',unit:'/ 5.400 mm',lbl:'🏗️ Makine Yüksekliği'},
+        ],
+      },
+      {
+        ad:'HWP 4730',sub:'TIR · Artiküle Araç',
+        stats:[
+          {val:'4.730',unit:'/ 5.000 mm',lbl:'📏 Yıkama Yüksekliği'},
+          {val:'2.830',unit:'mm',lbl:'📐 Yıkama Genişliği'},
+          {val:'24.000',unit:'mm',lbl:'🛤️ Ray Uzunluğu'},
+          {val:'5.710',unit:'/ 5.900 mm',lbl:'🏗️ Makine Yüksekliği'},
+        ],
+      },
+    ],
+  },
+
+  twashpro: {
+    ad:"T'WASH PRO", alt:"Konveyörlü Tünel Araç Yıkama — TWASH 4TC6000",
+    mpIcon:'🚇', mpType:'Tünel Sistemi · Konveyör Zincirli',
+    imgBase:null,
+    singleImg:'./gorseller/twashpro/TWash_Pro.png',
+    renkler:false,
+    stats:[
+      {val:'80',unit:'araç/saat',lbl:'🚗 Kapasite (3 fırça)'},
+      {val:'2300',unit:'mm',lbl:'📏 Yıkama Yüksekliği'},
+      {val:'2400',unit:'mm',lbl:'📐 Yıkama Genişliği'},
+      {val:'3–5',unit:'fırça',lbl:'🔄 Fırça Seçeneği'},
+    ],
+    avantajlar:[
+      {bg:'#f0f9f4',txt:'🚇 <strong>Sürekli Konveyör</strong> — Araç hareket eder, zincir sistemiyle taşınır'},
+      {bg:'#e8f2fb',txt:'📈 <strong>80 Araç/Saat</strong> — 3 fırçalı yapılandırmada yüksek verim'},
+      {bg:'#fff8f0',txt:'🖥️ <strong>Siemens Dokunmatik Panel</strong> — Tam otomatik PLC kontrolü'},
+      {bg:'#f9f0fc',txt:'💳 <strong>Self-Servis Kiosk</strong> — Jeton, kart, kod ile ödeme seçeneği'},
+      {bg:'#f0fff4',txt:'🌊 <strong>Kurutucu Modülleri</strong> — Üst + yan hava kurutucu sistemi'},
+      {bg:'#fff5f5',txt:'🇪🇸 <strong>ISTOBAL TWASH 4TC6000</strong> — CE · ISO 14001 sertifikalı'},
+    ],
+    specs:[
+      {baslik:'📐 Boyutlar',rows:[
+        ['Yıkama Yüksekliği','2.300 mm'],
+        ['Yıkama Genişliği','2.400 mm'],
+        ['Araç Giriş Genişliği','2.500 mm'],
+        ['Pist Genişliği (min)','4.500 mm'],
+        ['Pist Uzunluğu','12.560 – 32.060 mm (konfigürasyona göre)'],
+        ['Zincir Tipi','2" veya 4" konveyör zinciri'],
+      ]},
+      {baslik:'🚗 Yıkama Kapasitesi',rows:[
+        ['3 Fırça / 2" Zincir','50 araç / saat'],
+        ['3 Fırça / 4" Zincir','60 araç / saat'],
+        ['5 Fırça / 4" Zincir','80 araç / saat'],
+        ['Zincir Hızı','5,88 – 9,37 m/dak'],
+        ['Uyumlu Araçlar','Binek araç, SUV, küçük ticari'],
+      ]},
+      {baslik:'⚡ Elektrik & Su',rows:[
+        ['Şebeke','380 V – 50 Hz'],
+        ['Kumanda','PLC + Siemens dokunmatik panel'],
+        ['Su Tüketimi','~80 L / araç'],
+        ['Kimyasal Dozaj','Otomatik pompa sistemi'],
+        ['Sıcaklık Aralığı','2°C – 45°C'],
+      ]},
+      {baslik:'🔧 Sistem Bileşenleri',rows:[
+        ['Giriş Portalı','Özelleştirilebilir kasa, ışıklı levhalar'],
+        ['Fırça Modülü','3 veya 5 fırça (dikey + yatay)'],
+        ['Masaj Modülleri','Ek yıkama kalitesi için opsiyonel'],
+        ['Cila/Wax','Alüminyum ark + PVDF meme sistemi'],
+        ['Kurutucu','Hava kurutucu + tekstil kurutucu (opsiyonel)'],
+        ['Ödeme','Self-servis kiosk (jeton/kart/kod)'],
+      ]},
+      {baslik:'🏅 Garanti & Servis',rows:[
+        ['Makine Garantisi','2 yıl'],
+        ['Periyodik Bakım','Üretici takvimi doğrultusunda'],
+        ['Arıza Müdahale','Max. 3 gün'],
+        ['İlk 3 Ay','✅ Servis + işçilik ücretsiz'],
+        ['Teknik Personel','ALGA sertifikalı teknisyenler'],
+      ]},
+      {baslik:'🏅 Sertifikalar & Teslimat',rows:[
+        ['Kalite','ISO 14001 · CE'],
+        ['Model Kodu','TWASH 4TC6000'],
+        ['Menşei','🇪🇸 İspanya — ISTOBAL S.A.'],
+        ['Montaj','✅ Proje bazlı, yetkili servis'],
+        ['Eğitim','✅ Tesis eğitimi dahil'],
+      ]},
+    ],
+    hesap:{su:35,el:6,kim:2.5,arac:150,gun:26},
+    varyantlar:[
+      {
+        ad:'EXPRESS',sub:'12.5m · 3 Fırça · 2" Zincir',
+        stats:[
+          {val:'50',unit:'araç/saat',lbl:'🚗 Kapasite'},
+          {val:'12.560',unit:'mm',lbl:'📏 Tünel Uzunluğu'},
+          {val:'3',unit:'fırça',lbl:'🔄 Fırça Sayısı'},
+          {val:'2"',unit:'zincir',lbl:'⛓️ Zincir Tipi'},
+        ],
+      },
+      {
+        ad:'SHORT',sub:'17.5m · 5 Fırça · 4" Zincir',
+        stats:[
+          {val:'50',unit:'araç/saat',lbl:'🚗 Kapasite'},
+          {val:'17.430',unit:'mm',lbl:'📏 Tünel Uzunluğu'},
+          {val:'5',unit:'fırça',lbl:'🔄 Fırça Sayısı'},
+          {val:'4"',unit:'zincir',lbl:'⛓️ Zincir Tipi'},
+        ],
+      },
+      {
+        ad:'MEDIUM',sub:'23.9m · 5 Fırça · 4" Zincir',
+        stats:[
+          {val:'60',unit:'araç/saat',lbl:'🚗 Kapasite'},
+          {val:'23.930',unit:'mm',lbl:'📏 Tünel Uzunluğu'},
+          {val:'5',unit:'fırça',lbl:'🔄 Fırça Sayısı'},
+          {val:'4"',unit:'zincir',lbl:'⛓️ Zincir Tipi'},
+        ],
+      },
+      {
+        ad:'MEDIUM-LARGE',sub:'28.8m · 5 Fırça · 4" Zincir',
+        stats:[
+          {val:'70',unit:'araç/saat',lbl:'🚗 Kapasite'},
+          {val:'28.810',unit:'mm',lbl:'📏 Tünel Uzunluğu'},
+          {val:'5',unit:'fırça',lbl:'🔄 Fırça Sayısı'},
+          {val:'4"',unit:'zincir',lbl:'⛓️ Zincir Tipi'},
+        ],
+      },
+      {
+        ad:'LARGE',sub:'33.6m · 5 Fırça · 4" Zincir',
+        stats:[
+          {val:'80',unit:'araç/saat',lbl:'🚗 Kapasite'},
+          {val:'33.610',unit:'mm',lbl:'📏 Tünel Uzunluğu'},
+          {val:'5',unit:'fırça',lbl:'🔄 Fırça Sayısı'},
+          {val:'4"',unit:'zincir',lbl:'⛓️ Zincir Tipi'},
+        ],
+      },
+      {
+        ad:'SUPER',sub:'40m+ · 5 Fırça · 4" Zincir',
+        stats:[
+          {val:'80',unit:'araç/saat',lbl:'🚗 Kapasite'},
+          {val:'40.000+',unit:'mm',lbl:'📏 Tünel Uzunluğu'},
+          {val:'5',unit:'fırça',lbl:'🔄 Fırça Sayısı'},
+          {val:'4"',unit:'zincir',lbl:'⛓️ Zincir Tipi'},
+        ],
+      },
+    ],
+  },
+
+};
+
+// ── RENK & GÖRÜNÜM ──
+let imgBase = './gorseller/mwash2/MWASH2_';
+const colorNames = {azul:'🔵 Mavi',roja:'🔴 Kırmızı',amarilla:'🟡 Sarı',naranja:'🟠 Turuncu',verde:'🟢 Yeşil',gris:'⚫ Gri',blanca:'⚪ Beyaz'};
+let curColor='azul', curView='persp';
+
+// ── MODEL DEĞİŞTİR ──
+function switchModel(key, btn){
+  document.querySelectorAll('.msel').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const m = MODELLER[key];
+
+  // Header
+  document.querySelector('.header-center .model-name').textContent = m.ad;
+  document.querySelector('.header-center .model-sub').textContent = m.alt;
+
+  // Stats bar
+  document.querySelector('.stats-bar').innerHTML = m.stats.map(s=>
+    `<div class="stat-box"><div class="val">${s.val}</div><div class="unit">${s.unit}</div><div class="lbl">${s.lbl}</div></div>`
+  ).join('');
+
+  // Görsel
+  const imgBox = document.getElementById('imgBox');
+  const machineImg = document.getElementById('machineImg');
+  const ph = document.getElementById('modelPlaceholder');
+  const viewRow = document.querySelector('.view-row');
+
+  if(m.singleImg){
+    // T'WASH PRO — tek görsel
+    imgBox.style.display = '';
+    ph.style.display = 'none';
+    document.getElementById('imgErr').style.display = 'none';
+    machineImg.style.display = '';
+    machineImg.src = m.singleImg;
+    viewRow.style.display = 'none';
+  } else if(m.hwImages){
+    // HW'PROGRESS — 4 görünüm galerisi
+    imgBase = m.imgBase;
+    imgBox.style.display = '';
+    ph.style.display = 'none';
+    document.getElementById('imgErr').style.display = 'none';
+    machineImg.style.display = '';
+    machineImg.src = m.imgBase + m.hwImages[0].key + '.jpg';
+    viewRow.style.display = 'flex';
+    viewRow.innerHTML = m.hwImages.map((v,i)=>
+      `<button class="view-btn${i===0?' active':''}" onclick="setHwView(this,'${m.imgBase}${v.key}.jpg')">${v.lbl}</button>`
+    ).join('');
+  } else if(m.imgBase){
+    // M'WASH2 — renk+görünüm sistemi
+    imgBase = m.imgBase;
+    imgBox.style.display = '';
+    ph.style.display = 'none';
+    document.getElementById('imgErr').style.display = 'none';
+    machineImg.style.display = '';
+    updImg();
+    viewRow.style.display = 'flex';
+    viewRow.innerHTML = `
+      <button class="view-btn active" id="vbtn-persp" onclick="setView('persp',this)">Perspektif</button>
+      <button class="view-btn" id="vbtn-frente" onclick="setView('frente',this)">Ön Görünüm</button>
+    `;
+  } else {
+    imgBox.style.display = 'none';
+    document.getElementById('imgErr').style.display = 'none';
+    ph.style.display = 'flex';
+    document.getElementById('mpIcon').textContent = m.mpIcon;
+    document.getElementById('mpName').textContent = m.ad;
+    document.getElementById('mpType').textContent = m.mpType;
+    viewRow.style.display = 'none';
+  }
+
+  // Renk seçici
+  document.getElementById('colCard').style.display = m.renkler ? '' : 'none';
+
+  // Avantajlar
+  document.querySelector('.benefit-list').innerHTML = m.avantajlar.map(a=>
+    `<div class="benefit-item" style="background:${a.bg};">${a.txt}</div>`
+  ).join('');
+
+  // Teknik özellikler tablosu (Tab 2)
+  document.querySelector('.teknik-grid').innerHTML = m.specs.map(s=>`
+    <div class="card">
+      <div class="card-title">${s.baslik}</div>
+      <table class="spec-tbl">
+        ${s.rows.map(r=>`<tr><td>${r[0]}</td><td><strong>${r[1]}</strong></td></tr>`).join('')}
+      </table>
+    </div>
+  `).join('');
+
+  // Teklif formu model seçeneği
+  const tfModel = document.getElementById('tf-model');
+  if(tfModel){
+    tfModel.innerHTML = m.specs[0].rows.slice(0,2).map((r,i)=>
+      `<option${i===1?' selected':''}>${m.ad} — ${r[1]}</option>`
+    ).join('') || `<option selected>${m.ad}</option>`;
+  }
+
+  // Hesap varsayılanları
+  document.getElementById('cSu').value  = m.hesap.su;
+  document.getElementById('cEl').value  = m.hesap.el;
+  document.getElementById('cKim').value = m.hesap.kim;
+  document.getElementById('cArac').value= m.hesap.arac;
+  document.getElementById('cGun').value = m.hesap.gun;
+  hesap();
+
+  document.getElementById('roi-arac').value = m.hesap.arac;
+  document.getElementById('roi-su').value   = m.hesap.su;
+  document.getElementById('roi-el').value   = m.hesap.el;
+  document.getElementById('roi-kim').value  = m.hesap.kim;
+  roiHesap();
+
+  // Varyant bar
+  const varBar = document.getElementById('varBar');
+  const varBarInner = document.getElementById('varBarInner');
+  if(m.varyantlar && m.varyantlar.length){
+    varBar.classList.add('show');
+    varBarInner.innerHTML = '<div class="var-bar-lbl">Yapılandırma:</div>' +
+      m.varyantlar.map((v,i)=>
+        `<button class="vsel${i===0?' active':''}" onclick="switchVariant('${key}',${i},this)">
+          <div class="vsel-name">${v.ad}</div>
+          <div class="vsel-sub">${v.sub}</div>
+        </button>`
+      ).join('');
+    // İlk varyantı hemen uygula
+    applyVariantStats(m.varyantlar[0]);
+  } else {
+    varBar.classList.remove('show');
+  }
+}
+
+function applyVariantStats(v){
+  document.querySelector('.stats-bar').innerHTML = v.stats.map(s=>
+    `<div class="stat-box"><div class="val">${s.val}</div><div class="unit">${s.unit}</div><div class="lbl">${s.lbl}</div></div>`
+  ).join('');
+}
+function switchVariant(modelKey, idx, btn){
+  document.querySelectorAll('#varBarInner .vsel').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyVariantStats(MODELLER[modelKey].varyantlar[idx]);
+}
+
+function selColor(c,el){
+  document.querySelectorAll('.cswatch').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  curColor=c;
+  updImg();
+  document.getElementById('ts-renk').textContent = colorNames[c];
+  const sel=document.getElementById('tf-renk'); if(sel) sel.value=c;
+}
+function setView(v,el){
+  document.querySelectorAll('.view-btn').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  curView=v;
+  updImg();
+}
+function setHwView(el,src){
+  document.querySelectorAll('.view-btn').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  const img=document.getElementById('machineImg');
+  img.style.opacity='0';
+  setTimeout(()=>{ img.src=src; img.style.opacity='1'; },150);
+}
+function updImg(){
+  const img=document.getElementById('machineImg');
+  img.style.opacity='0';
+  setTimeout(()=>{
+    img.src=imgBase+curView+'_'+curColor+'.png';
+    img.style.opacity='1';
+  },160);
+}
+
+// ── MODEL ──
+function selModel(m,el){
+  document.querySelectorAll('.mbtn').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ts-model').textContent="M'WASH2 "+(m==='240'?'2.40m':'2.60m');
+}
+
+// ── TABS ──
+function showTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── OPSİYON SEÇİMİ ──
+document.getElementById('optGrid').addEventListener('click',function(e){
+  const item=e.target.closest('.opt-item');
+  if(!item) return;
+  item.classList.toggle('sel');
+  updSum();
+});
+function updSum(){
+  const sel=[];
+  document.querySelectorAll('.opt-item.sel .opt-name').forEach(e=>sel.push(e.textContent));
+  document.getElementById('ts-opt').textContent=sel.length?sel.join(' · '):'—';
+}
+
+// ── HESAP ──
+function fmt(n){return n.toLocaleString('tr-TR',{maximumFractionDigits:0});}
+function hesap(){
+  const arac=+document.getElementById('cArac').value||0;
+  const gun=+document.getElementById('cGun').value||26;
+  const su=+document.getElementById('cSu').value||35;
+  const el=+document.getElementById('cEl').value||6;
+  const kim=+document.getElementById('cKim').value||3;
+  const aylik=arac*gun;
+  const suL=aylik*105, elK=aylik*0.9;
+  const suM=suL/1000*su, elM=elK*el, kimM=aylik*kim;
+  const top=suM+elM+kimM;
+  document.getElementById('r-su').textContent=fmt(suL)+' L';
+  document.getElementById('r-el').textContent=fmt(elK)+' kWh';
+  document.getElementById('r-sumal').textContent=fmt(suM)+' ₺';
+  document.getElementById('r-elmal').textContent=fmt(elM)+' ₺';
+  document.getElementById('r-kimmal').textContent=fmt(kimM)+' ₺';
+  document.getElementById('r-top').textContent=fmt(top)+' ₺';
+  document.getElementById('r-arac').textContent=fmt(aylik);
+  document.getElementById('r-perArac').textContent=(aylik>0?(top/aylik).toFixed(1):0)+' ₺';
+}
+
+// ── TEKLİF ──
+document.getElementById('ts-tarih').textContent=
+  new Date().toLocaleDateString('tr-TR',{day:'2-digit',month:'long',year:'numeric'});
+
+function yazdir(){
+  const tabs=document.querySelectorAll('.tab-content');
+  tabs.forEach(e=>e.classList.remove('active'));
+  document.getElementById('tab-teklif').classList.add('active');
+  setTimeout(()=>window.print(),120);
+}
+function whatsapp(){
+  const firma=document.getElementById('tf-firma').value||'Belirtilmedi';
+  const model=document.getElementById('tf-model').value;
+  const renk=document.getElementById('tf-renk').options[document.getElementById('tf-renk').selectedIndex].text;
+  const msg=`ISTOBAL M'WASH2 Teklif Talebi\n\nFirma: ${firma}\nModel: ${model}\nRenk: ${renk}\n\nLütfen fiyat teklifi için iletişime geçin.\n\nALGA — Türkiye ISTOBAL Distribütörü`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg));
+}
+function sifirla(){
+  if(!confirm('Formu temizlemek istiyor musunuz?'))return;
+  ['tf-firma','tf-yetkili','tf-tel','tf-email','tf-sehir','tf-kap','tf-notlar'].forEach(id=>document.getElementById(id).value='');
+}
+
+// ── ARIZA KODLARI ──
+const ariza=[
+  {k:'01',kat:'Sistem',ad:'Program Seçin / Aracı Yerleştirin',ac:'Makine hazır, program bekleniyor — normal durum mesajı.',ned:'Müşteri program seçmedi',coz:'Program seçmesini bekleyin',onem:'info'},
+  {k:'02',kat:'Sistem',ad:'Bakım Gerekiyor',ac:'Bakım sayacı doldu. Periyodik bakım zorunlu.',ned:'10.000 araç sınırına ulaşıldı',coz:'Yetkili servis ile periyodik bakım yaptırın',onem:'warn'},
+  {k:'03',kat:'Sensör',ad:'Meme Fotosel Kirli',ac:'Kurutucu meme sensörü kirli veya engellenmiş.',ned:'Köpük birikimi, kir, su',coz:'Fotosel camını temizleyin',onem:'warn'},
+  {k:'04',kat:'Sensör',ad:'Geri Fotosel Kirli',ac:'Araç geri sensörü kirli veya hizası bozulmuş.',ned:'Kir, nem, yanlış hizalama',coz:'Fotosel temizle ve hizalamayı kontrol et',onem:'warn'},
+  {k:'05',kat:'Sensör',ad:'Teker Yıkama Fotosel Kirli',ac:'Disk teker yıkama sensörü kirli.',ned:'Köpük, taş, kir birikimi',coz:'Disk teker yıkama sensörünü temizleyin',onem:'warn'},
+  {k:'06',kat:'Sensör',ad:'Teker Algılanamadı',ac:'Teker yıkama sistemi tekeri algılayamıyor.',ned:'Kirli sensör, araç yanlış konumda',coz:'Sensörü temizle, aracı doğru konumlandır',onem:'warn'},
+  {k:'07',kat:'Su/Kimyasal',ad:'Ürün Seviyesi Düşük',ac:'Köpük veya cila kimyasal deposu dolum istiyor.',ned:'Kimyasal tükendi',coz:'İlgili kimyasal deposunu doldurun',onem:'warn'},
+  {k:'08',kat:'Su/Kimyasal',ad:'Pompa Zorlandı (P1→P2)',ac:'Pompa 1 su bulamıyor, sistem Pompa 2\'ye geçti.',ned:'Pompa 1 arızası veya su yok',coz:'Su kaynağını ve Pompa 1\'i kontrol edin',onem:'err'},
+  {k:'09',kat:'Sensör',ad:'Boru Fotosel Kirli',ac:'Kimyasal boru sensörü kirli.',ned:'Köpük birikimi',coz:'Fotosel temizleyin',onem:'warn'},
+  {k:'10',kat:'Sensör',ad:'HP Teker Sensörü Kirli',ac:'Yüksek basınçlı teker yıkama sensörü kirli.',ned:'Kir / köpük birikimi',coz:'Sensörü temizleyin',onem:'warn'},
+  {k:'11',kat:'Hareket',ad:'Teker Algılama Sıra Hatası',ac:'Teker algılama sırası hatalı: ön/arka sorun.',ned:'Araç yanlış konumda, sensör arızası',coz:'Aracı doğru hizalayın, sensör kalibrasyonu yapın',onem:'err'},
+  {k:'12',kat:'Güvenlik',ad:'Kapılar Açık — Tesis Kapalı',ac:'Tesis kapalıyken kapılar açık durumda.',ned:'Kapı sensörü veya kilitleme hatası',coz:'Kapıları kapatın veya kapı sensörünü kontrol edin',onem:'err'},
+  {k:'13',kat:'Güvenlik',ad:'Kapı Kapanmasını Bekliyor',ac:'Program başlamadan önce kapılar kapatılmalı.',ned:'Kapılar açık kaldı',coz:'Kapıları kapatın',onem:'warn'},
+  {k:'14',kat:'Güvenlik',ad:'Piste Engel / Kişi Algısı',ac:'Kamera veya sensör piste yabancı cisim ya da kişi algıladı.',ned:'Kişi, araç veya nesne piste girdi',coz:'Pisti boşaltın ve yeniden başlatın',onem:'err'},
+  {k:'15',kat:'Su/Kimyasal',ad:'Geri Dönüşüm Prob Arızası',ac:'Su geri dönüşüm sisteminde prob hatası.',ned:'Sensör arızası veya kablo kopuk',coz:'Prob bağlantısını kontrol edin',onem:'err'},
+  {k:'16',kat:'Su/Kimyasal',ad:'Su Yok / Pompa Aşırı Yük',ac:'Pompa suya ulaşamıyor veya aşırı yük var.',ned:'Su kaynağı kesildi, filtre tıkalı, pompa arızalı',coz:'Su girişini açın, filtreyi temizleyin, pompayı kontrol edin',onem:'err'},
+  {k:'25',kat:'Hareket',ad:'Pist Başı Algılanamadı',ac:'Makine pist başı pozisyonunu bulamıyor.',ned:'Sensör arızası, mekanik engel',coz:'Pist başı sensörünü kontrol edin',onem:'err'},
+  {k:'26',kat:'Hareket',ad:'Pist Sonu Algılanamadı',ac:'Makine pist sonu sınırına ulaşamıyor.',ned:'Sensör arızası',coz:'Pist sonu sensörünü kontrol edin',onem:'err'},
+  {k:'27',kat:'Hareket',ad:'Konveyör Hareket Etmiyor',ac:'Makine hareket edemiyor.',ned:'Motor arızası, mekanik blokaj, aşırı yük',coz:'Piste engel kontrol edin, motor çekicisini inceleyin',onem:'err'},
+  {k:'28',kat:'Hareket',ad:'Yatay Fırça Hareket Hatası',ac:'Yatay (üst) fırça yukarı/aşağı hareket edemiyor.',ned:'Motor arızası, kayış kopuk, sensör hatası',coz:'Kayış ve motoru kontrol edin',onem:'err'},
+  {k:'29',kat:'Hareket',ad:'Sol Dikey Fırça Hareket Hatası',ac:'Sol dikey fırça yeterli hareket yapamıyor.',ned:'Redüktör arızası, mekanik engel',coz:'Sol dikey fırça mekanik sistemini kontrol edin',onem:'err'},
+  {k:'30',kat:'Hareket',ad:'Sağ Dikey Fırça Hareket Hatası',ac:'Sağ dikey fırça yeterli hareket yapamıyor.',ned:'Redüktör arızası, mekanik engel',coz:'Sağ dikey fırça mekanik sistemini kontrol edin',onem:'err'},
+  {k:'31',kat:'Hareket',ad:'Teker Yıkama Hareket Hatası',ac:'Disk teker yıkama ünitesi hareket edemiyor.',ned:'Motor arızası, mekanik blokaj',coz:'Teker yıkama motor ve mekanik sistemini kontrol edin',onem:'err'},
+  {k:'32',kat:'Hareket',ad:'Meme (Nozzle) Hareket Hatası',ac:'Kurutucu meme yukarı/aşağı hareket edemiyor.',ned:'Motor arızası, kayış hatası',coz:'Meme motor ve kayışını kontrol edin',onem:'err'},
+  {k:'33',kat:'Güvenlik',ad:'Meme Güvenlik Engel Algısı',ac:'Kurutucu meme inerken araç üzerinde engel algıladı.',ned:'Araç çok yüksek veya sensör yanlış ayarlı',coz:'Araç yüksekliği kontrolü, sensör kalibrasyonu',onem:'err'},
+  {k:'35',kat:'Motor',ad:'Motor Aşırı Yük / Sigorta Attı',ac:'Bir motor aşırı yük çekiyor veya sigorta attı.',ned:'Mekanik engel, fırça sıkışması',coz:'Sigorta kutusunu kontrol edin, engeli kaldırın',onem:'err'},
+  {k:'36',kat:'Motor',ad:'Sol Fırça Akım Hatası',ac:'Sol fırça düşük veya aşırı akım — kopmuş olabilir.',ned:'Fırça aşınmış/kopmuş, motor arızası',coz:'Sol fırçayı görsel kontrol et, motor akımını ölç',onem:'err'},
+  {k:'37',kat:'Motor',ad:'Sağ Fırça Akım Hatası',ac:'Sağ fırça akım sorunu.',ned:'Fırça aşınmış/kopmuş, motor arızası',coz:'Sağ fırçayı görsel kontrol et',onem:'err'},
+  {k:'38',kat:'Motor',ad:'Yatay Fırça Akım Hatası',ac:'Üst (yatay) fırça akım sorunu.',ned:'Fırça aşınmış, motor arızası',coz:'Yatay fırça ve motoru kontrol edin',onem:'err'},
+  {k:'41',kat:'Güvenlik',ad:'Güvenli Yükseklik Limiti Aşıldı',ac:'Araç belirlenen maksimum yükseklik limitini aştı.',ned:'Araç çok yüksek (kamyonet, minibüs)',coz:'Uygun araç yüksekliğini kontrol edin',onem:'err'},
+  {k:'42',kat:'Su/Kimyasal',ad:'Hava Basıncı Düşük',ac:'Hava basıncı 6 bar altında.',ned:'Kompresör arızası, hava hattı sızıntısı',coz:'Kompresörü ve hava hatlarını kontrol edin',onem:'err'},
+  {k:'44',kat:'Hareket',ad:'Meme Kayışı Gevşedi',ac:'Kurutucu meme kayış gerilimi yetersiz.',ned:'Kayış aşınmış veya gevşemiş',coz:'Kayış gerilimini ayarlayın veya değiştirin',onem:'warn'},
+  {k:'45',kat:'Güvenlik',ad:'Program Başlarken Stop Basıldı',ac:'Program başlatılırken acil stop aktif.',ned:'Güvenlik butonu aktif',coz:'Acil stop butonunu serbest bırakın',onem:'warn'},
+  {k:'81',kat:'Sistem',ad:'Makineyi Başlangıç Pozisyonuna Al',ac:'Makine başlangıç noktasında değil.',ned:'Manuel müdahale sonrası yanlış konum',coz:'Makineyi pist başına götürün',onem:'warn'},
+  {k:'82',kat:'Sistem',ad:'Fırçaları Başlangıç Pozisyonuna Al',ac:'Fırçalar başlangıç pozisyonunda değil.',ned:'Manuel müdahale veya güç kesintisi',coz:'Fırçaları başlangıç konumuna alın',onem:'warn'},
+  {k:'83',kat:'Sistem',ad:'Boruları Başlangıç Pozisyonuna Al',ac:'Kimyasal borular başlangıç pozisyonunda değil.',ned:'Güç kesintisi, manuel müdahale',coz:'Hortum/boruları kontrol edin',onem:'warn'},
+  {k:'84',kat:'Sistem',ad:'Memeleri Başlangıç Pozisyonuna Al',ac:'Kurutucu memeler yukarı konumda değil.',ned:'Önceki çalışmada hata',coz:'Memeleri manuel olarak yukarı kaldırın',onem:'warn'},
+  {k:'91',kat:'Güvenlik',ad:'Devre Dışı — Acil Stop',ac:'Acil stop butonu aktif edildi.',ned:'Kaza, güvenlik ihlali, test',coz:'Tehlikeyi kaldırın, butonu serbest bırakın',onem:'err'},
+  {k:'92',kat:'Güvenlik',ad:'Devre Dışı — Güvenlik Switch',ac:'Güvenlik anahtarı açık.',ned:'Kapak açık, güvenlik ihlali',coz:'Tüm kapakları ve güvenlik switchlerini kontrol edin',onem:'err'},
+  {k:'93',kat:'Güvenlik',ad:'Araç Merkezde Değil',ac:'Araç yeterince ortalanmamış.',ned:'Araç eğik veya çok yana yakın',coz:'Aracı yeniden konumlandırın',onem:'err'},
+  {k:'94',kat:'Güvenlik',ad:'Devrilme Riski Algılandı',ac:'Rüzgar veya dış etki nedeniyle devrilme riski.',ned:'Şiddetli rüzgar, dış darbe',coz:'Makinenin sabitlendiğini kontrol edin',onem:'err'},
+  {k:'95',kat:'Sistem',ad:'Program Askıya Alındı',ac:'Program durduruldu — iptal veya devam seçin.',ned:'Kullanıcı müdahalesi veya sistem hatası',coz:'İptal veya devam seçin',onem:'warn'},
+  {k:'96',kat:'Su/Kimyasal',ad:'Geri Dönüşüm Sistemi Arızası',ac:'Su geri dönüşüm sisteminde hata.',ned:'Filtre tıkalı, pompa arızası, sensör hatası',coz:'Filtre ve pompayı kontrol edin',onem:'err'},
+  {k:'97',kat:'Sistem',ad:'Boru Boşaltılıyor',ac:'Don koruması için borular otomatik boşaltılıyor.',ned:'Sıcaklık 2°C altına düştü',coz:'Normal işlem — bekleyin',onem:'info'},
+  {k:'98',kat:'Güvenlik',ad:'Düşük Sıcaklık — Devre Dışı',ac:'Ortam sıcaklığı 2°C altında, makine çalışmıyor.',ned:'Soğuk hava koşulları',coz:'Ortam ısınana kadar bekleyin veya ısıtma sistemi kurun',onem:'err'},
+];
+
+let openIdx=-1;
+function renderAriza(data){
+  const tb=document.getElementById('arizaTbody');
+  tb.innerHTML='';
+  data.forEach((r,i)=>{
+    const cls=r.onem==='err'?'sev-err':r.onem==='warn'?'sev-warn':'sev-info';
+    const lbl=r.onem==='err'?'🔴 Hata':r.onem==='warn'?'🟡 Uyarı':'🟢 Bilgi';
+    const tr=document.createElement('tr');
+    tr.className='clickable';
+    tr.innerHTML=`<td class="kod">#${r.k}</td><td class="kat">${r.kat}</td><td><strong>${r.ad}</strong></td><td style="color:#444;">${r.ac}</td><td><span class="sbadge ${cls}">${lbl}</span></td>`;
+    tr.onclick=()=>{
+      const existing=document.getElementById('det-'+i);
+      if(existing){existing.remove();return;}
+      document.querySelectorAll('.detail-row').forEach(e=>e.remove());
+      const dr=document.createElement('tr');
+      dr.className='detail-row show';
+      dr.id='det-'+i;
+      dr.innerHTML=`<td colspan="5" style="background:#e8f2fb;padding:12px 20px;font-size:12.5px;color:#1a2a3a;border-left:4px solid var(--cyan);">
+        <strong>📋 Açıklama:</strong> ${r.ac}<br>
+        <strong>🔍 Olası Neden:</strong> ${r.ned}<br>
+        <strong>✅ Çözüm:</strong> ${r.coz}
+      </td>`;
+      tr.insertAdjacentElement('afterend',dr);
+    };
+    tb.appendChild(tr);
+  });
+  document.getElementById('arizaSay').textContent=`${data.length} kayıt gösteriliyor`;
+}
+function filtreAriza(){
+  const q=document.getElementById('srhTxt').value.toLowerCase();
+  const kat=document.getElementById('srhKat').value;
+  renderAriza(ariza.filter(r=>{
+    const mq=!q||r.k.includes(q)||r.ad.toLowerCase().includes(q)||r.ac.toLowerCase().includes(q)||r.kat.toLowerCase().includes(q);
+    const mk=!kat||r.kat===kat;
+    return mq&&mk;
+  }));
+}
+
+// ── AI ASISTAN ──
+function toggleAI(){
+  const p=document.getElementById('aiPanel');
+  p.classList.toggle('open');
+}
+
+// ── ARIZA VERİTABANI — M'WASH2 (Türkçe, resmi dokümandan) ──
+const ARIZA_DB=[
+  {k:1,  m:"Program seçin veya aracı konumlandırın",     a:"Makine başlatma koşullarında.",                                                t:"bilgi", n:"—",                                                                                  c:"Aracı konumlandırın ve kontrol panelinden program seçin.",                                                                      kw:["program","başlangıç","konumlandır","bekliyor"]},
+  {k:2,  m:"Kurutma modülündeki mesajı kontrol edin",    a:"Kurutma modülünde hata mesajı görüntüleniyor.",                                t:"uyari", n:"Kurutma modülü hatası.",                                                              c:"Kurutma modülündeki hatayı giderin; devam ederse teknik servisi arayın.",                                                        kw:["kurutma","modül","nozul","kurutucu"]},
+  {k:3,  m:"Nozul fotoseli kirli",                       a:"Kurutma nozulu aşağı inmiyor.",                                               t:"uyari", n:"B5015/B5016/B5017 fotosel lensleri kirli veya fotosel arızalı.",                    c:"Lensleri nemli bezle temizleyin. Sorun devam ederse verici/alıcıyı değiştirin.",                                                kw:["nozul","fotosel","kirli","lens","temizle"]},
+  {k:4,  m:"Geri dönüş fotoseli kirli",                  a:"Makine aracın arkasını geçtikten sonra geri dönmüyor.",                       t:"uyari", n:"B51 fotoseli kirli veya arızalı.",                                                  c:"Lensleri temizleyin. Fotoseli/verici-alıcıyı değiştirin, kabloları kontrol edin.",                                              kw:["geri","dönüş","fotosel","kirli","ters"]},
+  {k:5,  m:"Jant yıkama fotoseli kirli",                 a:"Jant yıkama diskleri yanlış yerde devreye giriyor veya hiç çalışmıyor.",      t:"uyari", n:"B55 fotoseli kirli/arızalı.",                                                      c:"Lensleri temizleyin. Arıza giderilemezse makine jant yıkama olmadan çalışabilir.",                                              kw:["jant","teker","tekerlek","fotosel","disk","jant yıkama"]},
+  {k:6,  m:"Ürün seviyesi düşük",                        a:"Makine tuş takımından program seçimine izin vermiyor.",                       t:"uyari", n:"Kimyasal tankında ürün seviyesi düşük veya sensör arızalı.",                        c:"İlgili kimyasal tankı doldurun. Arızalı sensörü/kabloyu değiştirin.",                                                           kw:["ürün","kimyasal","seviye","düşük","bidon","dolum","köpük","cila"]},
+  {k:7,  m:"Su pompası zorlandı",                        a:"Su 1 veya Su 2 kaynağı algılanmadı, yedek pompa devrede.",                    t:"bilgi", n:"Su kaynağı yok.",                                                                    c:"Su kaynağı geri geldiğinde mesaj otomatik kaybolur.",                                                                           kw:["pompa","zorlandı","su","yedek"]},
+  {k:9,  m:"Kurutma modülü devre dışı",                  a:"Kurutma modülü hizmet dışı.",                                                 t:"hata",  n:"Kurutma modülünde aktif hata veya iletişim kablosu arızası.",                         c:"Kurutma modülü ekranındaki hatayı çözün. Kablo ve bağlantıları kontrol edin.",                                                  kw:["kurutma","devre dışı","kapalı"]},
+  {k:10, m:"Boru konum fotoseli kirli",                  a:"Bekleme konumunda fotosel örtülü.",                                           t:"uyari", n:"Konumlandırma fotoseli kirli.",                                                       c:"Lensleri nemli bezle temizleyin.",                                                                                              kw:["boru","fotosel","kirli","konum"]},
+  {k:11, m:"Jant/Teker algılama hatası",                 a:"Jant yıkama iptal edildi; makine sonraki geçişlerde yeniden dener.",           t:"uyari", n:"Fotosel kirliliği, hatalı okuma veya yüksek basınç etkileşimi.",                    c:"Lensleri nemli bezle temizleyin ve algılama bölgesini kontrol edin.",                                                           kw:["teker","jant","algılama","hata","okuma"]},
+  {k:12, m:"Kapılar açık, tesis kapalı",                 a:"Yıkama çevrimi kesildi.",                                                     t:"hata",  n:"Güvenlik alanındaki kapı yıkama sırasında açıldı.",                                   c:"Kapıyı kapatın.",                                                                                                               kw:["kapı","açık","tesis","güvenlik"]},
+  {k:13, m:"Makine bakım istiyor",                       a:"Bakım sayacı limitine ulaşıldı.",                                             t:"bilgi", n:"Periyodik bakım zamanı geldi.",                                                        c:"Bakım işlemlerini yapın ve sayacı sıfırlayın. Bakım Takvimi sekmesine bakın.",                                                  kw:["bakım","servis","bakım istiyor","periyodik"]},
+  {k:14, m:"Kapıların kapanması bekleniyor",              a:"Makine başlatmak için kapıların kapanmasını bekliyor.",                        t:"bilgi", n:"Kapılar açık.",                                                                       c:"Kapıyı kapatın.",                                                                                                               kw:["kapı","kapanma","bekliyor"]},
+  {k:16, m:"Su yok veya pompa aşırı yükte (şasi altı)",  a:"Alt şase yıkama basınç/seviye sorunu.",                                       t:"hata",  n:"Su tankı boş, filtre tıkalı veya pompa/şalter arızalı.",                             c:"Tankta su olup olmadığını, filtre ve pompa şalterlerini kontrol edin.",                                                         kw:["su","pompa","şasi altı","basınç","yok","filtre"]},
+  {k:17, m:"Engel algılandı — yıkama alanı",             a:"Pist alanında kişi/engel tespit edildi; hareketler durduruldu.",               t:"hata",  n:"Piste kişi girdi, kamera kirli veya kapalı.",                                         c:"Kişiyi/engeli alandan uzaklaştırın. Kamera lensini temizleyin.",                                                                kw:["engel","peron","pist","kişi","kamera"]},
+  {k:25, m:"Pist dedektörü hatası",                      a:"Makine pist üzerinde bir noktada durdu.",                                      t:"hata",  n:"Konveyör dedektörü hatalı sinyal veya piste yabancı cisim.",                          c:"Dedektör mesafesini 8–10 mm ayarlayın, yabancı cisimleri temizleyin.",                                                          kw:["dedektör","pist","başlangıç","bitiş","konveyör"]},
+  {k:26, m:"Konveyör hareket edemiyor",                  a:"Makine pistte takıldı.",                                                       t:"hata",  n:"Dedektör arızası veya mekanik sıkışma.",                                              c:"Dedektör mesafesini 3 mm ayarlayın, pistteki engelleri temizleyin, konveyörü kontrol edin.",                                    kw:["konveyör","hareket","edemiyor","taşıyıcı"]},
+  {k:27, m:"Yatay fırça hareket sistemi hatası",          a:"Yatay fırça beklenen sürede hareket etmiyor.",                                 t:"hata",  n:"B3023/B3024 dedektör arızası veya fırça hareketinde fiziksel engel.",                c:"Engeli kaldırın, dedektör mesafesini 8–10 mm yapın veya kaldırma sistemini inceleyin.",                                         kw:["yatay fırça","hareket","kaldırma","yukarı","aşağı"]},
+  {k:28, m:"Sol dikey fırça hareket sistemi hatası",      a:"Sol dikey fırça hareket süresini aştı.",                                       t:"hata",  n:"B2011/B2014 dedektör arızası, redüktör veya mekanik sıkışma.",                       c:"Dedektör mesafelerini 8–10 mm ayarlayın, redüktör ve rayları kontrol edin.",                                                    kw:["sol fırça","sol dikey","hareket","dedektör","redüktör"]},
+  {k:29, m:"Sağ dikey fırça hareket sistemi hatası",      a:"Sağ dikey fırça hareket süresini aştı.",                                       t:"hata",  n:"B2021/B2024 dedektör arızası, redüktör veya mekanik sıkışma.",                       c:"Dedektör mesafelerini 8–10 mm ayarlayın, redüktör ve rayları kontrol edin.",                                                    kw:["sağ fırça","sağ dikey","hareket","dedektör"]},
+  {k:30, m:"Dikey fırça eğim hatası",                    a:"Fırçalar aşırı basınç algıladı.",                                             t:"hata",  n:"Dikey fırçalar araca fazla baskı uyguluyor.",                                         c:"Fırça basınç/baskı ayarlarını kontrol edin.",                                                                                   kw:["fırça","eğim","basınç","baskı","eğilme"]},
+  {k:31, m:"Fırça kayışı gevşek",                        a:"Yatay fırça araç üzerindeyken makine durdu.",                                  t:"hata",  n:"Yatay fırçayı tutan kayışlar gevşemiş veya kopmuş.",                                  c:"Fırçayı en üst konuma kaldırın, kayışları gerin veya değiştirin.",                                                             kw:["kayış","gevşek","fırça","kayış koptu"]},
+  {k:32, m:"Nozul hareket sistemi hatası",                a:"Kurutucu nozullar beklenen sürede hareket etmiyor.",                           t:"hata",  n:"Dedektör arızası, kayış gevşekliği veya mekanik engel.",                               c:"Engeli kaldırın, dedektörü 8–10 mm ayarlayın, gevşeyen/kopan kayışı değiştirin.",                                              kw:["nozul","hareket","kayış","kurutucu nozul"]},
+  {k:33, m:"Güvenlik engeli — nozul",                    a:"Nozul aracın üstündeki bir parçaya temas etti.",                               t:"hata",  n:"Araç üstündeki çıkıntı emniyet halkasına temas ediyor.",                               c:"Aracı tesisten çıkarın. Dedektör hassasiyet vidasını ayarlayın.",                                                               kw:["nozul","engel","güvenlik","araç","temas"]},
+  {k:34, m:"Jant yıkama hareket sistemi hatası",          a:"Jant yıkama ünitesi bekleme konumuna dönemedi.",                               t:"hata",  n:"Düşük hava basıncı, mekanik engel veya dedektör hatası.",                               c:"Hava basıncını kontrol edin (3,5–4 bar), engeli kaldırın, dedektör mesafesini 8–10 mm yapın.",                                 kw:["jant","teker yıkama","hareket","hava basıncı","pnömatik"]},
+  {k:35, m:"Motor aşırı yükte / sigorta attı",            a:"Yıkama çevrimi kesildi.",                                                     t:"hata",  n:"Termik röle veya otomatik şalter atması.",                                             c:"⚡ Atan otomatik sigortayı veya termik röleyi RESETLE/değiştir. Hata otomatik kaybolur.",                                       kw:["motor","sigorta","aşırı yük","termik","röle","şalter","resetle"]},
+  {k:36, m:"Beklenmeyen hata",                            a:"Konveyör durmuş, fırçalar 90 sn+ döndü.",                                     t:"hata",  n:"Yazılım hatası.",                                                                      c:"Alt hata kodunu not alın ve ISTOBAL teknik servisine bildirin.",                                                                kw:["beklenmeyen","yazılım","hata","teknik servis"]},
+  {k:37, m:"Su yok veya pompa aşırı yükte",               a:"Yıkama çevrimi kesildi.",                                                     t:"hata",  n:"Pompa motoru aşırı yüklenmiş, röle/şalter attı veya tankta su yok.",                  c:"Motor koruma rölesini veya otomatik şalteri RESETLE/değiştir. Tankta su olduğundan emin ol.",                                   kw:["su yok","pompa","şebeke","demineralize","yüksek basınç","röle","su","basınç"]},
+  {k:38, m:"Sol dikey fırça akım hatası",                 a:"Yıkama çevrimi kesildi. Fırça takılmış/kopmuş olabilir.",                     t:"hata",  n:"Düşük/yüksek akım veya fırça kopması. Motor faz kablosu gevşek.",                    c:"Fırçayı araçtan kurtar. Manuel kumandalarla problemi geç. Kabloları/motoru kontrol et.",                                        kw:["sol fırça","akım","koptu","takıldı","fırça hatası","düşük akım","yüksek akım"]},
+  {k:39, m:"Sağ dikey fırça akım hatası",                 a:"Yıkama çevrimi kesildi.",                                                     t:"hata",  n:"Düşük/yüksek akım veya fırça kopması.",                                               c:"Fırçayı araçtan kurtar. Kabloları ve motoru kontrol et.",                                                                       kw:["sağ fırça","akım","koptu","takıldı"]},
+  {k:40, m:"Yatay fırça akım hatası",                     a:"Yıkama çevrimi kesildi.",                                                     t:"hata",  n:"Yatay fırça aşırı basınç, takılma veya kopma.",                                        c:"Fırçayı araçtan kurtar. Kabloları ve motoru kontrol et. Kırıksa değiştir.",                                                    kw:["yatay fırça","akım","koptu","takıldı","tavan fırçası"]},
+  {k:41, m:"Güvenli yükseklik limiti aşıldı",             a:"Araç yıkanamayacak kadar yüksek veya fotosel kirli.",                          t:"hata",  n:"Araç çok yüksek veya yükseklik fotoseli kirli/hatalı.",                                c:"Araç yüksekliğini kontrol edin. Fotoseli temizleyin ve doğru monte edildiğini doğrulayın.",                                     kw:["yükseklik","limit","araç yüksek","fotosel","güvenlik"]},
+  {k:42, m:"Hava basıncı düşük",                          a:"Makine hava basıncı düştüğü için durdu.",                                      t:"hata",  n:"Kompresör çalışmıyor veya hava girişi kapalı.",                                        c:"Hava sistemini 6 bar'a ayarlayın. Kompresörü kontrol edin. Hava giriş vanasını açın.",                                         kw:["hava","basınç","kompresör","pnömatik","6 bar","hava yok"]},
+  {k:43, m:"Program yükleme hatası",                      a:"CPU düzgün çalışmıyor, makine servis yapamıyor.",                              t:"hata",  n:"PLC/CPU yazılım sorunu.",                                                              c:"Ana şalteri kapatıp açın. Çözülmezse PLC bağlantısını kontrol edin ve teknik servisi arayın.",                                  kw:["program yükleme","CPU","PLC","yükleme hatası"]},
+  {k:44, m:"Nozullarda kayış gevşek",                     a:"Nozul bir konumda makine durdu.",                                              t:"hata",  n:"Nozulu taşıyan kayışlar gevşemiş.",                                                    c:"Dedektörü kayışa hafif temas edecek şekilde ayarlayın, kayışı değiştirin.",                                                    kw:["nozul","kayış","gevşek"]},
+  {k:45, m:"Program başlangıcında stop butonu aktif",      a:"Stop butonu program başlangıcında basılı kalmış.",                             t:"hata",  n:"Stop butonu etkin.",                                                                    c:"Stop butonunu kontrol edin ve serbest bırakın.",                                                                                kw:["stop","buton","başlangıç"]},
+  {k:50, m:"Erişime izin verilmiyor — kapılar açık",       a:"Yıkama sırasında güvenlik kapısı açık.",                                       t:"hata",  n:"Giriş/çıkış veya servis kapısı açık.",                                                 c:"Kapıyı kapatın.",                                                                                                               kw:["kapı","açık","erişim","güvenlik"]},
+  {k:55, m:"Program iptal edildi",                         a:"Stop, acil stop veya süre aşımı ile iptal edildi.",                             t:"bilgi", n:"Stop butonu, acil stop veya başka hata.",                                              c:"Nedeni giderin ve yeni program başlatın.",                                                                                      kw:["iptal","durduruldu","stop"]},
+  {k:81, m:"Makineyi başlangıç konumuna alın",             a:"Makine bekleme/başlangıç dışında bir konumda.",                                t:"uyari", n:"Makine başlangıç pozisyonu dışında.",                                                  c:"Kontrol paneli fonksiyon tuşlarıyla makineyi başlangıç konumuna getirin.",                                                      kw:["başlangıç","pozisyon","konum","al"]},
+  {k:82, m:"Fırçaları ve kurutucuyu başlangıç konumuna alın", a:"Fırçalar veya kurutucu başlangıç dışında.",                               t:"uyari", n:"Fırça/kurutucu dedektör veya kablo arızası.",                                         c:"Kontrol paneli tuşlarıyla fırçaları başlangıç konumuna getirin. Arızalı dedektörü değiştirin.",                                kw:["fırça","kurutucu","başlangıç","konum"]},
+  {k:83, m:"Boruları başlangıç konumuna alın",              a:"Boru bekleme pozisyonu dışında.",                                             t:"uyari", n:"Boru başlangıç pozisyonunda değil.",                                                   c:"Kontrol paneli tuşlarıyla boruyu başlangıç konumuna gönderin.",                                                                kw:["boru","başlangıç","konum"]},
+  {k:84, m:"Nozulları başlangıç konumuna alın",             a:"Nozul bekleme pozisyonu dışında.",                                            t:"uyari", n:"Nozul başlangıç pozisyonunda değil.",                                                  c:"Kontrol paneli tuşlarıyla nozulu başlangıç konumuna gönderin.",                                                                kw:["nozul","başlangıç","konum"]},
+  {k:86, m:"Tesis kapalı",                                  a:"Çalışma saatleri dışında veya manuel kapatılmış.",                             t:"bilgi", n:"Tesis kapalı veya çalışma saati dışı.",                                               c:"Tesisin açık olduğundan emin olun. Giriş engelini kontrol edin.",                                                               kw:["tesis","kapalı","saat","zaman"]},
+  {k:91, m:"Servis dışı — Acil stop basılı",                a:"Makine durdu.",                                                               t:"hata",  n:"Acil stop butonu basılı veya emniyet şalteri aktif.",                                  c:"🔴 Acil stop butonunu çeyrek tur çevirip RESET'e basın. Engeli kaldırıp tekrar RESET'e basın.",                                 kw:["acil stop","servis dışı","reset","durdu","emergency","acil"]},
+  {k:92, m:"Program askıya alındı — Acil stop",             a:"Makine durdu.",                                                               t:"hata",  n:"Acil stop veya emniyet şalteri.",                                                      c:"Acil stop butonunu çeyrek tur çevirip RESET'e basın.",                                                                         kw:["acil","askıya","stop","reset"]},
+  {k:93, m:"Program askıya alındı — kapanma hatası",         a:"Bilinmeyen makine hatası yıkamayı durdurdu.",                                 t:"hata",  n:"Dedektör, fotosel veya fırça arızası.",                                                 c:"Dedektörleri, fotoselleri ve fırçaları kontrol edin.",                                                                         kw:["kapanma hatası","askıya","dedektör","fotosel"]},
+  {k:94, m:"Geri dönüşüm sistemi arızası",                  a:"Geri dönüşüm sistemi çalışmıyor.",                                            t:"hata",  n:"Su tankına su gelmiyor veya pompa basamıyor.",                                        c:"Su tankının dolu olduğunu kontrol edin.",                                                                                       kw:["geri dönüşüm","arıza","pompa"]},
+  {k:96, m:"Servis dışı — düşük sıcaklık",                  a:"Ortam sıcaklığı minimum değerin altında.",                                    t:"uyari", n:"Çok soğuk ortam.",                                                                    c:"Ortam sıcaklığı yükselene kadar makine çalışmaz. Isıtma önlemi alın.",                                                         kw:["sıcaklık","soğuk","düşük","donma"]},
+  {k:97, m:"Ekranda mesaj yok ama makine çalışmıyor",        a:"Makine bağlı ancak ekran boş.",                                               t:"hata",  n:"Güç gelmiyor veya FS1 sigortası atmış.",                                               c:"Güç beslemesini kontrol edin; FS1 sigortasını takın/kontrol edin.",                                                             kw:["ekran","boş","çalışmıyor","güç","sigorta","FS1"]},
+];
+
+// Genel bilgi KB
+const AI_KB={
+  su:        'Su tüketimi araç başına **105 litre**. 100 araç/gün → aylık ~273.000 litre. Hesaplayıcı sekmesinde detaylı hesap yapabilirsiniz.',
+  elektrik:  'Elektrik tüketimi araç başına **0,9 kWh**. Sistem 380 V – 50 Hz şebeke gerektirir.',
+  renk:      "M'WASH2 **7 farklı renk** seçeneğiyle sunulmaktadır. Sunum sekmesinde interaktif önizleme yapabilirsiniz!",
+  garanti:   'Makine **2 yıl**, fırça **2 yıl / 50.000 araç** garantili. İlk 3 ay servis + işçilik ücretsiz.',
+  bakım:     'Periyodik bakım her **10.000 araçta bir** zorunlu. Günlük: fotosel temizliği + kimyasal kontrol. Bakım Takvimi sekmesine bakın.',
+  boyut:     "M'WASH2: max **2,90 m yükseklik**, **2,40 m veya 2,60 m genişlik**. Ray uzunluğu min. **11 m**.",
+  sertifika: "M'WASH2; **ISO 14001 · TÜV · CE** sertifikalı. İspanya menşeili — ISTOBAL 1950'den bu yana üretimde.",
+  kimyasal:  'Araç başı: Köpük **20 ml** + Cila **20 ml** = Toplam **40 ml**. Tüm sistemler dozaj pompalı.',
+  program:   'Makinede **min. 6** farklı yıkama programı var. Programlar ihtiyaca göre ayarlanabilir.',
+  montaj:    'Montaj **ücretsiz**, yetkili servis tarafından yapılır. Altyapı projesi de ücretsiz hazırlanır.',
+};
+
+function aiChip(q){ document.getElementById('aiInput').value=q; aiGonder(); }
+
+function aiGonder(){
+  const inp=document.getElementById('aiInput');
+  const q=inp.value.trim();
+  if(!q)return;
+  addMsg(q,'user');
+  inp.value='';
+  setTimeout(()=>{
+    const ql=q.toLowerCase().replace(/[',.\-]/g,' ');
+
+    // 1 ── Arıza kodu numarası
+    const numM=ql.match(/\b(\d{1,2})\b/);
+    if(numM){
+      const kod=parseInt(numM[1]);
+      const hit=ARIZA_DB.find(a=>a.k===kod);
+      if(hit){addFaultCard(hit);return;}
+    }
+
+    // 2 ── "Sık arızalar" listesi
+    if(ql.includes('sık')||ql.includes('en sık')||ql.includes('yaygın')||ql.includes('liste')){
+      addMsg('En sık karşılaşılan **6 arıza** ve çözümleri:','bot');
+      [3,6,16,35,37,42].forEach(k=>{const h=ARIZA_DB.find(a=>a.k===k);if(h)addFaultCard(h,true);});
+      return;
+    }
+
+    // 3 ── Anahtar kelime araması (arıza DB)
+    const hits=ARIZA_DB.filter(a=>{
+      if(a.kw.some(kw=>ql.includes(kw))) return true;
+      const mWords=a.m.toLowerCase().split(/\s+/);
+      return mWords.some(w=>w.length>3&&ql.includes(w));
+    });
+    if(hits.length===1){addFaultCard(hits[0]);return;}
+    if(hits.length>1&&hits.length<=5){
+      addMsg(`**"${q}"** ile ilgili ${hits.length} arıza bulundu:`,'bot');
+      hits.forEach(h=>addFaultCard(h,true));return;
+    }
+    if(hits.length>5){
+      addMsg(`**"${q}"** için ${hits.length} sonuç — ilk 4 tanesi:`,'bot');
+      hits.slice(0,4).forEach(h=>addFaultCard(h,true));return;
+    }
+
+    // 4 ── Genel KB
+    for(const [kw,ans] of Object.entries(AI_KB)){
+      if(ql.includes(kw)){addMsg(ans,'bot');return;}
+    }
+
+    // 5 ── Kalıplar
+    if(ql.includes('merhaba')||ql.includes('selam'))
+      {addMsg('Merhaba! 😊 Arıza kodu (örn: **35**) veya semptom yazarak yardım alabilirsiniz.','bot');return;}
+    if(ql.includes('fiyat')||ql.includes('ücret')||ql.includes('tutar'))
+      {addMsg('Fiyat için **Teklif Formu** sekmesini doldurun. ALGA ekibi en kısa sürede ulaşır. 📋','bot');return;}
+    if(ql.includes('teknik servis')||ql.includes('servis ara'))
+      {addMsg('ALGA Teknik Servis — Arıza müdahale süresi max. **3 iş günü**. İlk 3 ay ücretsiz.','bot');return;}
+
+    addMsg('Aradığınızı bulamadım 🤔\nArıza kodu numarası (örn: **35**) veya farklı bir anahtar kelime deneyin.\n➡️ Yukarıdaki hızlı butonları da kullanabilirsiniz.','bot');
+  },350);
+}
+
+function addFaultCard(a,compact=false){
+  const box=document.getElementById('aiMsgs');
+  const turIcon={bilgi:'ℹ️',uyari:'⚠️',hata:'🔴'}[a.t]||'🔴';
+  const turRenk={bilgi:'#1a5c8a',uyari:'#7a5c00',hata:'#c0392b'}[a.t]||'#c0392b';
+  const d=document.createElement('div');
+  d.className='ai-msg bot';
+  if(compact){
+    d.innerHTML=`<div style="font-size:10px;font-weight:800;color:${turRenk};margin-bottom:2px">${turIcon} KOD ${a.k}</div>
+<div style="font-weight:700;font-size:12px;margin-bottom:3px">${a.m}</div>
+<div style="font-size:11px;background:#e6f4ea;border-radius:6px;padding:5px 8px;color:#1a5c2a;font-weight:600">✅ ${a.c}</div>`;
+  } else {
+    d.innerHTML=`<div class="ai-fault-code">${turIcon} KOD ${a.k} — ${a.t.toUpperCase()}</div>
+<div class="ai-fault-msg">${a.m}</div>
+<div class="ai-fault-row"><span>📋</span><span>${a.a}</span></div>
+${a.n&&a.n!=='—'?`<div class="ai-fault-row"><span>⚠️</span><span>${a.n}</span></div>`:''}
+<div class="ai-fault-cozum">✅ ${a.c}</div>`;
+  }
+  box.appendChild(d);
+  box.scrollTop=box.scrollHeight;
+}
+
+function addMsg(txt,rol){
+  const box=document.getElementById('aiMsgs');
+  const d=document.createElement('div');
+  d.className='ai-msg '+rol;
+  d.innerHTML=txt.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  box.appendChild(d);
+  box.scrollTop=box.scrollHeight;
+}
+
+// ── ROI HESAPLAYICI ──
+function roiHesap(){
+  const yontem = document.getElementById('roi-yontem').value;
+  const isciGrp = document.getElementById('roi-isci-grp');
+  const maasGrp = document.getElementById('roi-maas-grp');
+  const rakipGrp = document.getElementById('roi-rakip-grp');
+
+  isciGrp.style.display = (yontem==='manuel') ? '' : 'none';
+  maasGrp.style.display = (yontem==='manuel') ? '' : 'none';
+  rakipGrp.style.display = (yontem==='rakip') ? '' : 'none';
+
+  const arac = +document.getElementById('roi-arac').value || 0;
+  const gun  = +document.getElementById('roi-gun').value || 26;
+  const fiyat= +document.getElementById('roi-fiyat').value || 0;
+  const makineFiyat = +document.getElementById('roi-makinefiyat').value || 0;
+  const altyapi = +document.getElementById('roi-altyapi').value || 0;
+  const suFiyat = +document.getElementById('roi-su').value || 35;
+  const elFiyat = +document.getElementById('roi-el').value || 6;
+  const kimFiyat= +document.getElementById('roi-kim').value || 3;
+  const opSayi  = +document.getElementById('roi-operator').value || 0;
+  const opMaas  = +document.getElementById('roi-opmaas').value || 0;
+
+  const aylikArac = arac * gun;
+  const topYatirim = makineFiyat + altyapi;
+
+  // Makine ile aylık maliyet
+  const suM  = aylikArac * 105 / 1000 * suFiyat;
+  const elM  = aylikArac * 0.9 * elFiyat;
+  const kimM = aylikArac * kimFiyat;
+  const opM  = opSayi * opMaas;
+  const makineMaliyet = suM + elM + kimM + opM;
+
+  // Aylık gelir
+  const aylikGelir = aylikArac * fiyat;
+  const aylikKar = aylikGelir - makineMaliyet;
+
+  // Mevcut maliyet
+  let mevcutMaliyet = 0;
+  let mevcutAciklama = '';
+  if(yontem === 'manuel'){
+    const isci = +document.getElementById('roi-isci').value || 0;
+    const maas = +document.getElementById('roi-maas').value || 0;
+    mevcutMaliyet = isci * maas;
+    mevcutAciklama = `${isci} işçi × ${fmt(maas)} ₺ = ${fmt(mevcutMaliyet)} ₺/ay`;
+  } else if(yontem === 'rakip'){
+    mevcutMaliyet = +document.getElementById('roi-rakip-maliyet').value || 0;
+    mevcutAciklama = `Operasyon maliyeti: ${fmt(mevcutMaliyet)} ₺/ay`;
+  } else {
+    mevcutMaliyet = 0;
+    mevcutAciklama = 'Yıkama geliri yok (yeni yatırım)';
+  }
+
+  const tasarruf = mevcutMaliyet - makineMaliyet;
+
+  // Geri dönüş süresi
+  const aylikKazanim = (yontem === 'yok') ? aylikKar : (aylikKar + tasarruf);
+  const geriDonus = aylikKazanim > 0 ? topYatirim / aylikKazanim : Infinity;
+
+  // Alert
+  const alert = document.getElementById('roiAlert');
+  if(aylikKar < 0){
+    alert.className='roi-alert show';
+    alert.style.background='#fde8ea';alert.style.color='#9b000f';alert.style.border='1px solid #f5c6cb';
+    alert.textContent='⚠️ Aylık gelir, makine maliyetini karşılamıyor. Araç sayısını veya fiyatı artırmayı değerlendirin.';
+  } else {
+    alert.className='roi-alert';
+  }
+
+  // Sonuçları yaz
+  if(geriDonus === Infinity || geriDonus > 120){
+    document.getElementById('roi-r-sure').textContent = '> 10 yıl';
+    document.getElementById('roi-r-sure-lbl').textContent = 'Yatırım geri dönüşü çok uzun';
+    document.getElementById('roi-bar').style.width = '5%';
+  } else {
+    const yil = Math.floor(geriDonus/12);
+    const ay  = Math.round(geriDonus%12);
+    document.getElementById('roi-r-sure').textContent = Math.ceil(geriDonus) + ' ay';
+    document.getElementById('roi-r-sure-lbl').textContent =
+      yil > 0 ? `${yil} yıl ${ay} ay içinde yatırımınız geri dönüyor` : `${Math.ceil(geriDonus)} ay içinde yatırımınız geri dönüyor`;
+    const pct = Math.min(100, (1/geriDonus)*100*3);
+    document.getElementById('roi-bar').style.width = pct + '%';
+  }
+  document.getElementById('roi-bar-mid').textContent = Math.ceil(geriDonus/2) + '. ay';
+
+  document.getElementById('roi-r-aygelir').textContent   = fmt(aylikGelir) + ' ₺';
+  document.getElementById('roi-r-aymaliyet').textContent = fmt(makineMaliyet) + ' ₺';
+  document.getElementById('roi-r-aykar').textContent     = fmt(aylikKar) + ' ₺';
+  document.getElementById('roi-r-tasarruf').textContent  = (tasarruf>=0?'+':'')+fmt(tasarruf) + ' ₺';
+
+  // Yıl tablosu
+  const tbl = document.getElementById('roi-yil-tbl');
+  tbl.innerHTML = '';
+  let kumKar = -topYatirim;
+  for(let y=1;y<=5;y++){
+    kumKar += aylikKar * 12;
+    const tr = document.createElement('tr');
+    const kumStyle = kumKar>=0 ? 'color:#a8e063;' : 'color:#ff8080;';
+    tr.innerHTML = `<td>${y}. Yıl</td><td>${fmt(aylikKar)} ₺</td><td>${fmt(aylikGelir*12)} ₺</td><td style="${kumStyle}">${kumKar>=0?'+':''}${fmt(kumKar)} ₺</td>`;
+    tbl.appendChild(tr);
+  }
+
+  // Karşılaştırma
+  document.getElementById('roi-compare-eski').innerHTML =
+    `Yöntem: <b>${yontem==='manuel'?'Manuel İşçi':yontem==='rakip'?'Mevcut Makine':'Yıkama Yok'}</b><br>`+
+    `Maliyet: <b>${fmt(mevcutMaliyet)} ₺/ay</b><br>`+
+    (yontem!=='yok'?`Net Kâr: <b>${fmt(aylikGelir-mevcutMaliyet)} ₺/ay</b>`:'');
+
+  document.getElementById('roi-compare-yeni').innerHTML =
+    `Model: <b>M'WASH2</b><br>`+
+    `Değ. Maliyet: <b>${fmt(makineMaliyet)} ₺/ay</b><br>`+
+    `Net Kâr: <b style="color:#a8e063;">${fmt(aylikKar)} ₺/ay</b><br>`+
+    `Tasarruf: <b style="color:#ffe066;">${tasarruf>=0?'+':''}${fmt(tasarruf)} ₺/ay</b>`;
+}
+
+document.getElementById('roi-yontem').addEventListener('change', roiHesap);
+
+// ── INIT ──
+hesap();
+roiHesap();
+renderAriza(ariza);
+</script>
+</body>
+</html>
