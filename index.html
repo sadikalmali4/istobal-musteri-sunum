@@ -1116,14 +1116,48 @@ header{
           <div class="fgrp">
             <label>Makine Serisi</label>
             <select id="tf-model" onchange="updateTeklifModel()">
-              <option value="mwash2">M'WASH SERİSİ — Portal Araç Yıkama</option>
-              <option value="hwprogress">HW'PROGRESS — Ağır Araç (TIR / Otobüs)</option>
-              <option value="twashpro">T'WASH PRO — Tünel Konveyör Sistemi</option>
+              <optgroup label="🔵 Binek Araç — Portal (Rollover)">
+                <option value="mwash2">M'WASH2 — Standart Portal (2 Dikey Fırça)</option>
+                <option value="mwash3">M'WASH3 — Gelişmiş Portal (2 Dikey + 1 Yatay)</option>
+                <option value="mwash3pro">M'WASH3 PRO — Premium Portal (Ekstra Modüller)</option>
+              </optgroup>
+              <optgroup label="🟠 Ağır Araç — Büyük Araç Portal">
+                <option value="hwprogress">HW'PROGRESS — TIR · Otobüs · Kamyon</option>
+              </optgroup>
+              <optgroup label="🟢 Tünel — Konveyör Sistemi">
+                <option value="twashpro">T'WASH PRO — Yüksek Kapasiteli Tünel</option>
+              </optgroup>
             </select>
           </div>
           <div class="fgrp">
             <label>Yapılandırma / Varyant</label>
             <select id="tf-varyant" onchange="updateTeklifSum()"></select>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgrp">
+            <label>Makine Durumu</label>
+            <select id="tf-kondisyon" onchange="updateTeklifKondisyon()">
+              <option value="sifir">🆕 Sıfır Makine — Fabrikadan Yeni</option>
+              <option value="ikinciel">♻️ İkinci El — ALGA Revizyonlu</option>
+            </select>
+          </div>
+          <div class="fgrp" id="tf-revizyon-grp" style="display:none;">
+            <label>Revizyon Kapsamı</label>
+            <select id="tf-revizyon">
+              <option value="tam">Tam Revizyon — Tüm Mekanik + Elektrik</option>
+              <option value="mekanik">Mekanik Revizyon — Fırça, Motor, Pompa</option>
+              <option value="elektrik">Elektrik Revizyonu — PLC, Sensör, Kablo</option>
+              <option value="kozmetik">Kozmetik + Temel Kontrol</option>
+            </select>
+          </div>
+        </div>
+        <div class="frow" id="tf-ikinciel-bilgi" style="display:none;">
+          <div class="fgrp" style="grid-column:1/-1;">
+            <div style="background:#fff8e1;border:1px solid #f9a825;border-radius:8px;padding:10px 14px;font-size:13px;color:#5d4037;">
+              ♻️ <strong>İkinci El – ALGA Revizyonlu:</strong> ALGA atölyesinde tam teknik inceleme, yenileme ve test yapılmış makinedir.
+              Revizyon kapsamına göre <strong>6–12 ay ALGA servis garantisi</strong> verilir. Yedek parça ve teknik destek standart koşullarda devam eder.
+            </div>
           </div>
         </div>
         <div class="frow" id="tf-renk-grp">
@@ -1487,6 +1521,7 @@ const MODELLER = {
       ]},
     ],
     hesap:{su:35,el:6,kim:3,arac:100,gun:26},
+    defaultVaryant: 0,
     varyantlar:[
       {
         ad:"M'WASH2", sub:"2 Fırça · Kompakt · Çok Yönlü",
@@ -1517,6 +1552,10 @@ const MODELLER = {
       },
     ],
   },
+
+  // M'WASH3 ve M'WASH3 PRO — mwash2 ile aynı model, farklı varyant
+  mwash3: null,    // updateTeklifModel'de mwash2 varyant[1] olarak ele alınır
+  mwash3pro: null, // updateTeklifModel'de mwash2 varyant[2] olarak ele alınır
 
   hwprogress: {
     ad:"HW'PROGRESS", alt:"Ağır Araç Yıkama — TIR · Otobüs · Kamyon",
@@ -1991,42 +2030,65 @@ function teklifNo(){
 const _teklifNo = teklifNo();
 document.getElementById('ts-no').textContent = _teklifNo;
 
+// M'WASH3 / M'WASH3PRO → mwash2 varyantına yönlendir
+function resolveModel(key){
+  if(key==='mwash3')    return {m: MODELLER['mwash2'], defaultV:1};
+  if(key==='mwash3pro') return {m: MODELLER['mwash2'], defaultV:2};
+  return {m: MODELLER[key], defaultV:0};
+}
+
 // Model değişince varyant dropdown güncelle
 function updateTeklifModel(){
   const key = document.getElementById('tf-model').value;
-  const m = MODELLER[key];
+  const {m, defaultV} = resolveModel(key);
   const vSel = document.getElementById('tf-varyant');
   const renkGrp = document.getElementById('tf-renk-grp');
   vSel.innerHTML = '';
   if(m.varyantlar && m.varyantlar.length){
-    m.varyantlar.forEach((v,i)=>{
-      const opt = document.createElement('option');
-      opt.value = i;
-      opt.textContent = v.ad + (v.sub ? ' — ' + v.sub : '');
+    // M'WASH serisinde: eğer mwash3/mwash3pro seçildiyse sadece o varyantı göster
+    const startV = (key==='mwash3'||key==='mwash3pro') ? defaultV : 0;
+    const endV   = (key==='mwash3'||key==='mwash3pro') ? defaultV : m.varyantlar.length-1;
+    for(let i=startV; i<=endV; i++){
+      const v=m.varyantlar[i];
+      const opt=document.createElement('option');
+      opt.value=i;
+      opt.textContent=v.ad+(v.sub?' — '+v.sub:'');
       vSel.appendChild(opt);
-    });
+    }
     vSel.parentElement.parentElement.style.display='';
   } else {
-    const opt = document.createElement('option');
-    opt.textContent = 'Standart';
+    const opt=document.createElement('option');
+    opt.value=0; opt.textContent='Standart';
     vSel.appendChild(opt);
   }
   renkGrp.style.display = m.renkler ? '' : 'none';
   updateTeklifSum();
 }
 
+// İkinci el / sıfır makine değişince
+function updateTeklifKondisyon(){
+  const v = document.getElementById('tf-kondisyon').value;
+  document.getElementById('tf-revizyon-grp').style.display   = v==='ikinciel' ? '' : 'none';
+  document.getElementById('tf-ikinciel-bilgi').style.display = v==='ikinciel' ? '' : 'none';
+  updateTeklifSum();
+}
+
 // Özet kartı güncelle
 function updateTeklifSum(){
   const key = document.getElementById('tf-model').value;
-  const m = MODELLER[key];
+  const {m} = resolveModel(key);
   const vIdx = +document.getElementById('tf-varyant').value || 0;
   const v = (m.varyantlar && m.varyantlar[vIdx]) ? m.varyantlar[vIdx] : null;
   const renkSel = document.getElementById('tf-renk');
   const renkTxt = renkSel.options[renkSel.selectedIndex]?.text || '';
   const renkRow = document.getElementById('ts-renk-row');
+  const kondisyon = document.getElementById('tf-kondisyon').value;
 
   document.getElementById('ts-firma').textContent = document.getElementById('tf-firma').value || '—';
-  document.getElementById('ts-model').textContent = m.ad;
+  // Model adını kondisyonla birlikte göster
+  const modelAd = (key==='mwash3'?"M'WASH3":key==='mwash3pro'?"M'WASH3 PRO":m.ad);
+  const kondBadge = kondisyon==='ikinciel' ? ' ♻️ [İkinci El]' : '';
+  document.getElementById('ts-model').textContent = modelAd + kondBadge;
   document.getElementById('ts-varyant').textContent = v ? v.ad : '—';
   renkRow.style.display = m.renkler ? '' : 'none';
   document.getElementById('ts-renk').textContent = renkTxt;
@@ -2037,7 +2099,7 @@ function updateTeklifSum(){
   if(document.getElementById('tf-op-montaj').checked)   ops.push('Montaj');
   if(document.getElementById('tf-op-nakliye').checked)  ops.push('Nakliye');
   if(document.getElementById('tf-op-egitim').checked)   ops.push('Eğitim');
-  if(document.getElementById('tf-op-garanti').checked)  ops.push('2Y Garanti');
+  if(document.getElementById('tf-op-garanti').checked)  ops.push(kondisyon==='ikinciel'?'ALGA Garanti (6-12 ay)':'2Y Garanti');
   if(document.getElementById('tf-op-servis').checked)   ops.push('Bakım Sözl.');
   if(document.getElementById('tf-op-kimyasal').checked) ops.push('Kimyasal Paket');
   document.getElementById('ts-opt').textContent = ops.length ? ops.join(' · ') : '—';
@@ -2058,7 +2120,7 @@ function updateTeklifFiyat(){
 // Print — A4 teklif belgesini doldur ve yazdır
 function yazdir(){
   const key = document.getElementById('tf-model').value;
-  const m = MODELLER[key];
+  const {m} = resolveModel(key);
   const vIdx = +document.getElementById('tf-varyant').value || 0;
   const v = (m.varyantlar && m.varyantlar[vIdx]) ? m.varyantlar[vIdx] : null;
   const net = +document.getElementById('tf-fiyat').value || 0;
@@ -2067,6 +2129,10 @@ function yazdir(){
   const top = net + kdv;
   const renkSel = document.getElementById('tf-renk');
   const renkTxt = renkSel.options[renkSel.selectedIndex]?.text.replace(/[🔵🔴🟡🟠🟢⚫⚪]\s*/,'') || '';
+  const kondisyon = document.getElementById('tf-kondisyon').value;
+  const revizyonSel = document.getElementById('tf-revizyon');
+  const revizyonTxt = kondisyon==='ikinciel' ? revizyonSel.options[revizyonSel.selectedIndex]?.text : '';
+  const modelAd = key==='mwash3'?"M'WASH3":key==='mwash3pro'?"M'WASH3 PRO":m.ad;
 
   // Meta
   document.getElementById('pt-no').textContent = _teklifNo;
@@ -2074,48 +2140,77 @@ function yazdir(){
   document.getElementById('pt-gecerlilik').textContent = document.getElementById('tf-gecerlilik').value;
 
   // Müşteri
-  document.getElementById('pt-firma').textContent  = document.getElementById('tf-firma').value  || '—';
-  document.getElementById('pt-yetkili').textContent = document.getElementById('tf-yetkili').value|| '—';
-  document.getElementById('pt-vergi').textContent  = document.getElementById('tf-vergi').value  || '—';
-  document.getElementById('pt-tel').textContent    = document.getElementById('tf-tel').value    || '—';
-  document.getElementById('pt-email').textContent  = document.getElementById('tf-email').value  || '—';
-  document.getElementById('pt-sehir').textContent  = document.getElementById('tf-sehir').value  || '—';
-  document.getElementById('pt-adres').textContent  = document.getElementById('tf-adres').value  || '—';
-  document.getElementById('pt-tesis').textContent  = document.getElementById('tf-tesis').value  || '—';
+  document.getElementById('pt-firma').textContent   = document.getElementById('tf-firma').value   || '—';
+  document.getElementById('pt-yetkili').textContent = document.getElementById('tf-yetkili').value || '—';
+  document.getElementById('pt-vergi').textContent   = document.getElementById('tf-vergi').value   || '—';
+  document.getElementById('pt-tel').textContent     = document.getElementById('tf-tel').value     || '—';
+  document.getElementById('pt-email').textContent   = document.getElementById('tf-email').value   || '—';
+  document.getElementById('pt-sehir').textContent   = document.getElementById('tf-sehir').value   || '—';
+  document.getElementById('pt-adres').textContent   = document.getElementById('tf-adres').value   || '—';
+  document.getElementById('pt-tesis').textContent   = document.getElementById('tf-tesis').value   || '—';
 
-  // Ürün
-  document.getElementById('pt-model-ad').textContent = m.ad;
+  // Ürün — model adı + kondisyon
+  document.getElementById('pt-model-ad').textContent = modelAd + (kondisyon==='ikinciel' ? ' — İkinci El / Revizyonlu' : '');
   document.getElementById('pt-model-alt').textContent = m.alt || '';
   const varEl = document.getElementById('pt-varyant-ad');
   const renkEl = document.getElementById('pt-renk-ad');
-  if(v){ varEl.textContent = v.ad + (v.sub?' — '+v.sub:''); varEl.style.display='inline-block'; } else { varEl.style.display='none'; }
-  if(m.renkler && renkTxt){ renkEl.textContent = 'Renk: '+renkTxt; renkEl.style.display='inline-block'; } else { renkEl.style.display='none'; }
+  if(v){ varEl.textContent=v.ad+(v.sub?' — '+v.sub:''); varEl.style.display='inline-block'; } else { varEl.style.display='none'; }
+  if(m.renkler && renkTxt){ renkEl.textContent='Renk: '+renkTxt; renkEl.style.display='inline-block'; } else { renkEl.style.display='none'; }
 
-  // Teknik özellikler
-  const specs = v ? v.stats : m.stats;
+  // Kondisyon badge güncelle
+  const badge = document.getElementById('pt-badge');
+  if(badge){
+    if(kondisyon==='ikinciel'){
+      badge.innerHTML='ALGA<br>REVİZYONLU<br>♻️';
+      badge.style.background='#e8f5e9'; badge.style.color='#2e7d32';
+    } else {
+      badge.innerHTML='ISTOBAL<br>ONAYLIDIR<br>✓';
+      badge.style.background=''; badge.style.color='';
+    }
+  }
+
+  // Teknik özellikler — TAM ŞARTNAME (m.specs varsa) yoksa stats
   const tbody = document.getElementById('pt-spec-tbody');
-  tbody.innerHTML = specs.map(s=>`<tr><td>${s.lbl.replace(/[🚗💧⚡🧴📱📏🚛🛤️🏗️]/u,'').trim()}</td><td>${s.val} ${s.unit}</td></tr>`).join('');
+  if(m.specs && m.specs.length){
+    let rows = '';
+    // Önce varyant istatistikleri
+    const vstats = v ? v.stats : m.stats;
+    rows += vstats.map(s=>`<tr><td>${s.lbl.replace(/[\u{1F000}-\u{1FFFF}🚗💧⚡🧴📱📏🚛🛤️🏗️📐⏱️🏅]/gu,'').trim()}</td><td><strong>${s.val} ${s.unit}</strong></td></tr>`).join('');
+    // Sonra tam specs bölümleri
+    m.specs.forEach(sec=>{
+      rows += `<tr><td colspan="2" style="background:#003a6e;color:#fff;font-size:10px;font-weight:800;padding:5px 14px;letter-spacing:.5px;">${sec.baslik}</td></tr>`;
+      rows += sec.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
+    });
+    tbody.innerHTML = rows;
+  } else {
+    const specs = v ? v.stats : m.stats;
+    tbody.innerHTML = specs.map(s=>`<tr><td>${s.lbl.replace(/[\u{1F000}-\u{1FFFF}🚗💧⚡🧴📱📏🚛🛤️🏗️]/gu,'').trim()}</td><td>${s.val} ${s.unit}</td></tr>`).join('');
+  }
 
   // Hizmetler
   const svcMap = {
-    'tf-op-montaj':'Montaj (ALGA Teknisyeni)',
-    'tf-op-nakliye':'Nakliye',
-    'tf-op-egitim':'Operatör Eğitimi',
-    'tf-op-garanti':'2 Yıl Garanti',
-    'tf-op-servis':'Yıllık Bakım Sözleşmesi',
+    'tf-op-montaj' : 'Montaj (ALGA Teknisyeni)',
+    'tf-op-nakliye': 'Nakliye',
+    'tf-op-egitim' : 'Operatör Eğitimi',
+    'tf-op-garanti': kondisyon==='ikinciel' ? 'ALGA Servis Garantisi (6-12 Ay)' : '2 Yıl Garanti',
+    'tf-op-servis' : 'Yıllık Bakım Sözleşmesi',
     'tf-op-kimyasal':'Başlangıç Kimyasal Paketi'
   };
   const svcHtml = Object.entries(svcMap)
     .filter(([id])=>document.getElementById(id).checked)
     .map(([,lbl])=>`<span class="pt-service-tag">✓ ${lbl}</span>`).join('');
-  document.getElementById('pt-services').innerHTML = svcHtml || '—';
+  let svcFinal = svcHtml || '—';
+  if(kondisyon==='ikinciel' && revizyonTxt){
+    svcFinal += `<div style="margin-top:8px;font-size:11px;color:#5d4037;background:#fff8e1;padding:6px 10px;border-radius:6px;">♻️ Revizyon Kapsamı: ${revizyonTxt}</div>`;
+  }
+  document.getElementById('pt-services').innerHTML = svcFinal;
 
   // Fiyat
-  document.getElementById('pt-fiyat-net').textContent  = net ? fmt(net)+' ₺' : 'Teklif Alınacak';
-  document.getElementById('pt-kdv-lbl').textContent    = `KDV (%${kdvPct})`;
-  document.getElementById('pt-kdv-tutar').textContent  = net ? fmt(kdv)+' ₺' : '—';
-  document.getElementById('pt-toplam-p').textContent   = net ? fmt(top)+' ₺' : 'Teklif Alınacak';
-  document.getElementById('pt-vade').textContent       = document.getElementById('tf-vade').value;
+  document.getElementById('pt-fiyat-net').textContent = net ? fmt(net)+' ₺' : 'Teklif Alınacak';
+  document.getElementById('pt-kdv-lbl').textContent   = `KDV (%${kdvPct})`;
+  document.getElementById('pt-kdv-tutar').textContent = net ? fmt(kdv)+' ₺' : '—';
+  document.getElementById('pt-toplam-p').textContent  = net ? fmt(top)+' ₺' : 'Teklif Alınacak';
+  document.getElementById('pt-vade').textContent      = document.getElementById('tf-vade').value;
 
   // Notlar
   const notlar = document.getElementById('tf-notlar').value;
@@ -3009,7 +3104,7 @@ updateApiStatus();
         <div class="pt-product-var" id="pt-varyant-ad" style="display:none;">—</div>
         <div class="pt-product-var" id="pt-renk-ad" style="display:none;margin-top:4px;background:#e8f2fb;color:var(--blue-dark);">—</div>
       </div>
-      <div class="pt-badge">ISTOBAL<br>ONAYLIDIR<br>✓</div>
+      <div class="pt-badge" id="pt-badge">ISTOBAL<br>ONAYLIDIR<br>✓</div>
     </div>
     <table class="pt-spec-table">
       <thead><tr><th colspan="2">TEKNİK ÖZELLİKLER</th></tr></thead>
