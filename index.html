@@ -2758,22 +2758,43 @@ function typeMsg(txt, d, box){
   box.appendChild(d);
   box.scrollTop=box.scrollHeight;
 
-  let i=0;
   const len=txt.length;
+  let i=0, done=false;
+
+  // Uzunluğa göre hız ve chunk ayarı
+  // Kısa (<150): yavaş, tek harf    — ~18ms/harf → ~3 sn
+  // Orta (150-400): orta, 2 harf    — ~12ms/harf → ~5 sn
+  // Uzun (400-900): hızlı, 4 harf   — ~8ms/harf  → ~7 sn
+  // Çok uzun (900+): 8 harf         — ~6ms/harf  → ~7 sn
+  const baseDelay = len<150?18 : len<400?12 : len<900?8 : 6;
+  const chunkSize = len<150?1  : len<400?2  : len<900?4 : 8;
+
+  // Tıklayınca anında tamamla
+  d.style.cursor='pointer';
+  d.title='Tıkla: tamamını göster';
+  d.addEventListener('click',()=>{
+    if(!done){ done=true; d.innerHTML=fmtTxt(txt); d.style.cursor=''; box.scrollTop=box.scrollHeight; }
+  },{once:true});
 
   function tick(){
-    if(i>=len){ d.innerHTML=fmtTxt(txt); box.scrollTop=box.scrollHeight; return; }
+    if(done) return;
+    if(i>=len){
+      done=true;
+      d.innerHTML=fmtTxt(txt);
+      d.style.cursor='';
+      box.scrollTop=box.scrollHeight;
+      return;
+    }
 
-    // Noktalama işaretlerinde daha uzun dur — insan gibi
     const ch=txt[i];
-    let delay=22+Math.random()*18; // temel hız: ~22-40ms/karakter
-    if('.!?'.includes(ch))      delay=320+Math.random()*200;
-    else if(',;:—'.includes(ch)) delay=120+Math.random()*80;
-    else if(ch==='\n')           delay=180+Math.random()*100;
-    else if(ch===' ')            delay=35+Math.random()*25;
+    // Noktalama pauzları — uzun metinde daha kısa tut
+    let delay=baseDelay+Math.random()*baseDelay;
+    if('.!?'.includes(ch))       delay=len<400?280:120;
+    else if(',;:—'.includes(ch)) delay=len<400?100:50;
+    else if(ch==='\n')           delay=len<400?140:60;
 
-    i++;
-    // Her adımda ham metni format et
+    // Bir chunk kadar ilerle
+    i=Math.min(i+chunkSize, len);
     d.innerHTML=fmtTxt(txt.substring(0,i))+(i<len?'<span class="cursor-blink">▍</span>':'');
     box.scrollTop=box.scrollHeight;
     setTimeout(tick, delay);
