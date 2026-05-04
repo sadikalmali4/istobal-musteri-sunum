@@ -415,6 +415,8 @@ header{
 .ai-typing-dot:nth-child(2){animation-delay:.18s;}
 .ai-typing-dot:nth-child(3){animation-delay:.36s;}
 @keyframes typingBounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.cursor-blink{display:inline-block;color:#003a6e;font-weight:400;animation:cursorBlink .6s steps(1) infinite;}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
 
 /* ──────── TAB ROI ──────── */
 .roi-tab-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;}
@@ -2244,9 +2246,16 @@ function filtreAriza(){
 }
 
 // ── AI ASISTAN ──
+let aiGreeted=false;
 function toggleAI(){
   const p=document.getElementById('aiPanel');
   p.classList.toggle('open');
+  if(p.classList.contains('open') && !aiGreeted){
+    aiGreeted=true;
+    setTimeout(()=>{
+      addMsg('Merhaba! 👋 Ben ALGA teknik asistanıyım.\n\nSize nasıl yardımcı olabilirim?\n\n• **Arıza kodu** yazın (örn: 35, 91)\n• **Bakım sorusu** sorun (fırça, kimyasal, su...)\n• **Makine bilgisi** isteyin (kapasite, kurulum, garanti...)\n• **Karşılaştırma** yapın (temassız vs fırçalı, rakip markalar)','bot');
+    },400);
+  }
 }
 
 // ── ARIZA VERİTABANI — M'WASH2 (Türkçe, resmi dokümandan) ──
@@ -2651,13 +2660,50 @@ ${a.n&&a.n!=='—'?`<div class="ai-fault-row"><span>⚠️</span><span>${a.n}</s
   box.scrollTop=box.scrollHeight;
 }
 
+function fmtTxt(t){
+  return t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+}
+
 function addMsg(txt,rol){
   const box=document.getElementById('aiMsgs');
   const d=document.createElement('div');
   d.className='ai-msg '+rol;
-  d.innerHTML=txt.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  if(rol==='bot'){
+    typeMsg(txt, d, box);
+  } else {
+    d.innerHTML=fmtTxt(txt);
+    box.appendChild(d);
+    box.scrollTop=box.scrollHeight;
+  }
+}
+
+function typeMsg(txt, d, box){
+  if(!d){ d=document.createElement('div'); d.className='ai-msg bot'; }
+  if(!box) box=document.getElementById('aiMsgs');
   box.appendChild(d);
   box.scrollTop=box.scrollHeight;
+
+  let i=0;
+  const len=txt.length;
+
+  function tick(){
+    if(i>=len){ d.innerHTML=fmtTxt(txt); box.scrollTop=box.scrollHeight; return; }
+
+    // Noktalama işaretlerinde daha uzun dur — insan gibi
+    const ch=txt[i];
+    let delay=22+Math.random()*18; // temel hız: ~22-40ms/karakter
+    if('.!?'.includes(ch))      delay=320+Math.random()*200;
+    else if(',;:—'.includes(ch)) delay=120+Math.random()*80;
+    else if(ch==='\n')           delay=180+Math.random()*100;
+    else if(ch===' ')            delay=35+Math.random()*25;
+
+    i++;
+    // Her adımda ham metni format et
+    d.innerHTML=fmtTxt(txt.substring(0,i))+(i<len?'<span class="cursor-blink">▍</span>':'');
+    box.scrollTop=box.scrollHeight;
+    setTimeout(tick, delay);
+  }
+  tick();
 }
 
 // ── ROI HESAPLAYICI ──
