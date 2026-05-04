@@ -2612,8 +2612,13 @@ async function aiGonder(){
     if(kbHit){ removeTyping(tid); addMsg(kbHit.ans,'bot'); return; }
 
     // 5 — Kalıp eşleşme
-    if(ql.includes('merhaba')||ql.includes('selam')||ql.includes('naber')){
-      removeTyping(tid); addMsg('Merhaba! 😊 Arıza kodu, semptom veya teknik soru yazabilirsiniz.','bot'); return;
+    if(ql.includes('merhaba')||ql.includes('selam')||ql.includes('naber')||ql.includes('hey')||ql.includes('iyi günler')||ql.includes('günaydın')||ql.includes('iyi akşamlar')){
+      const saatler=['Günaydın','Merhaba','İyi günler','İyi akşamlar'];
+      const saat=new Date().getHours();
+      const selamlama=saat<12?saatler[0]:saat<17?saatler[1]:saat<20?saatler[2]:saatler[3];
+      removeTyping(tid);
+      addMsg(`${selamlama}! 😊 Ben ALGA\'nın teknik ve satış asistanıyım.\n\nSize şu konularda yardımcı olabilirim:\n\n🔧 **Teknik Destek** — Arıza kodları, bakım, çözüm adımları\n🚗 **Makine Bilgisi** — M\'WASH2, HW\'PROGRESS, T\'WASH PRO özellikleri\n💰 **Yatırım Hesabı** — Geri dönüş süresi, karlılık analizi\n🌍 **İklim & Kullanım** — Hangi makine nerede daha verimli?\n\nSormak istediğiniz konuyu yazabilirsiniz!`,'bot');
+      return;
     }
     if(ql.includes('fiyat')||ql.includes('ücret')||ql.includes('tutar')||ql.includes('kaça')){
       removeTyping(tid); addMsg('Fiyat bilgisi için **📋 Teklif Formu** sekmesini doldurun. ALGA ekibi kısa sürede ulaşır.','bot'); return;
